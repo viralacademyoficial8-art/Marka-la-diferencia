@@ -143,6 +143,36 @@
             .step-card { flex-direction: column; text-align: center; }
             .event-info-grid { grid-template-columns: 1fr; }
             .calendar-options { min-width: 250px; }
+            .share-buttons { flex-wrap: wrap; gap: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .progress-container { padding: 12px 10px; }
+            .progress-step { font-size: 10px; gap: 4px; }
+            .main-container { padding: 20px 12px 50px; }
+            .success-icon { width: 70px; height: 70px; font-size: 2rem; }
+            .success-header h1 { font-size: clamp(1.4rem, 5vw, 2.2rem); }
+            .success-header p { font-size: 0.85rem; }
+            .alert-box { padding: 15px; gap: 12px; }
+            .alert-icon { font-size: 2rem; }
+            .alert-box p { font-size: 0.85rem; }
+            .step-number { width: 45px; height: 45px; font-size: 1.3rem; min-width: 45px; }
+            .step-card { gap: 15px; padding: 20px; }
+            .step-content h3 { font-size: 0.95rem; }
+            .step-content p { font-size: 0.8rem; }
+            .check-icon { width: 32px; height: 32px; min-width: 32px; }
+            .event-info-icon { width: 40px; height: 40px; font-size: 1.2rem; min-width: 40px; }
+            .event-info-text label { font-size: 11px; }
+            .event-info-text strong { font-size: 0.85rem; }
+            .whatsapp-btn, .calendar-btn { padding: 12px 18px; font-size: 0.85rem; gap: 8px; width: 100%; justify-content: center; }
+            .play-button { width: 70px; height: 70px; }
+            .play-button svg { width: 28px; height: 28px; }
+            .video-label span { padding: 6px 12px; font-size: 11px; }
+            .calendar-options { min-width: calc(100vw - 60px); left: 50%; transform: translateX(-50%); }
+            .share-buttons { gap: 8px; }
+            .share-btn { padding: 8px 14px; font-size: 0.8rem; min-height: 44px; }
+            footer { padding: 20px 15px; margin-top: 30px; }
+            .footer-text { font-size: 12px; }
         }
     </style>
 </head>
