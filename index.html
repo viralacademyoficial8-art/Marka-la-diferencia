@@ -49,23 +49,23 @@
         .hero { min-height: 100vh; background: var(--gradient-dark); position: relative; display: flex; flex-direction: column; align-items: center; padding: 40px 20px 60px; }
         .hero::before { display: none; }
         
-        .badge { background: rgba(123, 83, 240, 0.2); border: 1px solid var(--violeta-intenso); color: var(--violeta-intenso); padding: 8px 24px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; animation: glow 2s infinite; z-index: 1; }
+        .badge { background: rgba(123, 83, 240, 0.2); border: 1px solid var(--violeta-intenso); color: var(--violeta-intenso); padding: 10px 28px; border-radius: 50px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; animation: glow 2s infinite; z-index: 1; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(123, 83, 240, 0.3); } 50% { box-shadow: 0 0 40px rgba(123, 83, 240, 0.6); } }
         
         .hero-content { text-align: center; max-width: 900px; z-index: 1; }
-        .pre-headline { font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--gray); margin-bottom: 15px; font-weight: 500; }
+        .pre-headline { font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: var(--gray); margin-bottom: 15px; font-weight: 500; }
         .main-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1; margin-bottom: 25px; text-transform: uppercase; }
         .main-headline .highlight { color: var(--violeta-intenso); -webkit-text-fill-color: var(--violeta-intenso); }
-        .sub-headline { font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--light); margin-bottom: 30px; max-width: 750px; margin-left: auto; margin-right: auto; }
+        .sub-headline { font-size: clamp(1.1rem, 2.8vw, 1.4rem); color: var(--light); margin-bottom: 30px; max-width: 750px; margin-left: auto; margin-right: auto; }
         .sub-headline strong { color: var(--amarillo-limon); font-weight: 700; }
         
         .target-audience { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; }
-        .target-item { background: rgba(123, 83, 240, 0.1); border: 1px solid rgba(123, 83, 240, 0.3); padding: 10px 20px; border-radius: 50px; font-size: 14px; }
+        .target-item { background: rgba(123, 83, 240, 0.1); border: 1px solid rgba(123, 83, 240, 0.3); padding: 12px 22px; border-radius: 50px; font-size: 1rem; }
         .target-item span { color: var(--amarillo-limon); margin-right: 8px; }
         
         .pain-points { background: rgba(123, 83, 240, 0.05); border: 1px solid rgba(123, 83, 240, 0.3); border-radius: 20px; padding: 30px; margin: 30px auto; max-width: 700px; text-align: left; }
         .pain-points h3 { text-align: center; font-size: 1.2rem; margin-bottom: 20px; color: var(--violeta-intenso); }
-        .pain-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 1rem; }
+        .pain-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 1.1rem; }
         .pain-item .icon { color: var(--violeta-intenso); font-size: 1.2rem; flex-shrink: 0; }
         .breakthrough-text { text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(123, 83, 240, 0.3); font-weight: 600; color: var(--amarillo-limon); }
         
@@ -82,12 +82,12 @@
         .cta-button:hover::before { left: 100%; }
         .cta-button:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 50px rgba(246, 255, 84, 0.5); }
         .cta-microcopy { display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap; }
-        .cta-microcopy span { font-size: 12px; color: var(--gray); }
+        .cta-microcopy span { font-size: 14px; color: var(--gray); }
         .cta-microcopy span::before { content: '✓'; color: var(--amarillo-limon); margin-right: 5px; }
         
         .video-section { background: #000000; padding: 80px 20px; }
         .video-intro { max-width: 700px; margin: 0 auto 40px; text-align: center; }
-        .video-intro p { color: var(--light); font-size: 1.1rem; line-height: 1.8; }
+        .video-intro p { color: var(--light); font-size: 1.2rem; line-height: 1.8; }
         .video-intro p strong { color: var(--amarillo-limon); }
         .video-intro .arrow { font-size: 2rem; margin-top: 20px; animation: bounce-down 1s infinite; }
         @keyframes bounce-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
@@ -101,7 +101,7 @@
         .video-text { font-weight: 700; font-size: 1.1rem; color: var(--light); }
         .video-duration { color: var(--gray); font-size: 14px; margin-top: 5px; max-width: 400px; text-align: center; }
         .video-cta { text-align: center; margin-top: 40px; }
-        .video-cta p { color: var(--amarillo-limon); font-weight: 600; font-size: 1.1rem; margin-bottom: 20px; }
+        .video-cta p { color: var(--amarillo-limon); font-weight: 600; font-size: 1.2rem; margin-bottom: 20px; }
         
         .section-title { text-align: center; margin-bottom: 60px; }
         .section-title h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4rem); text-transform: uppercase; }
@@ -110,7 +110,7 @@
         .learn-section { padding: 100px 20px; background: var(--gradient-dark); }
         .benefits-container { max-width: 900px; margin: 0 auto; }
         .benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .benefits-column h3 { font-size: 1.3rem; margin-bottom: 25px; }
+        .benefits-column h3 { font-size: 1.5rem; margin-bottom: 25px; }
         .benefits-column.positive h3 { color: var(--amarillo-limon); }
         .benefits-column.negative h3 { color: var(--violeta-intenso); }
         .benefit-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 18px; padding: 15px; background: rgba(123, 83, 240, 0.05); border-radius: 12px; transition: all 0.3s ease; border: 1px solid transparent; }
@@ -118,17 +118,17 @@
         .benefit-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem; }
         .positive .benefit-icon { background: rgba(246, 255, 84, 0.2); color: var(--amarillo-limon); }
         .negative .benefit-icon { background: rgba(123, 83, 240, 0.2); color: var(--violeta-intenso); }
-        .benefit-item p { color: var(--light); font-size: 0.95rem; line-height: 1.5; }
+        .benefit-item p { color: var(--light); font-size: 1.05rem; line-height: 1.5; }
         
         .for-who-section { padding: 100px 20px; background: #000000; }
         .for-who-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .for-who-card { background: rgba(123, 83, 240, 0.05); border: 1px solid rgba(123, 83, 240, 0.2); border-radius: 20px; padding: 40px; }
         .for-who-card.yes { border-color: rgba(246, 255, 84, 0.4); background: rgba(246, 255, 84, 0.03); }
         .for-who-card.no { border-color: rgba(123, 83, 240, 0.4); }
-        .for-who-card h3 { font-size: 1.3rem; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
+        .for-who-card h3 { font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
         .for-who-card.yes h3 { color: var(--amarillo-limon); }
         .for-who-card.no h3 { color: var(--violeta-intenso); }
-        .for-who-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; font-size: 0.95rem; }
+        .for-who-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; font-size: 1.05rem; }
         .for-who-card.yes .for-who-item .icon { color: var(--amarillo-limon); }
         .for-who-card.no .for-who-item .icon { color: var(--violeta-intenso); }
         
@@ -139,9 +139,9 @@
         .presenter-badge { position: absolute; bottom: 20px; right: -10px; background: var(--amarillo-limon); color: var(--dark); padding: 15px 25px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 10px 30px rgba(246, 255, 84, 0.3); }
         .presenter-content h3 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; margin-bottom: 20px; }
         .presenter-content h3 .name { color: var(--violeta-intenso); }
-        .presenter-content p { color: var(--gray); font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px; }
+        .presenter-content p { color: var(--gray); font-size: 1.05rem; line-height: 1.45; margin-bottom: 10px; }
         .presenter-credentials { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; }
-        .credential { background: rgba(123, 83, 240, 0.1); border: 1px solid rgba(123, 83, 240, 0.3); padding: 12px 20px; border-radius: 50px; font-size: 13px; }
+        .credential { background: rgba(123, 83, 240, 0.1); border: 1px solid rgba(123, 83, 240, 0.3); padding: 12px 20px; border-radius: 50px; font-size: 0.95rem; }
         .credential span { color: var(--amarillo-limon); margin-right: 8px; }
         
         .objections-section { padding: 100px 20px; background: #000000; }
@@ -149,8 +149,8 @@
         .objection-card { background: rgba(123, 83, 240, 0.05); border: 1px solid rgba(123, 83, 240, 0.2); border-radius: 16px; padding: 30px; display: grid; grid-template-columns: auto 1fr; gap: 25px; align-items: start; transition: all 0.3s ease; }
         .objection-card:hover { background: rgba(123, 83, 240, 0.1); border-color: rgba(123, 83, 240, 0.4); }
         .objection-icon { width: 60px; height: 60px; background: rgba(123, 83, 240, 0.2); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-        .objection-content h4 { color: var(--violeta-intenso); font-size: 1.1rem; margin-bottom: 10px; font-style: italic; }
-        .objection-content p { color: var(--light); font-size: 0.95rem; line-height: 1.7; }
+        .objection-content h4 { color: var(--violeta-intenso); font-size: 1.2rem; margin-bottom: 10px; font-style: italic; }
+        .objection-content p { color: var(--light); font-size: 1.05rem; line-height: 1.7; }
         .objection-content p strong { color: var(--amarillo-limon); }
         
         .vip-section { padding: 100px 20px; background: var(--gradient-dark); position: relative; overflow: hidden; }
@@ -178,11 +178,11 @@
         .event-detail .icon { width: 50px; height: 50px; background: rgba(123, 83, 240, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
         .event-detail .info { text-align: left; }
         .event-detail .label { font-size: 12px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
-        .event-detail .value { font-weight: 700; }
-        .urgency-message { background: rgba(123, 83, 240, 0.1); border: 1px solid var(--violeta-intenso); padding: 15px 30px; border-radius: 12px; display: inline-block; margin-bottom: 30px; color: var(--violeta-intenso); font-weight: 600; }
+        .event-detail .value { font-weight: 700; font-size: 1.05rem; }
+        .urgency-message { background: rgba(123, 83, 240, 0.1); border: 1px solid var(--violeta-intenso); padding: 15px 30px; border-radius: 12px; display: inline-block; margin-bottom: 30px; color: var(--violeta-intenso); font-weight: 600; font-size: 1.05rem; }
         .final-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1; margin-bottom: 20px; }
         .final-headline .highlight { color: var(--violeta-intenso); }
-        .final-subtext { font-size: 1.2rem; color: var(--gray); margin-bottom: 40px; }
+        .final-subtext { font-size: 1.3rem; color: var(--gray); margin-bottom: 40px; }
         
         footer { background: #000000; padding: 40px 20px; text-align: center; border-top: 1px solid rgba(123, 83, 240, 0.2); }
         .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
@@ -472,7 +472,8 @@
             <a href="#">Política de Privacidad</a>
             <a href="#">Contacto</a>
         </div>
-        <p class="copyright">© 2025 [Tu Empresa]. Todos los derechos reservados.<br>Este sitio no es parte de Facebook o Facebook Inc.</p>
+        <p class="copyright">© 2026 Aviso legal: Todas las estrategias e inversiones involucran riesgos de pérdida. Ninguna información contenida en este producto debe ser interpretada como una garantía de resultados. Este sitio está fuera de Facebook™, Instagram™ y TikTok™. El presente contenido es propiedad de Marka la Diferencia, los consejos están basados en la experiencia de los fundadores y creadores de contenido, pero no garantizan resultados. El manejo de datos personales será conforme a la ley y no se compartirán con otras empresas; eventualmente, se podrán utilizar para enviar información de invitación a eventos o promociones comerciales. Para cualquier asunto o duda, puedes comunicarte al correo soporte@markaladiferencia.com o contactarnos al +52 1 33 1433 4157.</p>
+        <p class="copyright" style="margin-top: 15px; font-weight: 600;">® 2026 MARKA LA DIFERENCIA | TODOS LOS DERECHOS RESERVADOS</p>
     </footer>
 
     <div class="floating-cta" id="floatingCta">
