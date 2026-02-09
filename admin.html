@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Admin Panel - Embudo de Conversión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --amarillo-limon: #F6FF54;
+            --violeta-intenso: #7B53F0;
+            --violeta-light: #9B7AF5;
+            --gris-oscuro: #232021;
+            --blanco-suave: #F5F5F5;
+            --dark: #1a1a1a;
+            --darker: #121212;
+            --card-bg: #1e1e1e;
+            --border: #333;
+            --success: #00E676;
+            --warning: #FFB300;
+            --danger: #FF5252;
+            --info: #29B6F6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--blanco-suave);
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 260px;
+            background: var(--dark);
+            border-right: 1px solid var(--border);
+            padding: 20px 0;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 20px 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .logo h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--violeta-intenso), var(--amarillo-limon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo span {
+            font-size: 0.75rem;
+            color: var(--violeta-light);
+            font-weight: 500;
+        }
+
+        .nav-section {
+            padding: 0 15px;
+            margin-bottom: 25px;
+        }
+
+        .nav-section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #666;
+            padding: 0 10px;
+            margin-bottom: 10px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #999;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(123, 83, 240, 0.1);
+            color: var(--blanco-suave);
+        }
+
+        .nav-item.active {
+            background: var(--violeta-intenso);
+            color: white;
+        }
+
+        .nav-item .icon {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-left h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-left p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .date-filter {
+            display: flex;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 5px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .date-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #888;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .date-btn:hover { color: var(--blanco-suave); }
+        .date-btn.active { background: var(--violeta-intenso); color: white; }
+
+        .btn-export {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--amarillo-limon);
+            color: var(--dark);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(246, 255, 84, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .stat-card.purple::before { background: var(--violeta-intenso); }
+        .stat-card.yellow::before { background: var(--amarillo-limon); }
+        .stat-card.green::before { background: var(--success); }
+        .stat-card.blue::before { background: var(--info); }
+
+        .stat-card .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-card.purple .stat-icon { background: rgba(123, 83, 240, 0.2); }
+        .stat-card.yellow .stat-icon { background: rgba(246, 255, 84, 0.2); }
+        .stat-card.green .stat-icon { background: rgba(0, 230, 118, 0.2); }
+        .stat-card.blue .stat-icon { background: rgba(41, 182, 246, 0.2); }
+
+        .stat-card .stat-label {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-card.purple .stat-value { color: var(--violeta-intenso); }
+        .stat-card.yellow .stat-value { color: var(--amarillo-limon); }
+        .stat-card.green .stat-value { color: var(--success); }
+        .stat-card.blue .stat-value { color: var(--info); }
+
+        .stat-card .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        /* Section Grid */
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .card-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-header .more-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .card-header .more-btn:hover {
+            background: var(--violeta-intenso);
+            color: white;
+            border-color: var(--violeta-intenso);
+        }
+
+        /* Funnel Visual */
+        .funnel-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .funnel-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .funnel-bar-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .funnel-bar {
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .funnel-bar:hover { transform: translateX(5px); }
+
+        .funnel-step:nth-child(1) .funnel-bar { background: var(--violeta-intenso); width: 100%; }
+        .funnel-step:nth-child(2) .funnel-bar { background: var(--violeta-light); width: 75%; }
+        .funnel-step:nth-child(3) .funnel-bar { background: var(--info); width: 55%; }
+        .funnel-step:nth-child(4) .funnel-bar { background: var(--success); width: 35%; }
+
+        .funnel-stats {
+            text-align: right;
+            min-width: 100px;
+        }
+
+        .funnel-stats .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .funnel-stats .rate {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Table Card */
+        .table-card {
+            grid-column: span 2;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        tr:hover { background: rgba(123, 83, 240, 0.05); }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--violeta-intenso);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .user-info .email {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.completed { background: rgba(0, 230, 118, 0.15); color: var(--success); }
+        .status-badge.pending { background: rgba(255, 179, 0, 0.15); color: var(--warning); }
+        .status-badge.partial { background: rgba(41, 182, 246, 0.15); color: var(--info); }
+
+        .source-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Real-time indicator */
+        .realtime-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--success);
+        }
+
+        .realtime-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* Conversion Rate */
+        .conversion-rate-display {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .big-rate {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--violeta-intenso), var(--amarillo-limon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .rate-label {
+            color: #888;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .rate-comparison {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .rate-item { text-align: center; }
+
+        .rate-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--violeta-light);
+        }
+
+        .rate-item .label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Top Sources */
+        .source-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .source-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .source-icon.facebook { background: rgba(24, 119, 242, 0.2); }
+        .source-icon.instagram { background: rgba(225, 48, 108, 0.2); }
+        .source-icon.google { background: rgba(234, 67, 53, 0.2); }
+        .source-icon.direct { background: rgba(123, 83, 240, 0.2); }
+        .source-icon.whatsapp { background: rgba(37, 211, 102, 0.2); }
+
+        .source-info { flex: 1; }
+        .source-info .name { font-weight: 600; margin-bottom: 5px; }
+
+        .source-progress {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .source-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .source-icon.facebook + .source-info .source-progress-fill { background: #1877F2; }
+        .source-icon.instagram + .source-info .source-progress-fill { background: #E1306C; }
+        .source-icon.google + .source-info .source-progress-fill { background: #EA4335; }
+        .source-icon.direct + .source-info .source-progress-fill { background: var(--violeta-intenso); }
+        .source-icon.whatsapp + .source-info .source-progress-fill { background: #25D366; }
+
+        .source-value {
+            text-align: right;
+            min-width: 60px;
+        }
+
+        .source-value .number { font-weight: 700; font-size: 1.1rem; }
+        .source-value .percent { font-size: 0.8rem; color: #888; }
+
+        /* Heatmap */
+        .heatmap-container { overflow-x: auto; }
+
+        .heatmap {
+            display: grid;
+            grid-template-columns: 60px repeat(24, 1fr);
+            gap: 3px;
+            min-width: 700px;
+        }
+
+        .heatmap-label {
+            font-size: 0.75rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.2);
+            z-index: 10;
+        }
+
+        .heatmap-cell.level-0 { background: rgba(123, 83, 240, 0.1); color: #666; }
+        .heatmap-cell.level-1 { background: rgba(123, 83, 240, 0.25); color: #999; }
+        .heatmap-cell.level-2 { background: rgba(123, 83, 240, 0.4); color: #ccc; }
+        .heatmap-cell.level-3 { background: rgba(123, 83, 240, 0.6); color: #fff; }
+        .heatmap-cell.level-4 { background: rgba(123, 83, 240, 0.8); color: #fff; }
+        .heatmap-cell.level-5 { background: var(--violeta-intenso); color: #fff; }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 1200px) {
+            .section-grid { grid-template-columns: 1fr; }
+            .table-card { grid-column: span 1; }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .header { flex-direction: column; gap: 20px; align-items: flex-start; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+        }
+
+        .modal-content.modal-large { max-width: 900px; }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-icon {
+            font-size: 2rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .modal-header p {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 3px;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .modal-body { padding: 30px; }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            padding: 20px 30px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-primary {
+            padding: 12px 25px;
+            background: var(--violeta-intenso);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--violeta-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            padding: 12px 25px;
+            background: transparent;
+            color: #888;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--blanco-suave);
+        }
+
+        /* Integrations Grid */
+        .integrations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .integration-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .integration-card:hover {
+            background: rgba(123, 83, 240, 0.1);
+            border-color: var(--violeta-intenso);
+        }
+
+        .integration-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .integration-icon.meta { background: rgba(24, 119, 242, 0.2); }
+        .integration-icon.google { background: rgba(234, 67, 53, 0.2); }
+        .integration-icon.gtm { background: rgba(30, 136, 229, 0.2); }
+        .integration-icon.tiktok { background: rgba(0, 0, 0, 0.3); }
+        .integration-icon.hotjar { background: rgba(253, 60, 0, 0.2); }
+        .integration-icon.webhook { background: rgba(123, 83, 240, 0.2); }
+
+        .integration-info { flex: 1; }
+        .integration-info h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
+        .integration-info p { font-size: 0.8rem; color: #888; }
+
+        .integration-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .integration-status .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .integration-status.connected { color: var(--success); }
+        .integration-status.connected .status-dot { background: var(--success); }
+        .integration-status.pending { color: #888; }
+        .integration-status.pending .status-dot { background: #888; }
+
+        /* Config Tabs */
+        .config-tabs {
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 5px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+
+        .config-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .config-tab:hover { color: var(--blanco-suave); }
+        .config-tab.active { background: var(--violeta-intenso); color: white; }
+
+        .config-panel { display: none; }
+        .config-panel.active { display: block; }
+
+        .config-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .section-desc {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--blanco-suave);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--blanco-suave);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--violeta-intenso);
+            background: rgba(123, 83, 240, 0.1);
+        }
+
+        .form-group input::placeholder { color: #666; }
+
+        .form-help {
+            display: block;
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 6px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon input { padding-right: 45px; }
+
+        .input-with-icon .input-icon,
+        .input-with-icon .input-action {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .input-with-icon .input-action {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .input-with-prefix {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .input-with-prefix .prefix,
+        .input-with-prefix .suffix {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .input-with-prefix input {
+            border: none;
+            background: transparent;
+            flex: 1;
+        }
+
+        /* Toggle Styles */
+        .toggle-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .toggle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .toggle-info { flex: 1; }
+        .toggle-label { font-weight: 600; font-size: 0.9rem; display: block; }
+        .toggle-desc { font-size: 0.8rem; color: #888; margin-top: 3px; display: block; }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            cursor: pointer;
+        }
+
+        .toggle input { opacity: 0; width: 0; height: 0; }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--border);
+            border-radius: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle input:checked + .toggle-slider { background: var(--violeta-intenso); }
+        .toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+        /* Events List */
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .event-item:hover { background: rgba(255, 255, 255, 0.04); }
+        .event-item.vip { border-color: var(--amarillo-limon); background: rgba(246, 255, 84, 0.03); }
+
+        .event-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(123, 83, 240, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .event-info { flex: 1; }
+        .event-info h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+        .event-info p { font-size: 0.8rem; color: #888; }
+
+        .event-config {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .event-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .event-badge.standard { background: rgba(41, 182, 246, 0.15); color: var(--info); }
+        .event-badge.custom { background: rgba(123, 83, 240, 0.15); color: var(--violeta-light); }
+
+        .event-values-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+        }
+
+        .event-values-section h4 { margin-bottom: 15px; }
+
+        /* CAPI Styles */
+        .capi-info-box {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(41, 182, 246, 0.1);
+            border: 1px solid rgba(41, 182, 246, 0.3);
+            border-radius: 12px;
+        }
+
+        .capi-info-box .info-icon { font-size: 1.5rem; }
+        .capi-info-box strong { color: var(--info); display: block; margin-bottom: 5px; }
+        .capi-info-box p { font-size: 0.85rem; color: #aaa; }
+
+        .deduplication-section,
+        .user-data-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .deduplication-section h4,
+        .user-data-section h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .deduplication-section p,
+        .user-data-section p {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--violeta-intenso);
+        }
+
+        /* Test Tools */
+        .test-tools {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .test-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .test-card .test-icon { font-size: 2rem; margin-bottom: 10px; }
+        .test-card h4 { font-size: 0.95rem; margin-bottom: 5px; }
+        .test-card p { font-size: 0.8rem; color: #888; margin-bottom: 15px; }
+
+        .test-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--violeta-intenso);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .test-btn:hover { background: var(--violeta-light); }
+
+        .test-console {
+            background: #0d0d0d;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .clear-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .clear-btn:hover { color: var(--blanco-suave); }
+
+        .console-body {
+            padding: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        .console-line {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .console-line.info { color: var(--info); }
+        .console-line.success { color: var(--success); }
+        .console-line.error { color: var(--danger); }
+
+        .verification-checklist {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .verification-checklist h4 { margin-bottom: 15px; }
+
+        .checklist-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .checklist-item .check-icon { font-size: 1rem; }
+
+        /* Code Blocks */
+        .code-block {
+            background: #0d0d0d;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .copy-btn {
+            background: var(--violeta-intenso);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover { background: var(--violeta-light); }
+
+        .code-block pre {
+            padding: 20px;
+            overflow-x: auto;
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .code-block code {
+            color: #aaa;
+        }
+
+        .pixel-id-placeholder {
+            background: var(--amarillo-limon);
+            color: var(--dark);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>🎯 FunnelMetrics</h1>
+            <span>Panel de Administración</span>
+        </div>
+
+        <nav class="nav-section">
+            <div class="nav-section-title">Principal</div>
+            <div class="nav-item active">
+                <span class="icon">📊</span>
+                Dashboard
+            </div>
+            <div class="nav-item">
+                <span class="icon">👥</span>
+                Registros
+                <span class="badge">127</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">📈</span>
+                Analytics
+            </div>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-section-title">Embudo</div>
+            <div class="nav-item">
+                <span class="icon">🎯</span>
+                Landing Page
+            </div>
+            <div class="nav-item">
+                <span class="icon">✅</span>
+                Confirmaciones
+            </div>
+            <div class="nav-item">
+                <span class="icon">💬</span>
+                WhatsApp
+            </div>
+            <div class="nav-item">
+                <span class="icon">📅</span>
+                Calendario
+            </div>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-section-title">Configuración</div>
+            <div class="nav-item">
+                <span class="icon">⚙️</span>
+                Ajustes
+            </div>
+            <div class="nav-item" onclick="showIntegrationsModal()">
+                <span class="icon">🔗</span>
+                Integraciones
+                <span class="badge" style="background: var(--success);">Setup</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">📧</span>
+                Email Marketing
+            </div>
+            <div class="nav-item" onclick="showPixelModal()">
+                <span class="icon">📘</span>
+                Meta Pixel
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Modal de Integraciones -->
+    <div class="modal-overlay" id="integrationsModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>🔗 Centro de Integraciones</h2>
+                <button class="modal-close" onclick="closeModal('integrationsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="integrations-grid">
+                    <!-- Meta / Facebook -->
+                    <div class="integration-card" onclick="showPixelModal()">
+                        <div class="integration-icon meta">📘</div>
+                        <div class="integration-info">
+                            <h3>Meta Pixel & CAPI</h3>
+                            <p>Facebook Pixel, Conversions API, eventos personalizados</p>
+                        </div>
+                        <div class="integration-status connected">
+                            <span class="status-dot"></span>
+                            Configurar
+                        </div>
+                    </div>
+
+                    <!-- Google Analytics -->
+                    <div class="integration-card">
+                        <div class="integration-icon google">📊</div>
+                        <div class="integration-info">
+                            <h3>Google Analytics 4</h3>
+                            <p>Tracking de eventos y conversiones</p>
+                        </div>
+                        <div class="integration-status pending">
+                            <span class="status-dot"></span>
+                            Pendiente
+                        </div>
+                    </div>
+
+                    <!-- Google Tag Manager -->
+                    <div class="integration-card">
+                        <div class="integration-icon gtm">🏷️</div>
+                        <div class="integration-info">
+                            <h3>Google Tag Manager</h3>
+                            <p>Gestión centralizada de tags</p>
+                        </div>
+                        <div class="integration-status pending">
+                            <span class="status-dot"></span>
+                            Pendiente
+                        </div>
+                    </div>
+
+                    <!-- TikTok Pixel -->
+                    <div class="integration-card">
+                        <div class="integration-icon tiktok">🎵</div>
+                        <div class="integration-info">
+                            <h3>TikTok Pixel</h3>
+                            <p>Tracking para TikTok Ads</p>
+                        </div>
+                        <div class="integration-status pending">
+                            <span class="status-dot"></span>
+                            Pendiente
+                        </div>
+                    </div>
+
+                    <!-- Hotjar -->
+                    <div class="integration-card">
+                        <div class="integration-icon hotjar">🔥</div>
+                        <div class="integration-info">
+                            <h3>Hotjar</h3>
+                            <p>Heatmaps y grabaciones</p>
+                        </div>
+                        <div class="integration-status pending">
+                            <span class="status-dot"></span>
+                            Pendiente
+                        </div>
+                    </div>
+
+                    <!-- Webhooks -->
+                    <div class="integration-card">
+                        <div class="integration-icon webhook">🪝</div>
+                        <div class="integration-info">
+                            <h3>Webhooks</h3>
+                            <p>Conectar con Zapier, Make, n8n</p>
+                        </div>
+                        <div class="integration-status pending">
+                            <span class="status-dot"></span>
+                            Pendiente
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Meta Pixel -->
+    <div class="modal-overlay" id="pixelModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="modal-icon">📘</span>
+                    <div>
+                        <h2>Meta Pixel & Conversions API</h2>
+                        <p>Configura el tracking de Facebook e Instagram Ads</p>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeModal('pixelModal')">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Tabs -->
+                <div class="config-tabs">
+                    <button class="config-tab active" data-tab="pixel">🎯 Pixel Base</button>
+                    <button class="config-tab" data-tab="events">⚡ Eventos</button>
+                    <button class="config-tab" data-tab="capi">🔐 Conversions API</button>
+                    <button class="config-tab" data-tab="test">🧪 Probar</button>
+                    <button class="config-tab" data-tab="code">📋 Código</button>
+                </div>
+
+                <!-- Tab: Pixel Base -->
+                <div class="config-panel active" id="panel-pixel">
+                    <div class="config-section">
+                        <h3>📌 Configuración del Pixel</h3>
+                        <p class="section-desc">Ingresa tu Pixel ID de Meta Business Suite</p>
+                        
+                        <div class="form-group">
+                            <label>Pixel ID *</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="pixelId" placeholder="Ej: 123456789012345" value="">
+                                <span class="input-icon">🔢</span>
+                            </div>
+                            <span class="form-help">Encuéntralo en: Meta Business Suite → Eventos → Orígenes de datos</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nombre del Pixel (opcional)</label>
+                            <input type="text" id="pixelName" placeholder="Ej: Pixel Masterclass 2025">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Dominio verificado</label>
+                                <input type="text" id="verifiedDomain" placeholder="tudominio.com">
+                            </div>
+                            <div class="form-group">
+                                <label>ID de cuenta publicitaria</label>
+                                <input type="text" id="adAccountId" placeholder="act_123456789">
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <span class="toggle-label">Modo avanzado de coincidencia</span>
+                                    <span class="toggle-desc">Mejora la atribución enviando datos hasheados</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" id="advancedMatching" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <span class="toggle-label">Consentimiento de cookies</span>
+                                    <span class="toggle-desc">Esperar consentimiento antes de disparar</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" id="cookieConsent">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Eventos -->
+                <div class="config-panel" id="panel-events">
+                    <div class="config-section">
+                        <h3>⚡ Eventos del Embudo</h3>
+                        <p class="section-desc">Configura qué eventos se disparan en cada paso</p>
+                        
+                        <div class="events-list">
+                            <div class="event-item">
+                                <div class="event-icon">👁️</div>
+                                <div class="event-info">
+                                    <h4>PageView</h4>
+                                    <p>Cuando alguien visita la landing</p>
+                                </div>
+                                <div class="event-config">
+                                    <span class="event-badge standard">Estándar</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" checked disabled>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-icon">📝</div>
+                                <div class="event-info">
+                                    <h4>Lead</h4>
+                                    <p>Cuando completa el formulario de registro</p>
+                                </div>
+                                <div class="event-config">
+                                    <span class="event-badge standard">Estándar</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="eventLead" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-icon">✅</div>
+                                <div class="event-info">
+                                    <h4>CompleteRegistration</h4>
+                                    <p>Cuando llega a la página de confirmación</p>
+                                </div>
+                                <div class="event-config">
+                                    <span class="event-badge standard">Estándar</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="eventCompleteReg" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-icon">💬</div>
+                                <div class="event-info">
+                                    <h4>WhatsAppJoin</h4>
+                                    <p>Cuando hace clic en unirse a WhatsApp</p>
+                                </div>
+                                <div class="event-config">
+                                    <span class="event-badge custom">Personalizado</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="eventWhatsApp" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-icon">📅</div>
+                                <div class="event-info">
+                                    <h4>Schedule</h4>
+                                    <p>Cuando agrega al calendario</p>
+                                </div>
+                                <div class="event-config">
+                                    <span class="event-badge standard">Estándar</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="eventSchedule" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-icon">🎥</div>
+                                <div class="event-info">
+                                    <h4>ViewContent</h4>
+                                    <p>Cuando reproduce el video VSL</p>
+                                </div>
+                                <div class="event-config">
+                                    <span class="event-badge standard">Estándar</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="eventViewContent" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="event-item vip">
+                                <div class="event-icon">💎</div>
+                                <div class="event-info">
+                                    <h4>InitiateCheckout</h4>
+                                    <p>Cuando hace clic en "Quiero Acceso VIP"</p>
+                                </div>
+                                <div class="event-config">
+                                    <span class="event-badge standard">Estándar</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="eventCheckout" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="event-item vip">
+                                <div class="event-icon">💰</div>
+                                <div class="event-info">
+                                    <h4>Purchase</h4>
+                                    <p>Cuando compra acceso VIP ($14 USD)</p>
+                                </div>
+                                <div class="event-config">
+                                    <span class="event-badge standard">Estándar</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="eventPurchase" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="event-values-section">
+                            <h4>💵 Valores de Conversión</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Valor por Lead</label>
+                                    <div class="input-with-prefix">
+                                        <span class="prefix">$</span>
+                                        <input type="number" id="leadValue" placeholder="0" value="5">
+                                        <span class="suffix">USD</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Valor VIP</label>
+                                    <div class="input-with-prefix">
+                                        <span class="prefix">$</span>
+                                        <input type="number" id="vipValue" placeholder="14" value="14">
+                                        <span class="suffix">USD</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Conversions API -->
+                <div class="config-panel" id="panel-capi">
+                    <div class="config-section">
+                        <h3>🔐 Conversions API (Server-Side)</h3>
+                        <p class="section-desc">Mejora la precisión del tracking con eventos del servidor</p>
+                        
+                        <div class="capi-info-box">
+                            <div class="info-icon">💡</div>
+                            <div class="info-content">
+                                <strong>¿Por qué usar Conversions API?</strong>
+                                <p>Con iOS 14.5+ y bloqueadores de anuncios, el Pixel pierde hasta 30% de las conversiones. CAPI envía eventos directamente desde tu servidor a Meta, mejorando la atribución.</p>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group" style="margin: 20px 0;">
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <span class="toggle-label">Activar Conversions API</span>
+                                    <span class="toggle-desc">Enviar eventos duplicados al servidor de Meta</span>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" id="capiEnabled">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="capi-config" id="capiConfig" style="display: none;">
+                            <div class="form-group">
+                                <label>Access Token *</label>
+                                <div class="input-with-icon">
+                                    <input type="password" id="capiToken" placeholder="EAAxxxxxxxxxxxxxxx">
+                                    <button class="input-action" onclick="togglePassword('capiToken')">👁️</button>
+                                </div>
+                                <span class="form-help">Genera un token en: Meta Business Suite → Configuración → Conversions API</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Test Event Code (opcional)</label>
+                                <input type="text" id="testEventCode" placeholder="TEST12345">
+                                <span class="form-help">Usa esto para probar eventos antes de ir a producción</span>
+                            </div>
+
+                            <div class="deduplication-section">
+                                <h4>🔄 Deduplicación de Eventos</h4>
+                                <p>Evita contar eventos duplicados entre Pixel y CAPI</p>
+                                
+                                <div class="toggle-item" style="margin-top: 15px;">
+                                    <div class="toggle-info">
+                                        <span class="toggle-label">Deduplicación automática</span>
+                                        <span class="toggle-desc">Usar event_id único para cada evento</span>
+                                    </div>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="deduplication" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="user-data-section">
+                                <h4>👤 Datos de Usuario para Matching</h4>
+                                <p>Selecciona qué datos enviar (hasheados) para mejor atribución</p>
+                                
+                                <div class="checkbox-grid">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked> Email
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked> Teléfono
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked> Nombre
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked> IP Address
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked> User Agent
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox"> Ciudad
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox"> País
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox"> Código Postal
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Probar -->
+                <div class="config-panel" id="panel-test">
+                    <div class="config-section">
+                        <h3>🧪 Probar Configuración</h3>
+                        <p class="section-desc">Verifica que todo esté funcionando correctamente</p>
+                        
+                        <div class="test-tools">
+                            <div class="test-card">
+                                <div class="test-icon">🔍</div>
+                                <h4>Meta Pixel Helper</h4>
+                                <p>Extensión de Chrome para verificar el Pixel</p>
+                                <a href="https://chrome.google.com/webstore/detail/meta-pixel-helper/fdgfkebogiimcoedlicjlajpkdmockpc" target="_blank" class="test-btn">Instalar extensión</a>
+                            </div>
+
+                            <div class="test-card">
+                                <div class="test-icon">📊</div>
+                                <h4>Events Manager</h4>
+                                <p>Ver eventos en tiempo real en Meta</p>
+                                <a href="https://business.facebook.com/events_manager" target="_blank" class="test-btn">Abrir Events Manager</a>
+                            </div>
+
+                            <div class="test-card">
+                                <div class="test-icon">🧪</div>
+                                <h4>Test Events</h4>
+                                <p>Probar eventos con código de prueba</p>
+                                <button class="test-btn" onclick="sendTestEvent()">Enviar evento de prueba</button>
+                            </div>
+                        </div>
+
+                        <div class="test-console">
+                            <div class="console-header">
+                                <span>📋 Consola de Pruebas</span>
+                                <button class="clear-btn" onclick="clearConsole()">Limpiar</button>
+                            </div>
+                            <div class="console-body" id="testConsole">
+                                <div class="console-line info">ℹ️ Configura tu Pixel ID y haz clic en "Enviar evento de prueba"</div>
+                            </div>
+                        </div>
+
+                        <div class="verification-checklist">
+                            <h4>✅ Lista de Verificación</h4>
+                            <div class="checklist-items">
+                                <div class="checklist-item" id="check-pixel">
+                                    <span class="check-icon">⏳</span>
+                                    <span>Pixel ID configurado</span>
+                                </div>
+                                <div class="checklist-item" id="check-pageview">
+                                    <span class="check-icon">⏳</span>
+                                    <span>PageView detectado</span>
+                                </div>
+                                <div class="checklist-item" id="check-events">
+                                    <span class="check-icon">⏳</span>
+                                    <span>Eventos personalizados activos</span>
+                                </div>
+                                <div class="checklist-item" id="check-capi">
+                                    <span class="check-icon">⏳</span>
+                                    <span>Conversions API conectada</span>
+                                </div>
+                                <div class="checklist-item" id="check-domain">
+                                    <span class="check-icon">⏳</span>
+                                    <span>Dominio verificado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Código -->
+                <div class="config-panel" id="panel-code">
+                    <div class="config-section">
+                        <h3>📋 Código para tu Landing</h3>
+                        <p class="section-desc">Copia este código y pégalo antes de &lt;/head&gt; en tu landing</p>
+                        
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>📄 meta-pixel.js</span>
+                                <button class="copy-btn" onclick="copyCode('pixelCode')">📋 Copiar</button>
+                            </div>
+                            <pre id="pixelCode"><code>&lt;!-- Meta Pixel Code --&gt;
+&lt;script&gt;
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+
+// Inicializar Pixel
+fbq('init', '<span class="pixel-id-placeholder">TU_PIXEL_ID</span>', {
+  em: '', // email hasheado
+  ph: '', // teléfono hasheado  
+  fn: '', // nombre hasheado
+});
+
+// PageView automático
+fbq('track', 'PageView');
+&lt;/script&gt;
+&lt;noscript&gt;&lt;img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=<span class="pixel-id-placeholder">TU_PIXEL_ID</span>&ev=PageView&noscript=1"
+/&gt;&lt;/noscript&gt;
+&lt;!-- End Meta Pixel Code --&gt;</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>📄 eventos-embudo.js</span>
+                                <button class="copy-btn" onclick="copyCode('eventsCode')">📋 Copiar</button>
+                            </div>
+                            <pre id="eventsCode"><code>// ====== EVENTOS DEL EMBUDO ======
+
+// 1. Cuando abre el modal de registro
+function trackInitiateRegistration() {
+  fbq('track', 'InitiateCheckout', {
+    content_name: 'Masterclass Registration',
+    content_category: 'Lead Form'
+  });
+}
+
+// 2. Cuando envía el formulario (LEAD)
+function trackLead(userData) {
+  fbq('track', 'Lead', {
+    content_name: 'Masterclass No Es Tu Producto',
+    content_category: 'Webinar Registration',
+    value: 5.00,
+    currency: 'USD'
+  }, {
+    eventID: 'lead_' + Date.now() // Para deduplicación
+  });
+}
+
+// 3. Cuando llega a página de confirmación
+function trackCompleteRegistration() {
+  fbq('track', 'CompleteRegistration', {
+    content_name: 'Masterclass Confirmed',
+    status: 'registered'
+  });
+}
+
+// 4. Cuando hace clic en WhatsApp
+function trackWhatsAppJoin() {
+  fbq('trackCustom', 'WhatsAppJoin', {
+    content_name: 'WhatsApp Group',
+    funnel_step: 'post_registration'
+  });
+}
+
+// 5. Cuando agrega al calendario
+function trackSchedule() {
+  fbq('track', 'Schedule', {
+    content_name: 'Masterclass Calendar',
+    calendar_type: 'google' // o 'apple', 'outlook'
+  });
+}
+
+// 6. Cuando reproduce el video
+function trackVideoView(percent) {
+  fbq('track', 'ViewContent', {
+    content_name: 'VSL Video',
+    content_type: 'video',
+    video_percent: percent
+  });
+}
+
+// 7. Cuando hace clic en VIP
+function trackVIPIntent() {
+  fbq('track', 'InitiateCheckout', {
+    content_name: 'VIP Access',
+    value: 14.00,
+    currency: 'USD'
+  });
+}
+
+// 8. Cuando compra VIP (conectar con pasarela)
+function trackPurchase(orderId) {
+  fbq('track', 'Purchase', {
+    content_name: 'VIP Access',
+    content_type: 'product',
+    value: 14.00,
+    currency: 'USD',
+    order_id: orderId
+  });
+}</code></pre>
+                        </div>
+
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>📄 conversions-api.js (Server-side / Supabase Edge Function)</span>
+                                <button class="copy-btn" onclick="copyCode('capiCode')">📋 Copiar</button>
+                            </div>
+                            <pre id="capiCode"><code>// Supabase Edge Function para Conversions API
+import { serve } from 'https://deno.land/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7605021236465847404e5846">[email&#160;protected]</a>/http/server.ts'
+import { createHash } from 'https://deno.land/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3c0c7d7f3839d82858b9d83">[email&#160;protected]</a>/crypto/mod.ts'
+
+const PIXEL_ID = Deno.env.get('META_PIXEL_ID')
+const ACCESS_TOKEN = Deno.env.get('META_ACCESS_TOKEN')
+
+// Función para hashear datos (SHA256)
+function hashData(data: string): string {
+  const encoder = new TextEncoder()
+  const hash = createHash('sha256')
+  hash.update(encoder.encode(data.toLowerCase().trim()))
+  return hash.toString()
+}
+
+serve(async (req) =&gt; {
+  const { event_name, user_data, custom_data, event_id } = await req.json()
+  
+  const payload = {
+    data: [{
+      event_name,
+      event_time: Math.floor(Date.now() / 1000),
+      event_id, // Para deduplicación con Pixel
+      action_source: 'website',
+      user_data: {
+        em: user_data.email ? [hashData(user_data.email)] : undefined,
+        ph: user_data.phone ? [hashData(user_data.phone)] : undefined,
+        fn: user_data.firstName ? [hashData(user_data.firstName)] : undefined,
+        client_ip_address: req.headers.get('x-forwarded-for'),
+        client_user_agent: req.headers.get('user-agent'),
+        fbc: user_data.fbc, // Facebook Click ID
+        fbp: user_data.fbp, // Facebook Browser ID
+      },
+      custom_data
+    }]
+  }
+
+  const response = await fetch(
+    `https://graph.facebook.com/v18.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }
+  )
+
+  return new Response(JSON.stringify(await response.json()), {
+    headers: { 'Content-Type': 'application/json' }
+  })
+})</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('pixelModal')">Cancelar</button>
+                <button class="btn-primary" onclick="savePixelConfig()">💾 Guardar Configuración</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-left">
+                <h2>Dashboard del Embudo</h2>
+                <p>Masterclass: "No Es Tu Producto, Eres Tú" • 15 Feb 2025</p>
+            </div>
+            <div class="header-right">
+                <div class="realtime-indicator">
+                    <span class="realtime-dot"></span>
+                    En tiempo real
+                </div>
+                <div class="date-filter">
+                    <button class="date-btn">Hoy</button>
+                    <button class="date-btn active">7 días</button>
+                    <button class="date-btn">30 días</button>
+                    <button class="date-btn">Todo</button>
+                </div>
+                <button class="btn-export">
+                    <span>📥</span>
+                    Exportar CSV
+                </button>
+            </div>
+        </header>
+
+        <div class="stats-grid fade-in">
+            <div class="stat-card purple">
+                <div class="stat-icon">👁️</div>
+                <div class="stat-label">Visitas a Landing</div>
+                <div class="stat-value" id="totalVisits">2,847</div>
+                <div class="stat-change up"><span>↑</span> 23.5% vs semana anterior</div>
+            </div>
+            <div class="stat-card yellow">
+                <div class="stat-icon">📝</div>
+                <div class="stat-label">Registros Totales</div>
+                <div class="stat-value" id="totalRegistros">847</div>
+                <div class="stat-change up"><span>↑</span> 18.2% vs semana anterior</div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-icon">💬</div>
+                <div class="stat-label">Unieron a WhatsApp</div>
+                <div class="stat-value" id="whatsappJoins">612</div>
+                <div class="stat-change up"><span>↑</span> 12.8% vs semana anterior</div>
+            </div>
+            <div class="stat-card blue">
+                <div class="stat-icon">📅</div>
+                <div class="stat-label">Agregaron Calendario</div>
+                <div class="stat-value" id="calendarAdds">489</div>
+                <div class="stat-change up"><span>↑</span> 8.4% vs semana anterior</div>
+            </div>
+        </div>
+
+        <div class="section-grid">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h3>📊 Embudo de Conversión</h3>
+                    <button class="more-btn">⋯</button>
+                </div>
+                <div class="funnel-container">
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container"><div class="funnel-bar">👁️ Visitantes Landing</div></div>
+                        <div class="funnel-stats"><div class="value">2,847</div><div class="rate">100%</div></div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container"><div class="funnel-bar">📝 Registros</div></div>
+                        <div class="funnel-stats"><div class="value">847</div><div class="rate">29.7%</div></div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container"><div class="funnel-bar">💬 WhatsApp</div></div>
+                        <div class="funnel-stats"><div class="value">612</div><div class="rate">72.3%</div></div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar-container"><div class="funnel-bar">📅 Calendario</div></div>
+                        <div class="funnel-stats"><div class="value">489</div><div class="rate">57.7%</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h3>🎯 Tasa de Conversión General</h3>
+                    <button class="more-btn">⋯</button>
+                </div>
+                <div class="conversion-rate-display">
+                    <div class="big-rate">29.7%</div>
+                    <div class="rate-label">Visitantes → Registros</div>
+                    <div class="rate-comparison">
+                        <div class="rate-item"><div class="value">72.3%</div><div class="label">Registro → WhatsApp</div></div>
+                        <div class="rate-item"><div class="value">79.9%</div><div class="label">WhatsApp → Calendario</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h3>📈 Registros por Día</h3>
+                    <button class="more-btn">⋯</button>
+                </div>
+                <div class="chart-container"><canvas id="registrosChart"></canvas></div>
+            </div>
+
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h3>🔗 Fuentes de Tráfico</h3>
+                    <button class="more-btn">⋯</button>
+                </div>
+                <div class="source-list">
+                    <div class="source-item">
+                        <div class="source-icon facebook">📘</div>
+                        <div class="source-info"><div class="name">Facebook Ads</div><div class="source-progress"><div class="source-progress-fill" style="width: 45%"></div></div></div>
+                        <div class="source-value"><div class="number">381</div><div class="percent">45%</div></div>
+                    </div>
+                    <div class="source-item">
+                        <div class="source-icon instagram">📸</div>
+                        <div class="source-info"><div class="name">Instagram</div><div class="source-progress"><div class="source-progress-fill" style="width: 28%"></div></div></div>
+                        <div class="source-value"><div class="number">237</div><div class="percent">28%</div></div>
+                    </div>
+                    <div class="source-item">
+                        <div class="source-icon whatsapp">💬</div>
+                        <div class="source-info"><div class="name">WhatsApp Directo</div><div class="source-progress"><div class="source-progress-fill" style="width: 15%"></div></div></div>
+                        <div class="source-value"><div class="number">127</div><div class="percent">15%</div></div>
+                    </div>
+                    <div class="source-item">
+                        <div class="source-icon google">🔍</div>
+                        <div class="source-info"><div class="name">Google Orgánico</div><div class="source-progress"><div class="source-progress-fill" style="width: 8%"></div></div></div>
+                        <div class="source-value"><div class="number">68</div><div class="percent">8%</div></div>
+                    </div>
+                    <div class="source-item">
+                        <div class="source-icon direct">🔗</div>
+                        <div class="source-info"><div class="name">Tráfico Directo</div><div class="source-progress"><div class="source-progress-fill" style="width: 4%"></div></div></div>
+                        <div class="source-value"><div class="number">34</div><div class="percent">4%</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card table-card fade-in">
+                <div class="card-header">
+                    <h3>👥 Últimos Registros</h3>
+                    <button class="more-btn">⋯</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Usuario</th><th>WhatsApp</th><th>Estado</th><th>Fuente</th><th>Fecha</th><th>Acciones</th></tr></thead>
+                        <tbody id="registrosTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card table-card fade-in">
+                <div class="card-header">
+                    <h3>🔥 Actividad por Hora (Última Semana)</h3>
+                    <button class="more-btn">⋯</button>
+                </div>
+                <div class="heatmap-container"><div class="heatmap" id="heatmap"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        const mockRegistros = [
+            { id: 1, nombre: "María García", email: "maria@gmail.com", whatsapp: "+52 55 1234 5678", status: "completed", source: "Facebook", fecha: "2025-02-08 14:32" },
+            { id: 2, nombre: "Carlos López", email: "carlos.l@hotmail.com", whatsapp: "+52 33 9876 5432", status: "completed", source: "Instagram", fecha: "2025-02-08 14:28" },
+            { id: 3, nombre: "Ana Martínez", email: "ana.mtz@yahoo.com", whatsapp: "+52 81 5555 4444", status: "partial", source: "Facebook", fecha: "2025-02-08 14:15" },
+            { id: 4, nombre: "Roberto Sánchez", email: "roberto.s@gmail.com", whatsapp: "+52 55 7777 8888", status: "pending", source: "WhatsApp", fecha: "2025-02-08 13:58" },
+            { id: 5, nombre: "Laura Hernández", email: "laura.h@outlook.com", whatsapp: "+52 44 3333 2222", status: "completed", source: "Instagram", fecha: "2025-02-08 13:45" },
+            { id: 6, nombre: "José Ramírez", email: "jose.ramirez@gmail.com", whatsapp: "+52 55 1111 9999", status: "completed", source: "Facebook", fecha: "2025-02-08 13:22" },
+            { id: 7, nombre: "Patricia Flores", email: "paty.flores@hotmail.com", whatsapp: "+52 33 4444 5555", status: "partial", source: "Google", fecha: "2025-02-08 12:58" },
+            { id: 8, nombre: "Miguel Torres", email: "miguel.t@gmail.com", whatsapp: "+52 81 6666 7777", status: "completed", source: "Facebook", fecha: "2025-02-08 12:34" },
+        ];
+
+        function populateTable() {
+            const tbody = document.getElementById('registrosTable');
+            tbody.innerHTML = mockRegistros.map(reg => `
+                <tr>
+                    <td><div class="user-cell"><div class="user-avatar">${reg.nombre.split(' ').map(n => n[0]).join('')}</div><div class="user-info"><div class="name">${reg.nombre}</div><div class="email">${reg.email}</div></div></div></td>
+                    <td>${reg.whatsapp}</td>
+                    <td><span class="status-badge ${reg.status}">${reg.status === 'completed' ? '✓ Completo' : reg.status === 'partial' ? '◐ Parcial' : '○ Pendiente'}</span></td>
+                    <td><span class="source-badge">${getSourceIcon(reg.source)} ${reg.source}</span></td>
+                    <td>${reg.fecha}</td>
+                    <td><button class="more-btn" style="width:30px;height:30px;font-size:0.8rem;">👁️</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function getSourceIcon(source) {
+            const icons = { 'Facebook': '📘', 'Instagram': '📸', 'WhatsApp': '💬', 'Google': '🔍', 'Directo': '🔗' };
+            return icons[source] || '🌐';
+        }
+
+        populateTable();
+
+        const ctx = document.getElementById('registrosChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                datasets: [{
+                    label: 'Registros',
+                    data: [89, 112, 145, 98, 156, 178, 169],
+                    borderColor: '#7B53F0',
+                    backgroundColor: 'rgba(123, 83, 240, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#7B53F0',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5
+                }, {
+                    label: 'WhatsApp',
+                    data: [65, 82, 108, 72, 118, 135, 128],
+                    borderColor: '#F6FF54',
+                    backgroundColor: 'rgba(246, 255, 84, 0.05)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#F6FF54',
+                    pointBorderColor: '#232021',
+                    pointBorderWidth: 2,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { color: '#999', usePointStyle: true, padding: 20 } } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#888' } },
+                    x: { grid: { display: false }, ticks: { color: '#888' } }
+                }
+            }
+        });
+
+        function generateHeatmap() {
+            const container = document.getElementById('heatmap');
+            const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+            const hours = Array.from({length: 24}, (_, i) => i);
+            
+            container.innerHTML = '<div class="heatmap-label"></div>';
+            hours.forEach(h => { container.innerHTML += `<div class="heatmap-label" style="justify-content:center;font-size:0.65rem;">${h}</div>`; });
+            
+            days.forEach(day => {
+                container.innerHTML += `<div class="heatmap-label">${day}</div>`;
+                hours.forEach(hour => {
+                    let level = 0;
+                    if (hour >= 9 && hour <= 21) {
+                        level = Math.floor(Math.random() * 5) + 1;
+                        if ((hour >= 10 && hour <= 12) || (hour >= 19 && hour <= 21)) level = Math.min(level + 2, 5);
+                    } else { level = Math.floor(Math.random() * 2); }
+                    const value = level * 4 + Math.floor(Math.random() * 5);
+                    container.innerHTML += `<div class="heatmap-cell level-${level}" title="${day} ${hour}:00 - ${value} registros">${value > 0 ? value : ''}</div>`;
+                });
+            });
+        }
+
+        generateHeatmap();
+
+        function simulateUpdate() {
+            const visits = document.getElementById('totalVisits');
+            const current = parseInt(visits.textContent.replace(',', ''));
+            visits.textContent = (current + Math.floor(Math.random() * 3)).toLocaleString();
+        }
+
+        setInterval(simulateUpdate, 5000);
+
+        document.querySelectorAll('.date-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.querySelector('.btn-export').addEventListener('click', function() {
+            alert('📥 Exportando datos a CSV...\n\nEsta funcionalidad se conectará a Supabase próximamente.');
+        });
+
+        // ========== MODAL FUNCTIONS ==========
+        function showIntegrationsModal() {
+            document.getElementById('integrationsModal').classList.add('active');
+        }
+
+        function showPixelModal() {
+            closeModal('integrationsModal');
+            document.getElementById('pixelModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // Tab switching
+        document.querySelectorAll('.config-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                
+                document.querySelectorAll('.config-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.config-panel').forEach(p => p.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById('panel-' + tabId).classList.add('active');
+            });
+        });
+
+        // Toggle CAPI config visibility
+        document.getElementById('capiEnabled')?.addEventListener('change', function() {
+            document.getElementById('capiConfig').style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        // Copy code function
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const code = codeElement.textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = codeElement.parentElement.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copiado!';
+                btn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+
+        // Send test event
+        function sendTestEvent() {
+            const pixelId = document.getElementById('pixelId').value;
+            const console = document.getElementById('testConsole');
+            
+            if (!pixelId) {
+                console.innerHTML += '<div class="console-line error">❌ Error: Ingresa un Pixel ID primero</div>';
+                return;
+            }
+            
+            console.innerHTML += '<div class="console-line info">🔄 Enviando evento de prueba...</div>';
+            
+            // Simulate sending event
+            setTimeout(() => {
+                console.innerHTML += '<div class="console-line success">✅ Evento PageView enviado al Pixel ' + pixelId + '</div>';
+                console.innerHTML += '<div class="console-line success">✅ Evento Lead (test) enviado correctamente</div>';
+                console.innerHTML += '<div class="console-line info">ℹ️ Verifica en Events Manager de Meta</div>';
+                
+                // Update checklist
+                updateChecklist('check-pixel', true);
+                updateChecklist('check-pageview', true);
+                updateChecklist('check-events', true);
+                
+                console.scrollTop = console.scrollHeight;
+            }, 1500);
+        }
+
+        function clearConsole() {
+            document.getElementById('testConsole').innerHTML = '<div class="console-line info">ℹ️ Consola limpiada</div>';
+        }
+
+        function updateChecklist(checkId, success) {
+            const item = document.getElementById(checkId);
+            if (item) {
+                const icon = item.querySelector('.check-icon');
+                icon.textContent = success ? '✅' : '❌';
+            }
+        }
+
+        // Save Pixel Configuration
+        function savePixelConfig() {
+            const config = {
+                pixelId: document.getElementById('pixelId').value,
+                pixelName: document.getElementById('pixelName').value,
+                verifiedDomain: document.getElementById('verifiedDomain').value,
+                adAccountId: document.getElementById('adAccountId').value,
+                advancedMatching: document.getElementById('advancedMatching').checked,
+                cookieConsent: document.getElementById('cookieConsent').checked,
+                events: {
+                    lead: document.getElementById('eventLead')?.checked,
+                    completeRegistration: document.getElementById('eventCompleteReg')?.checked,
+                    whatsApp: document.getElementById('eventWhatsApp')?.checked,
+                    schedule: document.getElementById('eventSchedule')?.checked,
+                    viewContent: document.getElementById('eventViewContent')?.checked,
+                    checkout: document.getElementById('eventCheckout')?.checked,
+                    purchase: document.getElementById('eventPurchase')?.checked,
+                },
+                leadValue: document.getElementById('leadValue')?.value,
+                vipValue: document.getElementById('vipValue')?.value,
+                capi: {
+                    enabled: document.getElementById('capiEnabled')?.checked,
+                    token: document.getElementById('capiToken')?.value,
+                    testCode: document.getElementById('testEventCode')?.value,
+                    deduplication: document.getElementById('deduplication')?.checked,
+                }
+            };
+
+            // Save to localStorage (will be replaced with Supabase)
+            localStorage.setItem('metaPixelConfig', JSON.stringify(config));
+            
+            // Update code placeholders
+            document.querySelectorAll('.pixel-id-placeholder').forEach(el => {
+                el.textContent = config.pixelId || 'TU_PIXEL_ID';
+            });
+
+            alert('✅ Configuración guardada correctamente!\n\nPixel ID: ' + config.pixelId + '\n\nAhora copia el código generado y pégalo en tu landing.');
+            
+            // Update checklist
+            if (config.pixelId) {
+                updateChecklist('check-pixel', true);
+            }
+            if (config.capi.enabled && config.capi.token) {
+                updateChecklist('check-capi', true);
+            }
+            if (config.verifiedDomain) {
+                updateChecklist('check-domain', true);
+            }
+        }
+
+        // Load saved config on page load
+        function loadSavedConfig() {
+            const saved = localStorage.getItem('metaPixelConfig');
+            if (saved) {
+                const config = JSON.parse(saved);
+                
+                if (document.getElementById('pixelId')) {
+                    document.getElementById('pixelId').value = config.pixelId || '';
+                    document.getElementById('pixelName').value = config.pixelName || '';
+                    document.getElementById('verifiedDomain').value = config.verifiedDomain || '';
+                    document.getElementById('adAccountId').value = config.adAccountId || '';
+                    
+                    // Update placeholders
+                    document.querySelectorAll('.pixel-id-placeholder').forEach(el => {
+                        el.textContent = config.pixelId || 'TU_PIXEL_ID';
+                    });
+                }
+            }
+        }
+
+        // Generate pixel code dynamically
+        function generatePixelCode() {
+            const pixelId = document.getElementById('pixelId').value || 'TU_PIXEL_ID';
+            const advancedMatching = document.getElementById('advancedMatching').checked;
+            
+            let initCode = `fbq('init', '
