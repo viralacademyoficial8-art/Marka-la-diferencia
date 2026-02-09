@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎉 ¡Estás al 95%! Completa Tu Registro</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Supabase JS -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <style>
         :root {
             /* Paleta de colores del Brand Kit */
@@ -257,6 +260,12 @@
     <footer><p class="footer-text">© 2025 [Tu Empresa]. Todos los derechos reservados.<br>¿Preguntas? Escríbenos a <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8bf8e4fbe4f9ffeecbfffeeee6fbf9eef8eaa5e8e4e6">[email&#160;protected]</a></p></footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Initialize Supabase
+        initSupabase();
+
+        // Track page view
+        trackPageView('confirmacion');
+
         function createConfetti() {
             const container = document.getElementById('confetti');
             const colors = ['#7B53F0', '#F6FF54', '#9B7AF5', '#232021'];
@@ -277,19 +286,48 @@
         createConfetti();
 
         const registroData = localStorage.getItem('registroEvento');
+        let registroId = null;
         if (registroData) {
             const data = JSON.parse(registroData);
+            registroId = data.registro_id;
             if (data.nombre) {
                 const firstName = data.nombre.split(' ')[0];
                 document.getElementById('userName').textContent = firstName;
             }
         }
 
+        // Track CompleteRegistration pixel event
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'CompleteRegistration', {
+                content_name: 'Masterclass Confirmed',
+                status: 'registered'
+            });
+        }
+
         document.getElementById('videoPlaceholder').addEventListener('click', function() {
             this.innerHTML = '<iframe src="https://www.youtube.com/embed/TU_VIDEO_ID?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>';
         });
 
+        // WhatsApp click handler with API tracking
         document.getElementById('whatsappBtn').addEventListener('click', function() {
+            if (registroId) {
+                fetch(CONFIG.API_BASE + '/actualizar-paso', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        registro_id: registroId,
+                        paso: 'whatsapp'
+                    })
+                }).catch(function(err) { console.error('Error tracking WhatsApp:', err); });
+            }
+
+            if (typeof fbq !== 'undefined') {
+                fbq('trackCustom', 'WhatsAppJoin', {
+                    content_name: 'WhatsApp Group',
+                    funnel_step: 'post_registration'
+                });
+            }
+
             setTimeout(() => {
                 const step2 = document.getElementById('step2');
                 step2.classList.remove('active');
@@ -324,7 +362,7 @@
             const endStr = eventEnd.toISOString().replace(/-|:|\.\d+/g, '');
             const url = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(eventTitle) + '&dates=' + startStr + '/' + endStr + '&details=' + encodeURIComponent(eventDescription) + '&location=' + encodeURIComponent(eventLocation);
             window.open(url, '_blank');
-            markCalendarComplete();
+            markCalendarComplete('google');
         });
 
         document.getElementById('appleCal').addEventListener('click', function(e) {
@@ -335,17 +373,38 @@
             link.href = URL.createObjectURL(blob);
             link.download = 'masterclass-no-es-tu-producto.ics';
             link.click();
-            markCalendarComplete();
+            markCalendarComplete('apple');
         });
 
         document.getElementById('outlookCal').addEventListener('click', function(e) {
             e.preventDefault();
             const url = 'https://outlook.live.com/calendar/0/deeplink/compose?subject=' + encodeURIComponent(eventTitle) + '&startdt=' + eventStart.toISOString() + '&enddt=' + eventEnd.toISOString() + '&body=' + encodeURIComponent(eventDescription) + '&location=' + encodeURIComponent(eventLocation);
             window.open(url, '_blank');
-            markCalendarComplete();
+            markCalendarComplete('outlook');
         });
 
-        function markCalendarComplete() {
+        function markCalendarComplete(tipo) {
+            // Track calendar step via API
+            if (registroId) {
+                fetch(CONFIG.API_BASE + '/actualizar-paso', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        registro_id: registroId,
+                        paso: 'calendario',
+                        datos: { tipo: tipo }
+                    })
+                }).catch(function(err) { console.error('Error tracking calendar:', err); });
+            }
+
+            // Fire client-side Pixel event
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Schedule', {
+                    content_name: 'Masterclass Calendar',
+                    calendar_type: tipo
+                });
+            }
+
             setTimeout(() => {
                 const step3 = document.getElementById('step3');
                 step3.classList.remove('active');

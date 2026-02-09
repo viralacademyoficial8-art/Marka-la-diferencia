@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔥 Masterclass GRATIS: No Es Tu Producto, Eres Tú</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Supabase JS -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <style>
         :root {
             /* Paleta de colores del Brand Kit */
@@ -505,15 +508,73 @@
             if (e.target === document.getElementById('modal')) closeModal();
         });
 
-        document.getElementById('registrationForm').addEventListener('submit', (e) => {
+        // Initialize Supabase
+        initSupabase();
+
+        // Track page view
+        trackPageView('landing');
+
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = e.target.querySelector('.form-button');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '⏳ Registrando...';
+            submitBtn.disabled = true;
+
+            const utms = getUTMParams();
             const formData = {
+                evento_slug: CONFIG.EVENTO_SLUG,
                 nombre: e.target.querySelector('input[type="text"]').value,
                 email: e.target.querySelector('input[type="email"]').value,
-                whatsapp: e.target.querySelector('input[type="tel"]').value
+                whatsapp: e.target.querySelector('input[type="tel"]').value,
+                utm_source: utms.utm_source,
+                utm_medium: utms.utm_medium,
+                utm_campaign: utms.utm_campaign,
+                utm_content: utms.utm_content,
+                utm_term: utms.utm_term,
+                referrer: document.referrer,
+                fbp: getCookie('_fbp'),
+                fbc: getCookie('_fbc') || new URLSearchParams(window.location.search).get('fbclid')
             };
-            localStorage.setItem('registroEvento', JSON.stringify(formData));
-            window.location.href = 'confirmacion.html';
+
+            try {
+                const response = await fetch(CONFIG.API_BASE + '/registro-lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Save registration data for confirmation page
+                    localStorage.setItem('registroEvento', JSON.stringify({
+                        ...formData,
+                        registro_id: result.registro.id
+                    }));
+
+                    // Fire client-side Pixel event
+                    if (typeof fbq !== 'undefined') {
+                        fbq('track', 'Lead', {
+                            content_name: 'Masterclass Registration',
+                            value: 5.00,
+                            currency: 'USD'
+                        });
+                    }
+
+                    window.location.href = 'confirmacion.html';
+                } else {
+                    throw new Error(result.error || 'Error en el registro');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Fallback: save to localStorage and redirect anyway
+                localStorage.setItem('registroEvento', JSON.stringify(formData));
+                window.location.href = 'confirmacion.html';
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
     </script>
 </body>
