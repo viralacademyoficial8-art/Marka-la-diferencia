@@ -6,6 +6,9 @@
     <title>📊 Admin Panel - Embudo de Conversión</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Supabase JS -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <style>
         :root {
             --amarillo-limon: #F6FF54;
@@ -1292,13 +1295,76 @@
         ::-webkit-scrollbar-track { background: var(--darker); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Login Overlay */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--darker);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-overlay.hidden { display: none; }
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+        .login-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--violeta-intenso), var(--amarillo-limon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .login-card p { color: #888; margin-bottom: 30px; font-size: 0.9rem; }
+        .login-card .form-group { margin-bottom: 15px; text-align: left; }
+        .login-card .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--blanco-suave); }
+        .login-card .form-group input { width: 100%; padding: 14px 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; color: var(--blanco-suave); font-size: 0.95rem; }
+        .login-card .form-group input:focus { outline: none; border-color: var(--violeta-intenso); }
+        .login-btn { width: 100%; padding: 16px; background: var(--violeta-intenso); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: all 0.2s ease; }
+        .login-btn:hover { background: var(--violeta-light); transform: translateY(-2px); }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .login-error { color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none; }
+        .login-error.visible { display: block; }
+        .logout-btn { background: transparent; border: 1px solid var(--border); color: #888; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s ease; }
+        .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
     </style>
 </head>
 <body>
+    <!-- Login Overlay -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-card">
+            <h2>🎯 FunnelMetrics</h2>
+            <p>Inicia sesión para acceder al panel de administración</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="admin@tudominio.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="loginPassword" placeholder="Tu contraseña" required>
+                </div>
+                <button type="submit" class="login-btn" id="loginBtn">Iniciar Sesión</button>
+            </form>
+            <p class="login-error" id="loginError"></p>
+        </div>
+    </div>
+
     <aside class="sidebar">
         <div class="logo">
             <h1>🎯 FunnelMetrics</h1>
             <span>Panel de Administración</span>
+            <button class="logout-btn" id="logoutBtn" style="margin-top: 10px; width: 100%;" onclick="handleLogout()">Cerrar Sesión</button>
         </div>
 
         <nav class="nav-section">
@@ -2188,121 +2254,409 @@ serve(async (req) =&gt; {
     </main>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        const mockRegistros = [
-            { id: 1, nombre: "María García", email: "maria@gmail.com", whatsapp: "+52 55 1234 5678", status: "completed", source: "Facebook", fecha: "2025-02-08 14:32" },
-            { id: 2, nombre: "Carlos López", email: "carlos.l@hotmail.com", whatsapp: "+52 33 9876 5432", status: "completed", source: "Instagram", fecha: "2025-02-08 14:28" },
-            { id: 3, nombre: "Ana Martínez", email: "ana.mtz@yahoo.com", whatsapp: "+52 81 5555 4444", status: "partial", source: "Facebook", fecha: "2025-02-08 14:15" },
-            { id: 4, nombre: "Roberto Sánchez", email: "roberto.s@gmail.com", whatsapp: "+52 55 7777 8888", status: "pending", source: "WhatsApp", fecha: "2025-02-08 13:58" },
-            { id: 5, nombre: "Laura Hernández", email: "laura.h@outlook.com", whatsapp: "+52 44 3333 2222", status: "completed", source: "Instagram", fecha: "2025-02-08 13:45" },
-            { id: 6, nombre: "José Ramírez", email: "jose.ramirez@gmail.com", whatsapp: "+52 55 1111 9999", status: "completed", source: "Facebook", fecha: "2025-02-08 13:22" },
-            { id: 7, nombre: "Patricia Flores", email: "paty.flores@hotmail.com", whatsapp: "+52 33 4444 5555", status: "partial", source: "Google", fecha: "2025-02-08 12:58" },
-            { id: 8, nombre: "Miguel Torres", email: "miguel.t@gmail.com", whatsapp: "+52 81 6666 7777", status: "completed", source: "Facebook", fecha: "2025-02-08 12:34" },
-        ];
+        // =============================================
+        // ADMIN PANEL - Supabase Integration
+        // =============================================
 
-        function populateTable() {
-            const tbody = document.getElementById('registrosTable');
-            tbody.innerHTML = mockRegistros.map(reg => `
-                <tr>
-                    <td><div class="user-cell"><div class="user-avatar">${reg.nombre.split(' ').map(n => n[0]).join('')}</div><div class="user-info"><div class="name">${reg.nombre}</div><div class="email">${reg.email}</div></div></div></td>
-                    <td>${reg.whatsapp}</td>
-                    <td><span class="status-badge ${reg.status}">${reg.status === 'completed' ? '✓ Completo' : reg.status === 'partial' ? '◐ Parcial' : '○ Pendiente'}</span></td>
-                    <td><span class="source-badge">${getSourceIcon(reg.source)} ${reg.source}</span></td>
-                    <td>${reg.fecha}</td>
-                    <td><button class="more-btn" style="width:30px;height:30px;font-size:0.8rem;">👁️</button></td>
-                </tr>
-            `).join('');
+        let registrosChart = null;
+        let currentPeriodo = '7d';
+        let currentSession = null;
+
+        // Initialize Supabase
+        initSupabase();
+
+        // ========== AUTHENTICATION ==========
+        async function initAdmin() {
+            if (!supabaseClient) {
+                console.warn('Supabase not initialized');
+                showLoginOverlay();
+                return;
+            }
+
+            const { data: { session } } = await supabaseClient.auth.getSession();
+
+            if (!session) {
+                showLoginOverlay();
+                return;
+            }
+
+            currentSession = session;
+            hideLoginOverlay();
+            await loadDashboardData();
+            subscribeToChanges();
         }
 
-        function getSourceIcon(source) {
-            const icons = { 'Facebook': '📘', 'Instagram': '📸', 'WhatsApp': '💬', 'Google': '🔍', 'Directo': '🔗' };
-            return icons[source] || '🌐';
+        function showLoginOverlay() {
+            document.getElementById('loginOverlay').classList.remove('hidden');
         }
 
-        populateTable();
+        function hideLoginOverlay() {
+            document.getElementById('loginOverlay').classList.add('hidden');
+        }
 
-        const ctx = document.getElementById('registrosChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-                datasets: [{
-                    label: 'Registros',
-                    data: [89, 112, 145, 98, 156, 178, 169],
-                    borderColor: '#7B53F0',
-                    backgroundColor: 'rgba(123, 83, 240, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#7B53F0',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5
-                }, {
-                    label: 'WhatsApp',
-                    data: [65, 82, 108, 72, 118, 135, 128],
-                    borderColor: '#F6FF54',
-                    backgroundColor: 'rgba(246, 255, 84, 0.05)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#F6FF54',
-                    pointBorderColor: '#232021',
-                    pointBorderWidth: 2,
-                    pointRadius: 5
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { position: 'top', labels: { color: '#999', usePointStyle: true, padding: 20 } } },
-                scales: {
-                    y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#888' } },
-                    x: { grid: { display: false }, ticks: { color: '#888' } }
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Iniciando sesión...';
+            loginError.classList.remove('visible');
+
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+                if (error) {
+                    loginError.textContent = 'Error: ' + error.message;
+                    loginError.classList.add('visible');
+                    return;
                 }
+
+                currentSession = data.session;
+                hideLoginOverlay();
+                await loadDashboardData();
+                subscribeToChanges();
+            } catch (err) {
+                loginError.textContent = 'Error de conexión. Intenta de nuevo.';
+                loginError.classList.add('visible');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Iniciar Sesión';
             }
         });
 
-        function generateHeatmap() {
+        async function handleLogout() {
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
+            currentSession = null;
+            showLoginOverlay();
+        }
+
+        // ========== LOAD DASHBOARD DATA ==========
+        async function loadDashboardData() {
+            if (!currentSession) return;
+
+            try {
+                const response = await fetch(
+                    CONFIG.API_BASE + '/dashboard-stats?evento=' + CONFIG.EVENTO_SLUG + '&periodo=' + currentPeriodo,
+                    {
+                        headers: {
+                            'Authorization': 'Bearer ' + currentSession.access_token,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        showLoginOverlay();
+                        return;
+                    }
+                    throw new Error('Error fetching data');
+                }
+
+                const data = await response.json();
+                updateDashboard(data);
+            } catch (err) {
+                console.error('Error loading dashboard:', err);
+            }
+        }
+
+        function updateDashboard(data) {
+            const stats = data.stats || {};
+
+            // Update KPIs
+            document.getElementById('totalVisits').textContent = (stats.total_visitas || 0).toLocaleString();
+            document.getElementById('totalRegistros').textContent = (stats.total_registros || 0).toLocaleString();
+            document.getElementById('whatsappJoins').textContent = (stats.total_whatsapp || 0).toLocaleString();
+            document.getElementById('calendarAdds').textContent = (stats.total_calendario || 0).toLocaleString();
+
+            // Update registration count badge in sidebar
+            const regBadge = document.querySelector('.nav-item .badge');
+            if (regBadge) regBadge.textContent = stats.total_registros || 0;
+
+            // Update funnel
+            updateFunnel(stats);
+
+            // Update conversion rates
+            updateConversionRates(stats);
+
+            // Update chart
+            updateChart(data.registrosPorDia || []);
+
+            // Update sources
+            updateSources(data.fuentes || []);
+
+            // Update table
+            updateTable(data.ultimosRegistros || []);
+
+            // Update heatmap
+            updateHeatmap(data.actividadPorHora || []);
+        }
+
+        function updateFunnel(stats) {
+            const funnelSteps = document.querySelectorAll('.funnel-step');
+            const visits = stats.total_visitas || 0;
+            const regs = stats.total_registros || 0;
+            const wa = stats.total_whatsapp || 0;
+            const cal = stats.total_calendario || 0;
+
+            const funnelData = [
+                { value: visits, rate: '100%', width: '100%' },
+                { value: regs, rate: visits > 0 ? ((regs / visits) * 100).toFixed(1) + '%' : '0%', width: visits > 0 ? Math.max(((regs / visits) * 100), 10) + '%' : '10%' },
+                { value: wa, rate: regs > 0 ? ((wa / regs) * 100).toFixed(1) + '%' : '0%', width: visits > 0 ? Math.max(((wa / visits) * 100), 5) + '%' : '5%' },
+                { value: cal, rate: regs > 0 ? ((cal / regs) * 100).toFixed(1) + '%' : '0%', width: visits > 0 ? Math.max(((cal / visits) * 100), 5) + '%' : '5%' }
+            ];
+
+            funnelSteps.forEach((step, i) => {
+                if (funnelData[i]) {
+                    const valueEl = step.querySelector('.funnel-stats .value');
+                    const rateEl = step.querySelector('.funnel-stats .rate');
+                    const barEl = step.querySelector('.funnel-bar');
+                    if (valueEl) valueEl.textContent = funnelData[i].value.toLocaleString();
+                    if (rateEl) rateEl.textContent = funnelData[i].rate;
+                    if (barEl) barEl.style.width = funnelData[i].width;
+                }
+            });
+        }
+
+        function updateConversionRates(stats) {
+            const visits = stats.total_visitas || 0;
+            const regs = stats.total_registros || 0;
+            const wa = stats.total_whatsapp || 0;
+            const cal = stats.total_calendario || 0;
+
+            const bigRate = document.querySelector('.big-rate');
+            if (bigRate) bigRate.textContent = visits > 0 ? ((regs / visits) * 100).toFixed(1) + '%' : '0%';
+
+            const rateItems = document.querySelectorAll('.rate-item .value');
+            if (rateItems[0]) rateItems[0].textContent = regs > 0 ? ((wa / regs) * 100).toFixed(1) + '%' : '0%';
+            if (rateItems[1]) rateItems[1].textContent = wa > 0 ? ((cal / wa) * 100).toFixed(1) + '%' : '0%';
+        }
+
+        function updateChart(registrosPorDia) {
+            const ctx = document.getElementById('registrosChart').getContext('2d');
+
+            const labels = registrosPorDia.map(d => {
+                const date = new Date(d.fecha);
+                return date.toLocaleDateString('es', { weekday: 'short', day: 'numeric' });
+            });
+            const regData = registrosPorDia.map(d => d.total_registros || 0);
+            const waData = registrosPorDia.map(d => d.con_whatsapp || 0);
+
+            if (registrosChart) {
+                registrosChart.data.labels = labels;
+                registrosChart.data.datasets[0].data = regData;
+                registrosChart.data.datasets[1].data = waData;
+                registrosChart.update();
+            } else {
+                registrosChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels.length > 0 ? labels : ['Sin datos'],
+                        datasets: [{
+                            label: 'Registros',
+                            data: regData.length > 0 ? regData : [0],
+                            borderColor: '#7B53F0',
+                            backgroundColor: 'rgba(123, 83, 240, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#7B53F0',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5
+                        }, {
+                            label: 'WhatsApp',
+                            data: waData.length > 0 ? waData : [0],
+                            borderColor: '#F6FF54',
+                            backgroundColor: 'rgba(246, 255, 84, 0.05)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#F6FF54',
+                            pointBorderColor: '#232021',
+                            pointBorderWidth: 2,
+                            pointRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'top', labels: { color: '#999', usePointStyle: true, padding: 20 } } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#888' } },
+                            x: { grid: { display: false }, ticks: { color: '#888' } }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateSources(fuentes) {
+            const sourceList = document.querySelector('.source-list');
+            if (!sourceList || fuentes.length === 0) return;
+
+            const sourceIcons = {
+                'facebook': { icon: '📘', cls: 'facebook' },
+                'instagram': { icon: '📸', cls: 'instagram' },
+                'whatsapp': { icon: '💬', cls: 'whatsapp' },
+                'google': { icon: '🔍', cls: 'google' },
+                'directo': { icon: '🔗', cls: 'direct' }
+            };
+
+            sourceList.innerHTML = fuentes.map(f => {
+                const key = (f.fuente || 'directo').toLowerCase();
+                const si = sourceIcons[key] || { icon: '🌐', cls: 'direct' };
+                return `<div class="source-item">
+                    <div class="source-icon ${si.cls}">${si.icon}</div>
+                    <div class="source-info"><div class="name">${f.fuente || 'Directo'}</div><div class="source-progress"><div class="source-progress-fill" style="width: ${f.porcentaje}%"></div></div></div>
+                    <div class="source-value"><div class="number">${f.total}</div><div class="percent">${f.porcentaje}%</div></div>
+                </div>`;
+            }).join('');
+        }
+
+        function updateTable(registros) {
+            const tbody = document.getElementById('registrosTable');
+            if (!tbody) return;
+
+            if (registros.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;padding:30px;">No hay registros aún</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = registros.map(reg => {
+                const status = reg.calendario_added ? 'completed' : (reg.whatsapp_joined ? 'partial' : 'pending');
+                const statusLabel = status === 'completed' ? '✓ Completo' : status === 'partial' ? '◐ Parcial' : '○ Pendiente';
+                const source = reg.utm_source || 'Directo';
+                const sourceIcon = getSourceIcon(source);
+                const fecha = new Date(reg.created_at).toLocaleString('es', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const initials = reg.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+                return `<tr>
+                    <td><div class="user-cell"><div class="user-avatar">${initials}</div><div class="user-info"><div class="name">${reg.nombre}</div><div class="email">${reg.email}</div></div></div></td>
+                    <td>${reg.whatsapp || '-'}</td>
+                    <td><span class="status-badge ${status}">${statusLabel}</span></td>
+                    <td><span class="source-badge">${sourceIcon} ${source}</span></td>
+                    <td>${fecha}</td>
+                    <td><button class="more-btn" style="width:30px;height:30px;font-size:0.8rem;">👁️</button></td>
+                </tr>`;
+            }).join('');
+        }
+
+        function getSourceIcon(source) {
+            const icons = { 'facebook': '📘', 'instagram': '📸', 'whatsapp': '💬', 'google': '🔍', 'directo': '🔗' };
+            return icons[(source || '').toLowerCase()] || '🌐';
+        }
+
+        function updateHeatmap(actividadPorHora) {
             const container = document.getElementById('heatmap');
-            const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+            if (!container) return;
+
+            const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
             const hours = Array.from({length: 24}, (_, i) => i);
-            
+
+            // Build a map from the data
+            const heatData = {};
+            let maxVal = 1;
+            (actividadPorHora || []).forEach(d => {
+                const key = d.dia_semana + '_' + d.hora;
+                heatData[key] = Number(d.total);
+                if (Number(d.total) > maxVal) maxVal = Number(d.total);
+            });
+
             container.innerHTML = '<div class="heatmap-label"></div>';
-            hours.forEach(h => { container.innerHTML += `<div class="heatmap-label" style="justify-content:center;font-size:0.65rem;">${h}</div>`; });
-            
-            days.forEach(day => {
-                container.innerHTML += `<div class="heatmap-label">${day}</div>`;
+            hours.forEach(h => {
+                container.innerHTML += '<div class="heatmap-label" style="justify-content:center;font-size:0.65rem;">' + h + '</div>';
+            });
+
+            days.forEach((day, dayIdx) => {
+                container.innerHTML += '<div class="heatmap-label">' + day + '</div>';
                 hours.forEach(hour => {
-                    let level = 0;
-                    if (hour >= 9 && hour <= 21) {
-                        level = Math.floor(Math.random() * 5) + 1;
-                        if ((hour >= 10 && hour <= 12) || (hour >= 19 && hour <= 21)) level = Math.min(level + 2, 5);
-                    } else { level = Math.floor(Math.random() * 2); }
-                    const value = level * 4 + Math.floor(Math.random() * 5);
-                    container.innerHTML += `<div class="heatmap-cell level-${level}" title="${day} ${hour}:00 - ${value} registros">${value > 0 ? value : ''}</div>`;
+                    const val = heatData[dayIdx + '_' + hour] || 0;
+                    const level = maxVal > 0 ? Math.min(Math.round((val / maxVal) * 5), 5) : 0;
+                    container.innerHTML += '<div class="heatmap-cell level-' + level + '" title="' + day + ' ' + hour + ':00 - ' + val + ' registros">' + (val > 0 ? val : '') + '</div>';
                 });
             });
         }
 
-        generateHeatmap();
+        // ========== REALTIME SUBSCRIPTION ==========
+        function subscribeToChanges() {
+            if (!supabaseClient) return;
 
-        function simulateUpdate() {
-            const visits = document.getElementById('totalVisits');
-            const current = parseInt(visits.textContent.replace(',', ''));
-            visits.textContent = (current + Math.floor(Math.random() * 3)).toLocaleString();
+            supabaseClient
+                .channel('registros-changes')
+                .on('postgres_changes',
+                    { event: 'INSERT', schema: 'public', table: 'registros' },
+                    function(payload) {
+                        // Reload dashboard data on new registration
+                        loadDashboardData();
+                    }
+                )
+                .subscribe();
         }
 
-        setInterval(simulateUpdate, 5000);
-
+        // ========== DATE FILTER ==========
         document.querySelectorAll('.date-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
+
+                const text = this.textContent.trim().toLowerCase();
+                if (text === 'hoy') currentPeriodo = '1d';
+                else if (text === '7 días') currentPeriodo = '7d';
+                else if (text === '30 días') currentPeriodo = '30d';
+                else currentPeriodo = 'all';
+
+                loadDashboardData();
             });
         });
 
-        document.querySelector('.btn-export').addEventListener('click', function() {
-            alert('📥 Exportando datos a CSV...\n\nEsta funcionalidad se conectará a Supabase próximamente.');
+        // ========== CSV EXPORT ==========
+        document.querySelector('.btn-export').addEventListener('click', async function() {
+            if (!currentSession) return;
+
+            try {
+                const { data: registros, error } = await supabaseClient
+                    .from('registros')
+                    .select('nombre, email, whatsapp, whatsapp_joined, calendario_added, es_vip, utm_source, created_at')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                if (!registros || registros.length === 0) {
+                    alert('No hay registros para exportar.');
+                    return;
+                }
+
+                // Build CSV
+                const headers = ['Nombre', 'Email', 'WhatsApp', 'WhatsApp Unido', 'Calendario', 'VIP', 'Fuente', 'Fecha'];
+                const rows = registros.map(r => [
+                    r.nombre,
+                    r.email,
+                    r.whatsapp || '',
+                    r.whatsapp_joined ? 'Sí' : 'No',
+                    r.calendario_added ? 'Sí' : 'No',
+                    r.es_vip ? 'Sí' : 'No',
+                    r.utm_source || 'Directo',
+                    new Date(r.created_at).toLocaleString('es')
+                ]);
+
+                const csvContent = [headers, ...rows].map(row =>
+                    row.map(cell => '"' + String(cell).replace(/"/g, '""') + '"').join(',')
+                ).join('\n');
+
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'registros_' + new Date().toISOString().split('T')[0] + '.csv';
+                link.click();
+            } catch (err) {
+                console.error('Error exporting CSV:', err);
+                alert('Error al exportar. Intenta de nuevo.');
+            }
         });
 
         // ========== MODAL FUNCTIONS ==========
@@ -2320,7 +2674,7 @@ serve(async (req) =&gt; {
         }
 
         // Close modal on outside click
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
+        document.querySelectorAll('.modal-overlay:not(#loginOverlay)').forEach(modal => {
             modal.addEventListener('click', function(e) {
                 if (e.target === this) {
                     this.classList.remove('active');
@@ -2332,10 +2686,10 @@ serve(async (req) =&gt; {
         document.querySelectorAll('.config-tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 const tabId = this.dataset.tab;
-                
+
                 document.querySelectorAll('.config-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.config-panel').forEach(p => p.classList.remove('active'));
-                
+
                 this.classList.add('active');
                 document.getElementById('panel-' + tabId).classList.add('active');
             });
@@ -2356,13 +2710,13 @@ serve(async (req) =&gt; {
         function copyCode(elementId) {
             const codeElement = document.getElementById(elementId);
             const code = codeElement.textContent;
-            
+
             navigator.clipboard.writeText(code).then(() => {
                 const btn = codeElement.parentElement.querySelector('.copy-btn');
                 const originalText = btn.textContent;
                 btn.textContent = '✓ Copiado!';
                 btn.style.background = 'var(--success)';
-                
+
                 setTimeout(() => {
                     btn.textContent = originalText;
                     btn.style.background = '';
@@ -2373,32 +2727,30 @@ serve(async (req) =&gt; {
         // Send test event
         function sendTestEvent() {
             const pixelId = document.getElementById('pixelId').value;
-            const console = document.getElementById('testConsole');
-            
+            const testConsole = document.getElementById('testConsole');
+
             if (!pixelId) {
-                console.innerHTML += '<div class="console-line error">❌ Error: Ingresa un Pixel ID primero</div>';
+                testConsole.innerHTML += '<div class="console-line error">Error: Ingresa un Pixel ID primero</div>';
                 return;
             }
-            
-            console.innerHTML += '<div class="console-line info">🔄 Enviando evento de prueba...</div>';
-            
-            // Simulate sending event
+
+            testConsole.innerHTML += '<div class="console-line info">Enviando evento de prueba...</div>';
+
             setTimeout(() => {
-                console.innerHTML += '<div class="console-line success">✅ Evento PageView enviado al Pixel ' + pixelId + '</div>';
-                console.innerHTML += '<div class="console-line success">✅ Evento Lead (test) enviado correctamente</div>';
-                console.innerHTML += '<div class="console-line info">ℹ️ Verifica en Events Manager de Meta</div>';
-                
-                // Update checklist
+                testConsole.innerHTML += '<div class="console-line success">Evento PageView enviado al Pixel ' + pixelId + '</div>';
+                testConsole.innerHTML += '<div class="console-line success">Evento Lead (test) enviado correctamente</div>';
+                testConsole.innerHTML += '<div class="console-line info">Verifica en Events Manager de Meta</div>';
+
                 updateChecklist('check-pixel', true);
                 updateChecklist('check-pageview', true);
                 updateChecklist('check-events', true);
-                
-                console.scrollTop = console.scrollHeight;
+
+                testConsole.scrollTop = testConsole.scrollHeight;
             }, 1500);
         }
 
         function clearConsole() {
-            document.getElementById('testConsole').innerHTML = '<div class="console-line info">ℹ️ Consola limpiada</div>';
+            document.getElementById('testConsole').innerHTML = '<div class="console-line info">Consola limpiada</div>';
         }
 
         function updateChecklist(checkId, success) {
@@ -2409,15 +2761,18 @@ serve(async (req) =&gt; {
             }
         }
 
-        // Save Pixel Configuration
-        function savePixelConfig() {
+        // Save Pixel Configuration (now saves to Supabase)
+        async function savePixelConfig() {
             const config = {
-                pixelId: document.getElementById('pixelId').value,
+                pixel_id: document.getElementById('pixelId').value,
                 pixelName: document.getElementById('pixelName').value,
                 verifiedDomain: document.getElementById('verifiedDomain').value,
                 adAccountId: document.getElementById('adAccountId').value,
                 advancedMatching: document.getElementById('advancedMatching').checked,
                 cookieConsent: document.getElementById('cookieConsent').checked,
+                access_token: document.getElementById('capiToken')?.value || '',
+                test_event_code: document.getElementById('testEventCode')?.value || '',
+                enabled: !!(document.getElementById('capiEnabled')?.checked && document.getElementById('capiToken')?.value),
                 events: {
                     lead: document.getElementById('eventLead')?.checked,
                     completeRegistration: document.getElementById('eventCompleteReg')?.checked,
@@ -2429,34 +2784,34 @@ serve(async (req) =&gt; {
                 },
                 leadValue: document.getElementById('leadValue')?.value,
                 vipValue: document.getElementById('vipValue')?.value,
-                capi: {
-                    enabled: document.getElementById('capiEnabled')?.checked,
-                    token: document.getElementById('capiToken')?.value,
-                    testCode: document.getElementById('testEventCode')?.value,
-                    deduplication: document.getElementById('deduplication')?.checked,
-                }
+                deduplication: document.getElementById('deduplication')?.checked,
             };
 
-            // Save to localStorage (will be replaced with Supabase)
+            // Save to Supabase if connected
+            if (supabaseClient && currentSession) {
+                try {
+                    await supabaseClient
+                        .from('configuraciones')
+                        .update({ valor: config })
+                        .eq('clave', 'meta_pixel');
+                } catch (err) {
+                    console.error('Error saving to Supabase:', err);
+                }
+            }
+
+            // Also save locally as fallback
             localStorage.setItem('metaPixelConfig', JSON.stringify(config));
-            
+
             // Update code placeholders
             document.querySelectorAll('.pixel-id-placeholder').forEach(el => {
-                el.textContent = config.pixelId || 'TU_PIXEL_ID';
+                el.textContent = config.pixel_id || 'TU_PIXEL_ID';
             });
 
-            alert('✅ Configuración guardada correctamente!\n\nPixel ID: ' + config.pixelId + '\n\nAhora copia el código generado y pégalo en tu landing.');
-            
-            // Update checklist
-            if (config.pixelId) {
-                updateChecklist('check-pixel', true);
-            }
-            if (config.capi.enabled && config.capi.token) {
-                updateChecklist('check-capi', true);
-            }
-            if (config.verifiedDomain) {
-                updateChecklist('check-domain', true);
-            }
+            alert('Configuracion guardada correctamente!\n\nPixel ID: ' + config.pixel_id);
+
+            if (config.pixel_id) updateChecklist('check-pixel', true);
+            if (config.enabled && config.access_token) updateChecklist('check-capi', true);
+            if (config.verifiedDomain) updateChecklist('check-domain', true);
         }
 
         // Load saved config on page load
@@ -2464,24 +2819,23 @@ serve(async (req) =&gt; {
             const saved = localStorage.getItem('metaPixelConfig');
             if (saved) {
                 const config = JSON.parse(saved);
-                
+
                 if (document.getElementById('pixelId')) {
-                    document.getElementById('pixelId').value = config.pixelId || '';
+                    document.getElementById('pixelId').value = config.pixel_id || config.pixelId || '';
                     document.getElementById('pixelName').value = config.pixelName || '';
                     document.getElementById('verifiedDomain').value = config.verifiedDomain || '';
                     document.getElementById('adAccountId').value = config.adAccountId || '';
-                    
-                    // Update placeholders
+
                     document.querySelectorAll('.pixel-id-placeholder').forEach(el => {
-                        el.textContent = config.pixelId || 'TU_PIXEL_ID';
+                        el.textContent = config.pixel_id || config.pixelId || 'TU_PIXEL_ID';
                     });
                 }
             }
         }
 
-        // Generate pixel code dynamically
-        function generatePixelCode() {
-            const pixelId = document.getElementById('pixelId').value || 'TU_PIXEL_ID';
-            const advancedMatching = document.getElementById('advancedMatching').checked;
-            
-            let initCode = `fbq('init', '
+        // ========== INITIALIZE ==========
+        loadSavedConfig();
+        initAdmin();
+    </script>
+</body>
+</html>
