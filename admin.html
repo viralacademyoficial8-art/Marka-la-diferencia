@@ -651,6 +651,9 @@
         .fade-in { animation: fadeIn 0.5s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        .admin-section { display: none; }
+        .admin-section.active { display: block; animation: fadeIn 0.3s ease; }
+
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
@@ -1386,27 +1389,27 @@
 
         <nav class="nav-section">
             <div class="nav-section-title">Embudo</div>
-            <div class="nav-item" onclick="navigateTo('funnel', this)">
+            <div class="nav-item" onclick="navigateTo('landing', this)">
                 <span class="icon">🎯</span>
                 Landing Page
             </div>
-            <div class="nav-item" onclick="navigateTo('funnel', this)">
+            <div class="nav-item" onclick="navigateTo('confirmaciones', this)">
                 <span class="icon">✅</span>
                 Confirmaciones
             </div>
-            <div class="nav-item" onclick="navigateTo('funnel', this)">
+            <div class="nav-item" onclick="navigateTo('whatsapp', this)">
                 <span class="icon">💬</span>
                 WhatsApp
             </div>
-            <div class="nav-item" onclick="navigateTo('funnel', this)">
+            <div class="nav-item" onclick="navigateTo('calendario', this)">
                 <span class="icon">📅</span>
                 Calendario
             </div>
         </nav>
 
         <nav class="nav-section">
-            <div class="nav-section-title">Configuración</div>
-            <div class="nav-item" onclick="showIntegrationsModal()">
+            <div class="nav-section-title">Configuracion</div>
+            <div class="nav-item" onclick="navigateTo('ajustes', this)">
                 <span class="icon">⚙️</span>
                 Ajustes
             </div>
@@ -2097,178 +2100,401 @@ serve(async (req) =&gt; {
     </div>
 
     <main class="main-content">
-        <header class="header">
-            <div class="header-left">
-                <h2>Dashboard del Embudo</h2>
-                <p>Masterclass: "No Es Tu Producto, Eres Tú" • 15 Feb 2025</p>
-            </div>
-            <div class="header-right">
-                <div class="realtime-indicator">
-                    <span class="realtime-dot"></span>
-                    En tiempo real
+        <!-- ==================== SECTION: DASHBOARD ==================== -->
+        <div class="admin-section active" id="section-dashboard">
+            <header class="header">
+                <div class="header-left">
+                    <h2>Dashboard del Embudo</h2>
+                    <p id="dashboardSubtitle">Cargando datos...</p>
                 </div>
-                <div class="date-filter">
-                    <button class="date-btn">Hoy</button>
-                    <button class="date-btn active">7 días</button>
-                    <button class="date-btn">30 días</button>
-                    <button class="date-btn">Todo</button>
+                <div class="header-right">
+                    <div class="realtime-indicator">
+                        <span class="realtime-dot"></span>
+                        En tiempo real
+                    </div>
+                    <div class="date-filter">
+                        <button class="date-btn" data-periodo="1d">Hoy</button>
+                        <button class="date-btn active" data-periodo="7d">7 dias</button>
+                        <button class="date-btn" data-periodo="30d">30 dias</button>
+                        <button class="date-btn" data-periodo="all">Todo</button>
+                    </div>
+                    <button class="btn-export" onclick="exportCSV()">
+                        <span>📥</span>
+                        Exportar CSV
+                    </button>
                 </div>
-                <button class="btn-export">
-                    <span>📥</span>
-                    Exportar CSV
-                </button>
-            </div>
-        </header>
+            </header>
 
-        <div class="stats-grid fade-in">
-            <div class="stat-card purple">
-                <div class="stat-icon">👁️</div>
-                <div class="stat-label">Visitas a Landing</div>
-                <div class="stat-value" id="totalVisits">0</div>
-                <div class="stat-change" id="visitChange"></div>
+            <div class="stats-grid fade-in">
+                <div class="stat-card purple">
+                    <div class="stat-icon">👁️</div>
+                    <div class="stat-label">Visitas a Landing</div>
+                    <div class="stat-value" id="totalVisits">0</div>
+                </div>
+                <div class="stat-card yellow">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-label">Registros Totales</div>
+                    <div class="stat-value" id="totalRegistros">0</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-label">Unieron a WhatsApp</div>
+                    <div class="stat-value" id="whatsappJoins">0</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-label">Agregaron Calendario</div>
+                    <div class="stat-value" id="calendarAdds">0</div>
+                </div>
             </div>
-            <div class="stat-card yellow">
-                <div class="stat-icon">📝</div>
-                <div class="stat-label">Registros Totales</div>
-                <div class="stat-value" id="totalRegistros">0</div>
-                <div class="stat-change" id="regChange"></div>
-            </div>
-            <div class="stat-card green">
-                <div class="stat-icon">💬</div>
-                <div class="stat-label">Unieron a WhatsApp</div>
-                <div class="stat-value" id="whatsappJoins">0</div>
-                <div class="stat-change" id="waChange"></div>
-            </div>
-            <div class="stat-card blue">
-                <div class="stat-icon">📅</div>
-                <div class="stat-label">Agregaron Calendario</div>
-                <div class="stat-value" id="calendarAdds">0</div>
-                <div class="stat-change" id="calChange"></div>
+
+            <div class="section-grid">
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h3>📊 Embudo de Conversion</h3>
+                    </div>
+                    <div class="funnel-container" id="funnelContainer">
+                        <div class="funnel-step"><div class="funnel-bar-container"><div class="funnel-bar">👁️ Visitantes Landing</div></div><div class="funnel-stats"><div class="value">0</div><div class="rate">100%</div></div></div>
+                        <div class="funnel-step"><div class="funnel-bar-container"><div class="funnel-bar">📝 Registros</div></div><div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div></div>
+                        <div class="funnel-step"><div class="funnel-bar-container"><div class="funnel-bar">💬 WhatsApp</div></div><div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div></div>
+                        <div class="funnel-step"><div class="funnel-bar-container"><div class="funnel-bar">📅 Calendario</div></div><div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div></div>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <div class="card-header"><h3>🎯 Tasa de Conversion General</h3></div>
+                    <div class="conversion-rate-display">
+                        <div class="big-rate">0%</div>
+                        <div class="rate-label">Visitantes → Registros</div>
+                        <div class="rate-comparison">
+                            <div class="rate-item"><div class="value">0%</div><div class="label">Registro → WhatsApp</div></div>
+                            <div class="rate-item"><div class="value">0%</div><div class="label">WhatsApp → Calendario</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <div class="card-header"><h3>📈 Registros por Dia</h3></div>
+                    <div class="chart-container"><canvas id="registrosChart"></canvas></div>
+                </div>
+
+                <div class="card fade-in">
+                    <div class="card-header"><h3>🔗 Fuentes de Trafico</h3></div>
+                    <div class="source-list"><div style="text-align:center;color:#888;padding:20px;">Sin datos de fuentes aun</div></div>
+                </div>
+
+                <div class="card table-card fade-in">
+                    <div class="card-header"><h3>👥 Ultimos Registros</h3></div>
+                    <div class="table-container">
+                        <table>
+                            <thead><tr><th>Usuario</th><th>WhatsApp</th><th>Estado</th><th>Fuente</th><th>Fecha</th></tr></thead>
+                            <tbody id="registrosTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card table-card fade-in">
+                    <div class="card-header"><h3>🔥 Actividad por Hora</h3></div>
+                    <div class="heatmap-container"><div class="heatmap" id="heatmap"></div></div>
+                </div>
             </div>
         </div>
 
-        <div class="section-grid">
-            <div class="card fade-in">
-                <div class="card-header">
-                    <h3>📊 Embudo de Conversión</h3>
-                    <button class="more-btn">⋯</button>
+        <!-- ==================== SECTION: REGISTROS ==================== -->
+        <div class="admin-section" id="section-registros">
+            <header class="header">
+                <div class="header-left">
+                    <h2>👥 Todos los Registros</h2>
+                    <p id="registrosCount">Cargando...</p>
                 </div>
-                <div class="funnel-container">
-                    <div class="funnel-step">
-                        <div class="funnel-bar-container"><div class="funnel-bar">👁️ Visitantes Landing</div></div>
-                        <div class="funnel-stats"><div class="value">0</div><div class="rate">100%</div></div>
-                    </div>
-                    <div class="funnel-step">
-                        <div class="funnel-bar-container"><div class="funnel-bar">📝 Registros</div></div>
-                        <div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div>
-                    </div>
-                    <div class="funnel-step">
-                        <div class="funnel-bar-container"><div class="funnel-bar">💬 WhatsApp</div></div>
-                        <div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div>
-                    </div>
-                    <div class="funnel-step">
-                        <div class="funnel-bar-container"><div class="funnel-bar">📅 Calendario</div></div>
-                        <div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div>
-                    </div>
+                <div class="header-right">
+                    <input type="text" id="searchRegistros" placeholder="🔍 Buscar por nombre o email..." style="padding:10px 15px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;color:var(--blanco-suave);font-size:0.9rem;width:280px;">
+                    <select id="filterStatus" style="padding:10px 15px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;color:var(--blanco-suave);font-size:0.9rem;">
+                        <option value="all">Todos</option>
+                        <option value="completed">Completos</option>
+                        <option value="whatsapp">Con WhatsApp</option>
+                        <option value="calendar">Con Calendario</option>
+                        <option value="pending">Pendientes</option>
+                    </select>
+                    <button class="btn-export" onclick="exportCSV()"><span>📥</span> Exportar CSV</button>
                 </div>
-            </div>
-
-            <div class="card fade-in">
-                <div class="card-header">
-                    <h3>🎯 Tasa de Conversión General</h3>
-                    <button class="more-btn">⋯</button>
-                </div>
-                <div class="conversion-rate-display">
-                    <div class="big-rate">0%</div>
-                    <div class="rate-label">Visitantes → Registros</div>
-                    <div class="rate-comparison">
-                        <div class="rate-item"><div class="value">0%</div><div class="label">Registro → WhatsApp</div></div>
-                        <div class="rate-item"><div class="value">0%</div><div class="label">WhatsApp → Calendario</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card fade-in">
-                <div class="card-header">
-                    <h3>📈 Registros por Día</h3>
-                    <button class="more-btn">⋯</button>
-                </div>
-                <div class="chart-container"><canvas id="registrosChart"></canvas></div>
-            </div>
-
-            <div class="card fade-in">
-                <div class="card-header">
-                    <h3>🔗 Fuentes de Tráfico</h3>
-                    <button class="more-btn">⋯</button>
-                </div>
-                <div class="source-list">
-                    <div style="text-align:center;color:#888;padding:20px;">Sin datos de fuentes aún</div>
-                </div>
-            </div>
-
-            <div class="card table-card fade-in">
-                <div class="card-header">
-                    <h3>👥 Últimos Registros</h3>
-                    <button class="more-btn">⋯</button>
-                </div>
+            </header>
+            <div class="card fade-in" style="margin-top:10px;">
                 <div class="table-container">
                     <table>
-                        <thead><tr><th>Usuario</th><th>WhatsApp</th><th>Estado</th><th>Fuente</th><th>Fecha</th><th>Acciones</th></tr></thead>
-                        <tbody id="registrosTable"></tbody>
+                        <thead><tr><th>Usuario</th><th>WhatsApp</th><th>WhatsApp Unido</th><th>Calendario</th><th>VIP</th><th>Fuente</th><th>Fecha</th></tr></thead>
+                        <tbody id="allRegistrosTable"><tr><td colspan="7" style="text-align:center;color:#888;padding:30px;">Cargando registros...</td></tr></tbody>
                     </table>
                 </div>
             </div>
+        </div>
 
-            <div class="card table-card fade-in">
-                <div class="card-header">
-                    <h3>🔥 Actividad por Hora (Última Semana)</h3>
-                    <button class="more-btn">⋯</button>
+        <!-- ==================== SECTION: ANALYTICS ==================== -->
+        <div class="admin-section" id="section-analytics">
+            <header class="header">
+                <div class="header-left">
+                    <h2>📈 Analytics</h2>
+                    <p>Graficas y metricas detalladas</p>
                 </div>
-                <div class="heatmap-container"><div class="heatmap" id="heatmap"></div></div>
+                <div class="header-right">
+                    <div class="date-filter">
+                        <button class="date-btn-analytics" data-periodo="1d">Hoy</button>
+                        <button class="date-btn-analytics active" data-periodo="7d">7 dias</button>
+                        <button class="date-btn-analytics" data-periodo="30d">30 dias</button>
+                        <button class="date-btn-analytics" data-periodo="all">Todo</button>
+                    </div>
+                </div>
+            </header>
+            <div class="section-grid" style="margin-top:10px;">
+                <div class="card fade-in">
+                    <div class="card-header"><h3>📈 Registros por Dia</h3></div>
+                    <div class="chart-container"><canvas id="analyticsChart"></canvas></div>
+                </div>
+                <div class="card fade-in">
+                    <div class="card-header"><h3>🔗 Fuentes de Trafico</h3></div>
+                    <div class="source-list" id="analyticsSourceList"><div style="text-align:center;color:#888;padding:20px;">Cargando...</div></div>
+                </div>
+                <div class="card table-card fade-in">
+                    <div class="card-header"><h3>🔥 Mapa de Calor - Actividad por Hora</h3></div>
+                    <div class="heatmap-container"><div class="heatmap" id="analyticsHeatmap"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: LANDING PAGE ==================== -->
+        <div class="admin-section" id="section-landing">
+            <header class="header">
+                <div class="header-left">
+                    <h2>🎯 Landing Page</h2>
+                    <p>Metricas de la pagina de registro</p>
+                </div>
+            </header>
+            <div class="stats-grid fade-in" style="margin-top:10px;">
+                <div class="stat-card purple">
+                    <div class="stat-icon">👁️</div>
+                    <div class="stat-label">Visitas a Landing</div>
+                    <div class="stat-value" id="landingVisits">0</div>
+                </div>
+                <div class="stat-card yellow">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-label">Registros desde Landing</div>
+                    <div class="stat-value" id="landingRegistros">0</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-label">Tasa de Conversion</div>
+                    <div class="stat-value" id="landingConversion">0%</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-icon">🔗</div>
+                    <div class="stat-label">Fuente Principal</div>
+                    <div class="stat-value" id="landingTopSource" style="font-size:1.2rem;">-</div>
+                </div>
+            </div>
+            <div class="section-grid" style="margin-top:20px;">
+                <div class="card table-card fade-in">
+                    <div class="card-header"><h3>👁️ Ultimas Visitas a Landing</h3></div>
+                    <div class="table-container">
+                        <table>
+                            <thead><tr><th>Session ID</th><th>Referrer</th><th>UTM Source</th><th>UTM Medium</th><th>UTM Campaign</th><th>Fecha</th></tr></thead>
+                            <tbody id="landingViewsTable"><tr><td colspan="6" style="text-align:center;color:#888;padding:30px;">Cargando...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: CONFIRMACIONES ==================== -->
+        <div class="admin-section" id="section-confirmaciones">
+            <header class="header">
+                <div class="header-left">
+                    <h2>✅ Confirmaciones</h2>
+                    <p>Actividad en la pagina de confirmacion</p>
+                </div>
+            </header>
+            <div class="stats-grid fade-in" style="margin-top:10px;">
+                <div class="stat-card purple">
+                    <div class="stat-icon">👁️</div>
+                    <div class="stat-label">Visitas a Confirmacion</div>
+                    <div class="stat-value" id="confirmVisits">0</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-label">Hicieron clic en WhatsApp</div>
+                    <div class="stat-value" id="confirmWhatsapp">0</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-label">Agregaron Calendario</div>
+                    <div class="stat-value" id="confirmCalendar">0</div>
+                </div>
+                <div class="stat-card yellow">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-label">Completaron Ambos</div>
+                    <div class="stat-value" id="confirmBoth">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: WHATSAPP ==================== -->
+        <div class="admin-section" id="section-whatsapp">
+            <header class="header">
+                <div class="header-left">
+                    <h2>💬 WhatsApp</h2>
+                    <p>Usuarios que se unieron al grupo de WhatsApp</p>
+                </div>
+            </header>
+            <div class="stats-grid fade-in" style="grid-template-columns:repeat(3,1fr);margin-top:10px;">
+                <div class="stat-card green">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-label">Total Uniones</div>
+                    <div class="stat-value" id="waTotal">0</div>
+                </div>
+                <div class="stat-card yellow">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-label">Total Registros</div>
+                    <div class="stat-value" id="waOfTotal">0</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">Tasa de Union</div>
+                    <div class="stat-value" id="waRate">0%</div>
+                </div>
+            </div>
+            <div class="card fade-in" style="margin-top:20px;">
+                <div class="card-header"><h3>💬 Registros con WhatsApp</h3></div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Usuario</th><th>WhatsApp</th><th>Calendario Tambien</th><th>Fuente</th><th>Fecha Union</th></tr></thead>
+                        <tbody id="waTable"><tr><td colspan="5" style="text-align:center;color:#888;padding:30px;">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: CALENDARIO ==================== -->
+        <div class="admin-section" id="section-calendario">
+            <header class="header">
+                <div class="header-left">
+                    <h2>📅 Calendario</h2>
+                    <p>Usuarios que agregaron al calendario</p>
+                </div>
+            </header>
+            <div class="stats-grid fade-in" style="grid-template-columns:repeat(3,1fr);margin-top:10px;">
+                <div class="stat-card blue">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-label">Total Calendario</div>
+                    <div class="stat-value" id="calTotal">0</div>
+                </div>
+                <div class="stat-card yellow">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-label">Total Registros</div>
+                    <div class="stat-value" id="calOfTotal">0</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">Tasa de Adicion</div>
+                    <div class="stat-value" id="calRate">0%</div>
+                </div>
+            </div>
+            <div class="card fade-in" style="margin-top:20px;">
+                <div class="card-header"><h3>📅 Registros con Calendario</h3></div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Usuario</th><th>Tipo Calendario</th><th>WhatsApp Tambien</th><th>Fuente</th><th>Fecha</th></tr></thead>
+                        <tbody id="calTable"><tr><td colspan="5" style="text-align:center;color:#888;padding:30px;">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: AJUSTES ==================== -->
+        <div class="admin-section" id="section-ajustes">
+            <header class="header">
+                <div class="header-left">
+                    <h2>⚙️ Ajustes del Evento</h2>
+                    <p>Configuracion general del evento actual</p>
+                </div>
+            </header>
+            <div class="section-grid" style="margin-top:10px;">
+                <div class="card fade-in">
+                    <div class="card-header"><h3>📋 Informacion del Evento</h3></div>
+                    <div class="form-group">
+                        <label>Nombre del Evento</label>
+                        <input type="text" id="settingEventName" placeholder="Nombre del evento" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Slug del Evento</label>
+                        <input type="text" id="settingEventSlug" placeholder="slug-del-evento" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha del Evento</label>
+                        <input type="text" id="settingEventDate" placeholder="Fecha" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Link de WhatsApp</label>
+                        <input type="text" id="settingWhatsappUrl" placeholder="https://chat.whatsapp.com/..." disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio VIP</label>
+                        <input type="text" id="settingVipPrice" placeholder="$0" disabled>
+                    </div>
+                    <p style="color:#888;font-size:0.8rem;margin-top:10px;">Estos datos se configuran directamente en la base de datos (tabla <code>eventos</code>)</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="card-header"><h3>🔧 Base de Datos</h3></div>
+                    <div style="padding:10px 0;">
+                        <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+                            <span style="color:#888;">Supabase URL</span>
+                            <span style="font-weight:600;font-size:0.85rem;">zztfordfokshyzgklaly.supabase.co</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+                            <span style="color:#888;">Estado</span>
+                            <span style="color:var(--success);font-weight:600;">Conectado</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+                            <span style="color:#888;">Evento Slug</span>
+                            <span style="font-weight:600;">masterclass-2025</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:12px 0;">
+                            <span style="color:#888;">Edge Functions</span>
+                            <span style="color:var(--success);font-weight:600;">4 activas</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="margin-top:15px;width:100%;" onclick="showIntegrationsModal()">🔗 Gestionar Integraciones</button>
+                    <button class="btn-primary" style="margin-top:10px;width:100%;background:var(--amarillo-limon);color:var(--dark);" onclick="showPixelModal()">📘 Configurar Meta Pixel</button>
+                </div>
             </div>
         </div>
     </main>
 
     <script>
         // =============================================
-        // ADMIN PANEL - Supabase Integration
+        // ADMIN PANEL - Full Supabase Integration
         // =============================================
 
         let registrosChart = null;
+        let analyticsChart = null;
         let currentPeriodo = '7d';
         let currentSession = null;
+        let cachedDashboardData = null;
+        let allRegistrosCache = [];
 
-        // Initialize Supabase
         initSupabase();
 
         // ========== AUTHENTICATION ==========
         async function initAdmin() {
-            if (!supabaseClient) {
-                console.warn('Supabase not initialized');
-                showLoginOverlay();
-                return;
-            }
-
+            if (!supabaseClient) { showLoginOverlay(); return; }
             const { data: { session } } = await supabaseClient.auth.getSession();
-
-            if (!session) {
-                showLoginOverlay();
-                return;
-            }
-
+            if (!session) { showLoginOverlay(); return; }
             currentSession = session;
             hideLoginOverlay();
             await loadDashboardData();
             subscribeToChanges();
         }
 
-        function showLoginOverlay() {
-            document.getElementById('loginOverlay').classList.remove('hidden');
-        }
-
-        function hideLoginOverlay() {
-            document.getElementById('loginOverlay').classList.add('hidden');
-        }
+        function showLoginOverlay() { document.getElementById('loginOverlay').classList.remove('hidden'); }
+        function hideLoginOverlay() { document.getElementById('loginOverlay').classList.add('hidden'); }
 
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2276,385 +2502,394 @@ serve(async (req) =&gt; {
             const password = document.getElementById('loginPassword').value;
             const loginBtn = document.getElementById('loginBtn');
             const loginError = document.getElementById('loginError');
-
             loginBtn.disabled = true;
-            loginBtn.textContent = 'Iniciando sesión...';
+            loginBtn.textContent = 'Iniciando sesion...';
             loginError.classList.remove('visible');
-
             try {
                 const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-                if (error) {
-                    loginError.textContent = 'Error: ' + error.message;
-                    loginError.classList.add('visible');
-                    return;
-                }
-
+                if (error) { loginError.textContent = 'Error: ' + error.message; loginError.classList.add('visible'); return; }
                 currentSession = data.session;
                 hideLoginOverlay();
                 await loadDashboardData();
                 subscribeToChanges();
             } catch (err) {
-                loginError.textContent = 'Error de conexión. Intenta de nuevo.';
+                loginError.textContent = 'Error de conexion. Intenta de nuevo.';
                 loginError.classList.add('visible');
-            } finally {
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Iniciar Sesión';
-            }
+            } finally { loginBtn.disabled = false; loginBtn.textContent = 'Iniciar Sesion'; }
         });
 
         async function handleLogout() {
-            if (supabaseClient) {
-                await supabaseClient.auth.signOut();
-            }
+            if (supabaseClient) await supabaseClient.auth.signOut();
             currentSession = null;
             showLoginOverlay();
         }
 
-        // ========== LOAD DASHBOARD DATA ==========
+        // ========== SECTION NAVIGATION ==========
+        function navigateTo(section, navEl) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            if (navEl) navEl.classList.add('active');
+
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            const sectionEl = document.getElementById('section-' + section);
+            if (sectionEl) sectionEl.classList.add('active');
+
+            // Load section-specific data
+            if (section === 'dashboard') loadDashboardData();
+            else if (section === 'registros') loadRegistrosSection();
+            else if (section === 'analytics') loadAnalyticsSection();
+            else if (section === 'landing') loadLandingSection();
+            else if (section === 'confirmaciones') loadConfirmacionesSection();
+            else if (section === 'whatsapp') loadWhatsappSection();
+            else if (section === 'calendario') loadCalendarioSection();
+            else if (section === 'ajustes') loadAjustesSection();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ========== DASHBOARD DATA ==========
         async function loadDashboardData() {
             if (!currentSession) return;
-
             try {
                 const response = await fetch(
                     CONFIG.API_BASE + '/dashboard-stats?evento=' + CONFIG.EVENTO_SLUG + '&periodo=' + currentPeriodo,
-                    {
-                        headers: {
-                            'Authorization': 'Bearer ' + currentSession.access_token,
-                            'Content-Type': 'application/json'
-                        }
-                    }
+                    { headers: { 'Authorization': 'Bearer ' + currentSession.access_token, 'Content-Type': 'application/json' } }
                 );
-
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        showLoginOverlay();
-                        return;
-                    }
-                    throw new Error('Error fetching data');
-                }
-
+                if (!response.ok) { if (response.status === 401) showLoginOverlay(); return; }
                 const data = await response.json();
+                cachedDashboardData = data;
                 updateDashboard(data);
-            } catch (err) {
-                console.error('Error loading dashboard:', err);
-            }
+            } catch (err) { console.error('Error loading dashboard:', err); }
         }
 
         function updateDashboard(data) {
             const stats = data.stats || {};
+            const evento = data.evento || {};
 
-            // Update KPIs
             document.getElementById('totalVisits').textContent = (stats.total_visitas || 0).toLocaleString();
             document.getElementById('totalRegistros').textContent = (stats.total_registros || 0).toLocaleString();
             document.getElementById('whatsappJoins').textContent = (stats.total_whatsapp || 0).toLocaleString();
             document.getElementById('calendarAdds').textContent = (stats.total_calendario || 0).toLocaleString();
 
-            // Update registration count badge in sidebar
+            const sub = document.getElementById('dashboardSubtitle');
+            if (sub && evento.nombre) sub.textContent = evento.nombre + ' • ' + (evento.fecha_evento ? new Date(evento.fecha_evento).toLocaleDateString('es', {day:'numeric',month:'long',year:'numeric'}) : '');
+
             const regBadge = document.getElementById('regCountBadge');
             if (regBadge) regBadge.textContent = stats.total_registros || 0;
 
-            // Update funnel
             updateFunnel(stats);
-
-            // Update conversion rates
             updateConversionRates(stats);
-
-            // Update chart
-            updateChart(data.registrosPorDia || []);
-
-            // Update sources
-            updateSources(data.fuentes || []);
-
-            // Update table
-            updateTable(data.ultimosRegistros || []);
-
-            // Update heatmap
-            updateHeatmap(data.actividadPorHora || []);
+            updateChart(data.registrosPorDia || [], 'registrosChart', 'registrosChart');
+            updateSources(data.fuentes || [], document.querySelector('#section-dashboard .source-list'));
+            updateTable(data.ultimosRegistros || [], 'registrosTable');
+            updateHeatmap(data.actividadPorHora || [], 'heatmap');
         }
 
         function updateFunnel(stats) {
-            const funnelSteps = document.querySelectorAll('.funnel-step');
-            const visits = stats.total_visitas || 0;
-            const regs = stats.total_registros || 0;
-            const wa = stats.total_whatsapp || 0;
-            const cal = stats.total_calendario || 0;
-
-            const funnelData = [
-                { value: visits, rate: '100%', width: '100%' },
-                { value: regs, rate: visits > 0 ? ((regs / visits) * 100).toFixed(1) + '%' : '0%', width: visits > 0 ? Math.max(((regs / visits) * 100), 10) + '%' : '10%' },
-                { value: wa, rate: regs > 0 ? ((wa / regs) * 100).toFixed(1) + '%' : '0%', width: visits > 0 ? Math.max(((wa / visits) * 100), 5) + '%' : '5%' },
-                { value: cal, rate: regs > 0 ? ((cal / regs) * 100).toFixed(1) + '%' : '0%', width: visits > 0 ? Math.max(((cal / visits) * 100), 5) + '%' : '5%' }
+            const steps = document.querySelectorAll('#funnelContainer .funnel-step');
+            const v = stats.total_visitas || 0, r = stats.total_registros || 0, w = stats.total_whatsapp || 0, c = stats.total_calendario || 0;
+            const fd = [
+                { value: v, rate: '100%', width: '100%' },
+                { value: r, rate: v > 0 ? ((r/v)*100).toFixed(1)+'%' : '0%', width: v > 0 ? Math.max((r/v)*100,10)+'%' : '10%' },
+                { value: w, rate: r > 0 ? ((w/r)*100).toFixed(1)+'%' : '0%', width: v > 0 ? Math.max((w/v)*100,5)+'%' : '5%' },
+                { value: c, rate: r > 0 ? ((c/r)*100).toFixed(1)+'%' : '0%', width: v > 0 ? Math.max((c/v)*100,5)+'%' : '5%' }
             ];
-
-            funnelSteps.forEach((step, i) => {
-                if (funnelData[i]) {
-                    const valueEl = step.querySelector('.funnel-stats .value');
-                    const rateEl = step.querySelector('.funnel-stats .rate');
-                    const barEl = step.querySelector('.funnel-bar');
-                    if (valueEl) valueEl.textContent = funnelData[i].value.toLocaleString();
-                    if (rateEl) rateEl.textContent = funnelData[i].rate;
-                    if (barEl) barEl.style.width = funnelData[i].width;
-                }
-            });
+            steps.forEach((s, i) => { if (fd[i]) { const ve=s.querySelector('.value'),re=s.querySelector('.rate'),be=s.querySelector('.funnel-bar'); if(ve)ve.textContent=fd[i].value.toLocaleString(); if(re)re.textContent=fd[i].rate; if(be)be.style.width=fd[i].width; }});
         }
 
         function updateConversionRates(stats) {
-            const visits = stats.total_visitas || 0;
-            const regs = stats.total_registros || 0;
-            const wa = stats.total_whatsapp || 0;
-            const cal = stats.total_calendario || 0;
-
-            const bigRate = document.querySelector('.big-rate');
-            if (bigRate) bigRate.textContent = visits > 0 ? ((regs / visits) * 100).toFixed(1) + '%' : '0%';
-
-            const rateItems = document.querySelectorAll('.rate-item .value');
-            if (rateItems[0]) rateItems[0].textContent = regs > 0 ? ((wa / regs) * 100).toFixed(1) + '%' : '0%';
-            if (rateItems[1]) rateItems[1].textContent = wa > 0 ? ((cal / wa) * 100).toFixed(1) + '%' : '0%';
+            const v=stats.total_visitas||0, r=stats.total_registros||0, w=stats.total_whatsapp||0, c=stats.total_calendario||0;
+            const br = document.querySelector('#section-dashboard .big-rate');
+            if (br) br.textContent = v > 0 ? ((r/v)*100).toFixed(1)+'%' : '0%';
+            const ri = document.querySelectorAll('#section-dashboard .rate-item .value');
+            if (ri[0]) ri[0].textContent = r > 0 ? ((w/r)*100).toFixed(1)+'%' : '0%';
+            if (ri[1]) ri[1].textContent = w > 0 ? ((c/w)*100).toFixed(1)+'%' : '0%';
         }
 
-        function updateChart(registrosPorDia) {
-            const ctx = document.getElementById('registrosChart').getContext('2d');
-
-            const labels = registrosPorDia.map(d => {
-                const date = new Date(d.fecha);
-                return date.toLocaleDateString('es', { weekday: 'short', day: 'numeric' });
-            });
+        function updateChart(registrosPorDia, canvasId, chartVar) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const labels = registrosPorDia.map(d => new Date(d.fecha).toLocaleDateString('es',{weekday:'short',day:'numeric'}));
             const regData = registrosPorDia.map(d => d.total_registros || 0);
             const waData = registrosPorDia.map(d => d.con_whatsapp || 0);
+            const chartRef = chartVar === 'registrosChart' ? registrosChart : analyticsChart;
 
-            if (registrosChart) {
-                registrosChart.data.labels = labels;
-                registrosChart.data.datasets[0].data = regData;
-                registrosChart.data.datasets[1].data = waData;
-                registrosChart.update();
+            if (chartRef) {
+                chartRef.data.labels = labels.length > 0 ? labels : ['Sin datos'];
+                chartRef.data.datasets[0].data = regData.length > 0 ? regData : [0];
+                chartRef.data.datasets[1].data = waData.length > 0 ? waData : [0];
+                chartRef.update();
             } else {
-                registrosChart = new Chart(ctx, {
+                const newChart = new Chart(ctx, {
                     type: 'line',
-                    data: {
-                        labels: labels.length > 0 ? labels : ['Sin datos'],
-                        datasets: [{
-                            label: 'Registros',
-                            data: regData.length > 0 ? regData : [0],
-                            borderColor: '#7B53F0',
-                            backgroundColor: 'rgba(123, 83, 240, 0.1)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: '#7B53F0',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 2,
-                            pointRadius: 5
-                        }, {
-                            label: 'WhatsApp',
-                            data: waData.length > 0 ? waData : [0],
-                            borderColor: '#F6FF54',
-                            backgroundColor: 'rgba(246, 255, 84, 0.05)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: '#F6FF54',
-                            pointBorderColor: '#232021',
-                            pointBorderWidth: 2,
-                            pointRadius: 5
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { position: 'top', labels: { color: '#999', usePointStyle: true, padding: 20 } } },
-                        scales: {
-                            y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#888' } },
-                            x: { grid: { display: false }, ticks: { color: '#888' } }
-                        }
-                    }
+                    data: { labels: labels.length > 0 ? labels : ['Sin datos'], datasets: [
+                        { label:'Registros', data:regData.length>0?regData:[0], borderColor:'#7B53F0', backgroundColor:'rgba(123,83,240,0.1)', borderWidth:3, fill:true, tension:0.4, pointBackgroundColor:'#7B53F0', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:5 },
+                        { label:'WhatsApp', data:waData.length>0?waData:[0], borderColor:'#F6FF54', backgroundColor:'rgba(246,255,84,0.05)', borderWidth:3, fill:true, tension:0.4, pointBackgroundColor:'#F6FF54', pointBorderColor:'#232021', pointBorderWidth:2, pointRadius:5 }
+                    ]},
+                    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'top',labels:{color:'#999',usePointStyle:true,padding:20}}}, scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#888'}},x:{grid:{display:false},ticks:{color:'#888'}}} }
                 });
+                if (chartVar === 'registrosChart') registrosChart = newChart; else analyticsChart = newChart;
             }
         }
 
-        function updateSources(fuentes) {
-            const sourceList = document.querySelector('.source-list');
-            if (!sourceList || fuentes.length === 0) return;
+        function updateSources(fuentes, container) {
+            if (!container || fuentes.length === 0) { if(container) container.innerHTML='<div style="text-align:center;color:#888;padding:20px;">Sin datos de fuentes aun</div>'; return; }
+            const si = {'facebook':{icon:'📘',cls:'facebook'},'instagram':{icon:'📸',cls:'instagram'},'whatsapp':{icon:'💬',cls:'whatsapp'},'google':{icon:'🔍',cls:'google'},'directo':{icon:'🔗',cls:'direct'}};
+            container.innerHTML = fuentes.map(f => { const k=(f.fuente||'directo').toLowerCase(), s=si[k]||{icon:'🌐',cls:'direct'}; return `<div class="source-item"><div class="source-icon ${s.cls}">${s.icon}</div><div class="source-info"><div class="name">${f.fuente||'Directo'}</div><div class="source-progress"><div class="source-progress-fill" style="width:${f.porcentaje}%"></div></div></div><div class="source-value"><div class="number">${f.total}</div><div class="percent">${f.porcentaje}%</div></div></div>`; }).join('');
+        }
 
-            const sourceIcons = {
-                'facebook': { icon: '📘', cls: 'facebook' },
-                'instagram': { icon: '📸', cls: 'instagram' },
-                'whatsapp': { icon: '💬', cls: 'whatsapp' },
-                'google': { icon: '🔍', cls: 'google' },
-                'directo': { icon: '🔗', cls: 'direct' }
-            };
-
-            sourceList.innerHTML = fuentes.map(f => {
-                const key = (f.fuente || 'directo').toLowerCase();
-                const si = sourceIcons[key] || { icon: '🌐', cls: 'direct' };
-                return `<div class="source-item">
-                    <div class="source-icon ${si.cls}">${si.icon}</div>
-                    <div class="source-info"><div class="name">${f.fuente || 'Directo'}</div><div class="source-progress"><div class="source-progress-fill" style="width: ${f.porcentaje}%"></div></div></div>
-                    <div class="source-value"><div class="number">${f.total}</div><div class="percent">${f.porcentaje}%</div></div>
-                </div>`;
+        function updateTable(registros, tbodyId) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+            if (!registros || registros.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;padding:30px;">No hay registros aun</td></tr>'; return; }
+            tbody.innerHTML = registros.map(reg => {
+                const status = reg.calendario_added ? 'completed' : (reg.whatsapp_joined ? 'partial' : 'pending');
+                const statusLabel = status==='completed'?'Completo':status==='partial'?'Parcial':'Pendiente';
+                const source = reg.utm_source || 'Directo';
+                const fecha = new Date(reg.created_at).toLocaleString('es',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+                const initials = (reg.nombre||'?').split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                return `<tr><td><div class="user-cell"><div class="user-avatar">${initials}</div><div class="user-info"><div class="name">${reg.nombre}</div><div class="email">${reg.email}</div></div></div></td><td>${reg.whatsapp||'-'}</td><td><span class="status-badge ${status}">${statusLabel}</span></td><td><span class="source-badge">${getSourceIcon(source)} ${source}</span></td><td>${fecha}</td></tr>`;
             }).join('');
         }
 
-        function updateTable(registros) {
-            const tbody = document.getElementById('registrosTable');
+        function getSourceIcon(s) { return {'facebook':'📘','instagram':'📸','whatsapp':'💬','google':'🔍','directo':'🔗'}[(s||'').toLowerCase()]||'🌐'; }
+
+        function updateHeatmap(actividadPorHora, containerId) {
+            const c = document.getElementById(containerId);
+            if (!c) return;
+            const days=['Dom','Lun','Mar','Mie','Jue','Vie','Sab'], hours=Array.from({length:24},(_,i)=>i);
+            const hd={}; let mx=1;
+            (actividadPorHora||[]).forEach(d=>{ hd[d.dia_semana+'_'+d.hora]=Number(d.total); if(Number(d.total)>mx) mx=Number(d.total); });
+            let html='<div class="heatmap-label"></div>';
+            hours.forEach(h=>{ html+='<div class="heatmap-label" style="justify-content:center;font-size:0.65rem;">'+h+'</div>'; });
+            days.forEach((day,di)=>{ html+='<div class="heatmap-label">'+day+'</div>'; hours.forEach(hr=>{ const v=hd[di+'_'+hr]||0, l=mx>0?Math.min(Math.round((v/mx)*5),5):0; html+='<div class="heatmap-cell level-'+l+'" title="'+day+' '+hr+':00 - '+v+' registros">'+(v>0?v:'')+'</div>'; }); });
+            c.innerHTML = html;
+        }
+
+        // ========== SECTION: REGISTROS ==========
+        async function loadRegistrosSection() {
+            if (!currentSession) return;
+            try {
+                const { data: registros, error } = await supabaseClient
+                    .from('registros').select('id,nombre,email,whatsapp,whatsapp_joined,whatsapp_joined_at,calendario_added,calendario_added_at,tipo_calendario,es_vip,utm_source,created_at')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                allRegistrosCache = registros || [];
+                document.getElementById('registrosCount').textContent = allRegistrosCache.length + ' registros en total';
+                renderAllRegistros(allRegistrosCache);
+            } catch (err) { console.error('Error loading registros:', err); }
+        }
+
+        function renderAllRegistros(registros) {
+            const tbody = document.getElementById('allRegistrosTable');
             if (!tbody) return;
-
-            if (registros.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;padding:30px;">No hay registros aún</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = registros.map(reg => {
-                const status = reg.calendario_added ? 'completed' : (reg.whatsapp_joined ? 'partial' : 'pending');
-                const statusLabel = status === 'completed' ? '✓ Completo' : status === 'partial' ? '◐ Parcial' : '○ Pendiente';
-                const source = reg.utm_source || 'Directo';
-                const sourceIcon = getSourceIcon(source);
-                const fecha = new Date(reg.created_at).toLocaleString('es', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                const initials = reg.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-
+            if (!registros || registros.length === 0) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#888;padding:30px;">No hay registros</td></tr>'; return; }
+            tbody.innerHTML = registros.map(r => {
+                const initials = (r.nombre||'?').split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                const fecha = new Date(r.created_at).toLocaleString('es',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
                 return `<tr>
-                    <td><div class="user-cell"><div class="user-avatar">${initials}</div><div class="user-info"><div class="name">${reg.nombre}</div><div class="email">${reg.email}</div></div></div></td>
-                    <td>${reg.whatsapp || '-'}</td>
-                    <td><span class="status-badge ${status}">${statusLabel}</span></td>
-                    <td><span class="source-badge">${sourceIcon} ${source}</span></td>
+                    <td><div class="user-cell"><div class="user-avatar">${initials}</div><div class="user-info"><div class="name">${r.nombre}</div><div class="email">${r.email}</div></div></div></td>
+                    <td>${r.whatsapp||'-'}</td>
+                    <td><span class="status-badge ${r.whatsapp_joined?'completed':'pending'}">${r.whatsapp_joined?'Si':'No'}</span></td>
+                    <td><span class="status-badge ${r.calendario_added?'completed':'pending'}">${r.calendario_added?(r.tipo_calendario||'Si'):'No'}</span></td>
+                    <td><span class="status-badge ${r.es_vip?'completed':'pending'}">${r.es_vip?'VIP':'No'}</span></td>
+                    <td><span class="source-badge">${getSourceIcon(r.utm_source)} ${r.utm_source||'Directo'}</span></td>
                     <td>${fecha}</td>
-                    <td><button class="more-btn" style="width:30px;height:30px;font-size:0.8rem;">👁️</button></td>
                 </tr>`;
             }).join('');
         }
 
-        function getSourceIcon(source) {
-            const icons = { 'facebook': '📘', 'instagram': '📸', 'whatsapp': '💬', 'google': '🔍', 'directo': '🔗' };
-            return icons[(source || '').toLowerCase()] || '🌐';
+        // Search and filter
+        document.getElementById('searchRegistros')?.addEventListener('input', function() { filterRegistros(); });
+        document.getElementById('filterStatus')?.addEventListener('change', function() { filterRegistros(); });
+
+        function filterRegistros() {
+            const search = (document.getElementById('searchRegistros')?.value || '').toLowerCase();
+            const filter = document.getElementById('filterStatus')?.value || 'all';
+            let filtered = allRegistrosCache;
+            if (search) filtered = filtered.filter(r => r.nombre.toLowerCase().includes(search) || r.email.toLowerCase().includes(search));
+            if (filter === 'completed') filtered = filtered.filter(r => r.whatsapp_joined && r.calendario_added);
+            else if (filter === 'whatsapp') filtered = filtered.filter(r => r.whatsapp_joined);
+            else if (filter === 'calendar') filtered = filtered.filter(r => r.calendario_added);
+            else if (filter === 'pending') filtered = filtered.filter(r => !r.whatsapp_joined && !r.calendario_added);
+            document.getElementById('registrosCount').textContent = filtered.length + ' de ' + allRegistrosCache.length + ' registros';
+            renderAllRegistros(filtered);
         }
 
-        function updateHeatmap(actividadPorHora) {
-            const container = document.getElementById('heatmap');
-            if (!container) return;
-
-            const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-            const hours = Array.from({length: 24}, (_, i) => i);
-
-            // Build a map from the data
-            const heatData = {};
-            let maxVal = 1;
-            (actividadPorHora || []).forEach(d => {
-                const key = d.dia_semana + '_' + d.hora;
-                heatData[key] = Number(d.total);
-                if (Number(d.total) > maxVal) maxVal = Number(d.total);
-            });
-
-            container.innerHTML = '<div class="heatmap-label"></div>';
-            hours.forEach(h => {
-                container.innerHTML += '<div class="heatmap-label" style="justify-content:center;font-size:0.65rem;">' + h + '</div>';
-            });
-
-            days.forEach((day, dayIdx) => {
-                container.innerHTML += '<div class="heatmap-label">' + day + '</div>';
-                hours.forEach(hour => {
-                    const val = heatData[dayIdx + '_' + hour] || 0;
-                    const level = maxVal > 0 ? Math.min(Math.round((val / maxVal) * 5), 5) : 0;
-                    container.innerHTML += '<div class="heatmap-cell level-' + level + '" title="' + day + ' ' + hour + ':00 - ' + val + ' registros">' + (val > 0 ? val : '') + '</div>';
-                });
-            });
+        // ========== SECTION: ANALYTICS ==========
+        async function loadAnalyticsSection() {
+            if (!cachedDashboardData) await loadDashboardData();
+            if (!cachedDashboardData) return;
+            updateChart(cachedDashboardData.registrosPorDia || [], 'analyticsChart', 'analyticsChart');
+            updateSources(cachedDashboardData.fuentes || [], document.getElementById('analyticsSourceList'));
+            updateHeatmap(cachedDashboardData.actividadPorHora || [], 'analyticsHeatmap');
         }
 
-        // ========== REALTIME SUBSCRIPTION ==========
+        document.querySelectorAll('.date-btn-analytics').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                document.querySelectorAll('.date-btn-analytics').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentPeriodo = this.dataset.periodo;
+                cachedDashboardData = null;
+                await loadAnalyticsSection();
+            });
+        });
+
+        // ========== SECTION: LANDING PAGE ==========
+        async function loadLandingSection() {
+            if (!currentSession) return;
+            try {
+                const { data: views, error } = await supabaseClient
+                    .from('page_views').select('*').eq('pagina', 'landing').order('created_at', { ascending: false }).limit(100);
+                if (error) throw error;
+
+                const stats = cachedDashboardData?.stats || {};
+                document.getElementById('landingVisits').textContent = (stats.total_visitas || (views||[]).length).toLocaleString();
+                document.getElementById('landingRegistros').textContent = (stats.total_registros || 0).toLocaleString();
+                const v = stats.total_visitas || 0, r = stats.total_registros || 0;
+                document.getElementById('landingConversion').textContent = v > 0 ? ((r/v)*100).toFixed(1)+'%' : '0%';
+
+                // Top source
+                const sources = {};
+                (views||[]).forEach(v => { const s = v.utm_source||'Directo'; sources[s]=(sources[s]||0)+1; });
+                const topSource = Object.entries(sources).sort((a,b)=>b[1]-a[1])[0];
+                document.getElementById('landingTopSource').textContent = topSource ? topSource[0] : '-';
+
+                // Table
+                const tbody = document.getElementById('landingViewsTable');
+                if (tbody) {
+                    if (!views || views.length === 0) { tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#888;padding:30px;">Sin visitas aun</td></tr>'; return; }
+                    tbody.innerHTML = views.map(v => `<tr>
+                        <td style="font-size:0.8rem;">${(v.session_id||'-').substring(0,20)}</td>
+                        <td style="font-size:0.8rem;">${v.referrer?new URL(v.referrer).hostname:'-'}</td>
+                        <td>${v.utm_source||'-'}</td><td>${v.utm_medium||'-'}</td><td>${v.utm_campaign||'-'}</td>
+                        <td>${new Date(v.created_at).toLocaleString('es',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</td>
+                    </tr>`).join('');
+                }
+            } catch (err) { console.error('Error loading landing section:', err); }
+        }
+
+        // ========== SECTION: CONFIRMACIONES ==========
+        async function loadConfirmacionesSection() {
+            if (!currentSession) return;
+            try {
+                const [viewsRes, regsRes] = await Promise.all([
+                    supabaseClient.from('page_views').select('*', { count: 'exact', head: true }).eq('pagina', 'confirmacion'),
+                    supabaseClient.from('registros').select('whatsapp_joined,calendario_added', { count: 'exact' })
+                ]);
+                const confirmViews = viewsRes.count || 0;
+                const regs = regsRes.data || [];
+                const waCount = regs.filter(r => r.whatsapp_joined).length;
+                const calCount = regs.filter(r => r.calendario_added).length;
+                const bothCount = regs.filter(r => r.whatsapp_joined && r.calendario_added).length;
+
+                document.getElementById('confirmVisits').textContent = confirmViews.toLocaleString();
+                document.getElementById('confirmWhatsapp').textContent = waCount.toLocaleString();
+                document.getElementById('confirmCalendar').textContent = calCount.toLocaleString();
+                document.getElementById('confirmBoth').textContent = bothCount.toLocaleString();
+            } catch (err) { console.error('Error loading confirmaciones:', err); }
+        }
+
+        // ========== SECTION: WHATSAPP ==========
+        async function loadWhatsappSection() {
+            if (!currentSession) return;
+            try {
+                const { data: regs, error } = await supabaseClient
+                    .from('registros').select('nombre,email,whatsapp,whatsapp_joined,calendario_added,utm_source,whatsapp_joined_at,created_at')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                const all = regs || [];
+                const waRegs = all.filter(r => r.whatsapp_joined);
+
+                document.getElementById('waTotal').textContent = waRegs.length.toLocaleString();
+                document.getElementById('waOfTotal').textContent = all.length.toLocaleString();
+                document.getElementById('waRate').textContent = all.length > 0 ? ((waRegs.length/all.length)*100).toFixed(1)+'%' : '0%';
+
+                const tbody = document.getElementById('waTable');
+                if (!tbody) return;
+                if (waRegs.length === 0) { tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#888;padding:30px;">Nadie se ha unido a WhatsApp aun</td></tr>'; return; }
+                tbody.innerHTML = waRegs.map(r => {
+                    const initials = (r.nombre||'?').split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                    const fecha = r.whatsapp_joined_at ? new Date(r.whatsapp_joined_at).toLocaleString('es',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : new Date(r.created_at).toLocaleString('es',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+                    return `<tr><td><div class="user-cell"><div class="user-avatar">${initials}</div><div class="user-info"><div class="name">${r.nombre}</div><div class="email">${r.email}</div></div></div></td><td>${r.whatsapp||'-'}</td><td><span class="status-badge ${r.calendario_added?'completed':'pending'}">${r.calendario_added?'Si':'No'}</span></td><td><span class="source-badge">${getSourceIcon(r.utm_source)} ${r.utm_source||'Directo'}</span></td><td>${fecha}</td></tr>`;
+                }).join('');
+            } catch (err) { console.error('Error loading WhatsApp section:', err); }
+        }
+
+        // ========== SECTION: CALENDARIO ==========
+        async function loadCalendarioSection() {
+            if (!currentSession) return;
+            try {
+                const { data: regs, error } = await supabaseClient
+                    .from('registros').select('nombre,email,whatsapp,whatsapp_joined,calendario_added,tipo_calendario,utm_source,calendario_added_at,created_at')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                const all = regs || [];
+                const calRegs = all.filter(r => r.calendario_added);
+
+                document.getElementById('calTotal').textContent = calRegs.length.toLocaleString();
+                document.getElementById('calOfTotal').textContent = all.length.toLocaleString();
+                document.getElementById('calRate').textContent = all.length > 0 ? ((calRegs.length/all.length)*100).toFixed(1)+'%' : '0%';
+
+                const tbody = document.getElementById('calTable');
+                if (!tbody) return;
+                if (calRegs.length === 0) { tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#888;padding:30px;">Nadie ha agregado al calendario aun</td></tr>'; return; }
+                tbody.innerHTML = calRegs.map(r => {
+                    const initials = (r.nombre||'?').split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                    const fecha = r.calendario_added_at ? new Date(r.calendario_added_at).toLocaleString('es',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : new Date(r.created_at).toLocaleString('es',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+                    return `<tr><td><div class="user-cell"><div class="user-avatar">${initials}</div><div class="user-info"><div class="name">${r.nombre}</div><div class="email">${r.email}</div></div></div></td><td><span class="status-badge completed">${r.tipo_calendario||'Si'}</span></td><td><span class="status-badge ${r.whatsapp_joined?'completed':'pending'}">${r.whatsapp_joined?'Si':'No'}</span></td><td><span class="source-badge">${getSourceIcon(r.utm_source)} ${r.utm_source||'Directo'}</span></td><td>${fecha}</td></tr>`;
+                }).join('');
+            } catch (err) { console.error('Error loading Calendario section:', err); }
+        }
+
+        // ========== SECTION: AJUSTES ==========
+        async function loadAjustesSection() {
+            if (!cachedDashboardData) await loadDashboardData();
+            const evento = cachedDashboardData?.evento || {};
+            document.getElementById('settingEventName').value = evento.nombre || '';
+            document.getElementById('settingEventSlug').value = evento.slug || '';
+            document.getElementById('settingEventDate').value = evento.fecha_evento ? new Date(evento.fecha_evento).toLocaleString('es') : '';
+            document.getElementById('settingWhatsappUrl').value = evento.url_whatsapp || '';
+            document.getElementById('settingVipPrice').value = evento.precio_vip ? '$' + evento.precio_vip + ' ' + (evento.moneda||'USD') : '';
+        }
+
+        // ========== CSV EXPORT ==========
+        async function exportCSV() {
+            if (!currentSession) return;
+            try {
+                const { data: registros, error } = await supabaseClient
+                    .from('registros').select('nombre,email,whatsapp,whatsapp_joined,calendario_added,tipo_calendario,es_vip,utm_source,created_at')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                if (!registros || registros.length === 0) { alert('No hay registros para exportar.'); return; }
+                const headers = ['Nombre','Email','WhatsApp','WhatsApp Unido','Calendario','Tipo Calendario','VIP','Fuente','Fecha'];
+                const rows = registros.map(r => [r.nombre, r.email, r.whatsapp||'', r.whatsapp_joined?'Si':'No', r.calendario_added?'Si':'No', r.tipo_calendario||'', r.es_vip?'Si':'No', r.utm_source||'Directo', new Date(r.created_at).toLocaleString('es')]);
+                const csv = [headers,...rows].map(row => row.map(cell => '"'+String(cell).replace(/"/g,'""')+'"').join(',')).join('\n');
+                const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'registros_'+new Date().toISOString().split('T')[0]+'.csv';
+                link.click();
+            } catch (err) { console.error('CSV export error:', err); alert('Error al exportar.'); }
+        }
+
+        // ========== REALTIME ==========
         function subscribeToChanges() {
             if (!supabaseClient) return;
-
-            supabaseClient
-                .channel('registros-changes')
-                .on('postgres_changes',
-                    { event: 'INSERT', schema: 'public', table: 'registros' },
-                    function(payload) {
-                        // Reload dashboard data on new registration
-                        loadDashboardData();
-                    }
-                )
+            supabaseClient.channel('registros-changes')
+                .on('postgres_changes', { event:'INSERT', schema:'public', table:'registros' }, () => loadDashboardData())
                 .subscribe();
         }
 
-        // ========== DATE FILTER ==========
+        // ========== DATE FILTER (Dashboard) ==========
         document.querySelectorAll('.date-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-
-                const text = this.textContent.trim().toLowerCase();
-                if (text === 'hoy') currentPeriodo = '1d';
-                else if (text === '7 días') currentPeriodo = '7d';
-                else if (text === '30 días') currentPeriodo = '30d';
-                else currentPeriodo = 'all';
-
+                currentPeriodo = this.dataset.periodo || '7d';
                 loadDashboardData();
             });
         });
-
-        // ========== CSV EXPORT ==========
-        document.querySelector('.btn-export').addEventListener('click', async function() {
-            if (!currentSession) return;
-
-            try {
-                const { data: registros, error } = await supabaseClient
-                    .from('registros')
-                    .select('nombre, email, whatsapp, whatsapp_joined, calendario_added, es_vip, utm_source, created_at')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-                if (!registros || registros.length === 0) {
-                    alert('No hay registros para exportar.');
-                    return;
-                }
-
-                // Build CSV
-                const headers = ['Nombre', 'Email', 'WhatsApp', 'WhatsApp Unido', 'Calendario', 'VIP', 'Fuente', 'Fecha'];
-                const rows = registros.map(r => [
-                    r.nombre,
-                    r.email,
-                    r.whatsapp || '',
-                    r.whatsapp_joined ? 'Sí' : 'No',
-                    r.calendario_added ? 'Sí' : 'No',
-                    r.es_vip ? 'Sí' : 'No',
-                    r.utm_source || 'Directo',
-                    new Date(r.created_at).toLocaleString('es')
-                ]);
-
-                const csvContent = [headers, ...rows].map(row =>
-                    row.map(cell => '"' + String(cell).replace(/"/g, '""') + '"').join(',')
-                ).join('\n');
-
-                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'registros_' + new Date().toISOString().split('T')[0] + '.csv';
-                link.click();
-            } catch (err) {
-                console.error('Error exporting CSV:', err);
-                alert('Error al exportar. Intenta de nuevo.');
-            }
-        });
-
-        // ========== NAVIGATION ==========
-        function navigateTo(section, navEl) {
-            // Update active nav item
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            if (navEl) navEl.classList.add('active');
-
-            // Scroll to relevant section
-            const targets = {
-                'dashboard': '.stats-grid',
-                'registros': '.table-card',
-                'analytics': '.chart-container',
-                'funnel': '.funnel-container'
-            };
-
-            const target = targets[section];
-            if (target) {
-                const el = document.querySelector(target);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
 
         // ========== MODAL FUNCTIONS ==========
         function showIntegrationsModal() {
