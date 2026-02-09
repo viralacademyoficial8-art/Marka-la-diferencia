@@ -193,7 +193,7 @@
         .floating-cta { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999; display: none; }
         .floating-cta.visible { display: block; animation: slideUp 0.5s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(100px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-        .floating-cta .cta-button { padding: 18px 40px; font-size: 1rem; }
+        .floating-cta .cta-button { padding: 16px 36px; font-size: 1rem; white-space: nowrap; width: auto; max-width: none; }
         
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
