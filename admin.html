@@ -1369,16 +1369,16 @@
 
         <nav class="nav-section">
             <div class="nav-section-title">Principal</div>
-            <div class="nav-item active">
+            <div class="nav-item active" onclick="navigateTo('dashboard', this)">
                 <span class="icon">📊</span>
                 Dashboard
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="navigateTo('registros', this)">
                 <span class="icon">👥</span>
                 Registros
-                <span class="badge">127</span>
+                <span class="badge" id="regCountBadge">0</span>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="navigateTo('analytics', this)">
                 <span class="icon">📈</span>
                 Analytics
             </div>
@@ -1386,19 +1386,19 @@
 
         <nav class="nav-section">
             <div class="nav-section-title">Embudo</div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="navigateTo('funnel', this)">
                 <span class="icon">🎯</span>
                 Landing Page
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="navigateTo('funnel', this)">
                 <span class="icon">✅</span>
                 Confirmaciones
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="navigateTo('funnel', this)">
                 <span class="icon">💬</span>
                 WhatsApp
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="navigateTo('funnel', this)">
                 <span class="icon">📅</span>
                 Calendario
             </div>
@@ -1406,7 +1406,7 @@
 
         <nav class="nav-section">
             <div class="nav-section-title">Configuración</div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="showIntegrationsModal()">
                 <span class="icon">⚙️</span>
                 Ajustes
             </div>
@@ -1415,7 +1415,7 @@
                 Integraciones
                 <span class="badge" style="background: var(--success);">Setup</span>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="showIntegrationsModal()">
                 <span class="icon">📧</span>
                 Email Marketing
             </div>
@@ -2035,8 +2035,8 @@ function trackPurchase(orderId) {
                                 <button class="copy-btn" onclick="copyCode('capiCode')">📋 Copiar</button>
                             </div>
                             <pre id="capiCode"><code>// Supabase Edge Function para Conversions API
-import { serve } from 'https://deno.land/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7605021236465847404e5846">[email&#160;protected]</a>/http/server.ts'
-import { createHash } from 'https://deno.land/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3c0c7d7f3839d82858b9d83">[email&#160;protected]</a>/crypto/mod.ts'
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
+import { createHash } from 'https://deno.land/std@0.168.0/crypto/mod.ts'
 
 const PIXEL_ID = Deno.env.get('META_PIXEL_ID')
 const ACCESS_TOKEN = Deno.env.get('META_ACCESS_TOKEN')
@@ -2124,26 +2124,26 @@ serve(async (req) =&gt; {
             <div class="stat-card purple">
                 <div class="stat-icon">👁️</div>
                 <div class="stat-label">Visitas a Landing</div>
-                <div class="stat-value" id="totalVisits">2,847</div>
-                <div class="stat-change up"><span>↑</span> 23.5% vs semana anterior</div>
+                <div class="stat-value" id="totalVisits">0</div>
+                <div class="stat-change" id="visitChange"></div>
             </div>
             <div class="stat-card yellow">
                 <div class="stat-icon">📝</div>
                 <div class="stat-label">Registros Totales</div>
-                <div class="stat-value" id="totalRegistros">847</div>
-                <div class="stat-change up"><span>↑</span> 18.2% vs semana anterior</div>
+                <div class="stat-value" id="totalRegistros">0</div>
+                <div class="stat-change" id="regChange"></div>
             </div>
             <div class="stat-card green">
                 <div class="stat-icon">💬</div>
                 <div class="stat-label">Unieron a WhatsApp</div>
-                <div class="stat-value" id="whatsappJoins">612</div>
-                <div class="stat-change up"><span>↑</span> 12.8% vs semana anterior</div>
+                <div class="stat-value" id="whatsappJoins">0</div>
+                <div class="stat-change" id="waChange"></div>
             </div>
             <div class="stat-card blue">
                 <div class="stat-icon">📅</div>
                 <div class="stat-label">Agregaron Calendario</div>
-                <div class="stat-value" id="calendarAdds">489</div>
-                <div class="stat-change up"><span>↑</span> 8.4% vs semana anterior</div>
+                <div class="stat-value" id="calendarAdds">0</div>
+                <div class="stat-change" id="calChange"></div>
             </div>
         </div>
 
@@ -2156,19 +2156,19 @@ serve(async (req) =&gt; {
                 <div class="funnel-container">
                     <div class="funnel-step">
                         <div class="funnel-bar-container"><div class="funnel-bar">👁️ Visitantes Landing</div></div>
-                        <div class="funnel-stats"><div class="value">2,847</div><div class="rate">100%</div></div>
+                        <div class="funnel-stats"><div class="value">0</div><div class="rate">100%</div></div>
                     </div>
                     <div class="funnel-step">
                         <div class="funnel-bar-container"><div class="funnel-bar">📝 Registros</div></div>
-                        <div class="funnel-stats"><div class="value">847</div><div class="rate">29.7%</div></div>
+                        <div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div>
                     </div>
                     <div class="funnel-step">
                         <div class="funnel-bar-container"><div class="funnel-bar">💬 WhatsApp</div></div>
-                        <div class="funnel-stats"><div class="value">612</div><div class="rate">72.3%</div></div>
+                        <div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div>
                     </div>
                     <div class="funnel-step">
                         <div class="funnel-bar-container"><div class="funnel-bar">📅 Calendario</div></div>
-                        <div class="funnel-stats"><div class="value">489</div><div class="rate">57.7%</div></div>
+                        <div class="funnel-stats"><div class="value">0</div><div class="rate">0%</div></div>
                     </div>
                 </div>
             </div>
@@ -2179,11 +2179,11 @@ serve(async (req) =&gt; {
                     <button class="more-btn">⋯</button>
                 </div>
                 <div class="conversion-rate-display">
-                    <div class="big-rate">29.7%</div>
+                    <div class="big-rate">0%</div>
                     <div class="rate-label">Visitantes → Registros</div>
                     <div class="rate-comparison">
-                        <div class="rate-item"><div class="value">72.3%</div><div class="label">Registro → WhatsApp</div></div>
-                        <div class="rate-item"><div class="value">79.9%</div><div class="label">WhatsApp → Calendario</div></div>
+                        <div class="rate-item"><div class="value">0%</div><div class="label">Registro → WhatsApp</div></div>
+                        <div class="rate-item"><div class="value">0%</div><div class="label">WhatsApp → Calendario</div></div>
                     </div>
                 </div>
             </div>
@@ -2202,31 +2202,7 @@ serve(async (req) =&gt; {
                     <button class="more-btn">⋯</button>
                 </div>
                 <div class="source-list">
-                    <div class="source-item">
-                        <div class="source-icon facebook">📘</div>
-                        <div class="source-info"><div class="name">Facebook Ads</div><div class="source-progress"><div class="source-progress-fill" style="width: 45%"></div></div></div>
-                        <div class="source-value"><div class="number">381</div><div class="percent">45%</div></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-icon instagram">📸</div>
-                        <div class="source-info"><div class="name">Instagram</div><div class="source-progress"><div class="source-progress-fill" style="width: 28%"></div></div></div>
-                        <div class="source-value"><div class="number">237</div><div class="percent">28%</div></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-icon whatsapp">💬</div>
-                        <div class="source-info"><div class="name">WhatsApp Directo</div><div class="source-progress"><div class="source-progress-fill" style="width: 15%"></div></div></div>
-                        <div class="source-value"><div class="number">127</div><div class="percent">15%</div></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-icon google">🔍</div>
-                        <div class="source-info"><div class="name">Google Orgánico</div><div class="source-progress"><div class="source-progress-fill" style="width: 8%"></div></div></div>
-                        <div class="source-value"><div class="number">68</div><div class="percent">8%</div></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-icon direct">🔗</div>
-                        <div class="source-info"><div class="name">Tráfico Directo</div><div class="source-progress"><div class="source-progress-fill" style="width: 4%"></div></div></div>
-                        <div class="source-value"><div class="number">34</div><div class="percent">4%</div></div>
-                    </div>
+                    <div style="text-align:center;color:#888;padding:20px;">Sin datos de fuentes aún</div>
                 </div>
             </div>
 
@@ -2253,7 +2229,7 @@ serve(async (req) =&gt; {
         </div>
     </main>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         // =============================================
         // ADMIN PANEL - Supabase Integration
         // =============================================
@@ -2375,7 +2351,7 @@ serve(async (req) =&gt; {
             document.getElementById('calendarAdds').textContent = (stats.total_calendario || 0).toLocaleString();
 
             // Update registration count badge in sidebar
-            const regBadge = document.querySelector('.nav-item .badge');
+            const regBadge = document.getElementById('regCountBadge');
             if (regBadge) regBadge.textContent = stats.total_registros || 0;
 
             // Update funnel
@@ -2658,6 +2634,27 @@ serve(async (req) =&gt; {
                 alert('Error al exportar. Intenta de nuevo.');
             }
         });
+
+        // ========== NAVIGATION ==========
+        function navigateTo(section, navEl) {
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (navEl) navEl.classList.add('active');
+
+            // Scroll to relevant section
+            const targets = {
+                'dashboard': '.stats-grid',
+                'registros': '.table-card',
+                'analytics': '.chart-container',
+                'funnel': '.funnel-container'
+            };
+
+            const target = targets[section];
+            if (target) {
+                const el = document.querySelector(target);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
 
         // ========== MODAL FUNCTIONS ==========
         function showIntegrationsModal() {
