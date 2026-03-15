@@ -4,6 +4,7 @@
     { "src": "/", "dest": "/index.html" },
     { "src": "/confirmacion", "dest": "/confirmacion.html" },
     { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/terminos", "dest": "/terminos.html" }
+    { "src": "/terminos", "dest": "/terminos.html" },
+    { "src": "/evento", "dest": "/evento.html" }
   ]
 }
