@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Exitoso - EXPO COSPIDE 2026</title>
+    <meta name="description" content="Tu boleto ha sido confirmado para EXPO COSPIDE 2026">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple-main: #7B53F0;
+            --yellow-accent: #FFD700;
+            --dark: #0f0f0f;
+            --white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--dark);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7B53F0, #6d28d9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 3rem;
+        }
+        .success-icon svg {
+            width: 50px;
+            height: 50px;
+            fill: none;
+            stroke: var(--yellow-accent);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--yellow-accent);
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 30px;
+            max-width: 550px;
+            line-height: 1.6;
+        }
+        .info-box {
+            background: rgba(123, 83, 240, 0.15);
+            border: 1px solid rgba(123, 83, 240, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            margin-bottom: 35px;
+        }
+        .info-box h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            color: var(--yellow-accent);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        .info-box p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        .info-box strong {
+            color: var(--white);
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 16px 40px;
+            background: var(--purple-main);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(123, 83, 240, 0.4);
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h1>PAGO CONFIRMADO</h1>
+    <p class="subtitle">Tu boleto para <strong>EXPO COSPIDE 2026</strong> ha sido adquirido exitosamente.</p>
+    <div class="info-box">
+        <h3>Detalles importantes</h3>
+        <p><strong>Fecha:</strong> 23 de mayo de 2026</p>
+        <p><strong>Lugar:</strong> Ocotlan, Jalisco</p>
+        <p>Stripe te enviara un recibo de compra a tu correo electronico.</p>
+        <p>Guarda tu comprobante de pago como confirmacion de entrada.</p>
+    </div>
+    <a href="evento.html" class="btn-back">Volver al evento</a>
+</body>
+</html>

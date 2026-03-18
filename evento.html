@@ -6,6 +6,7 @@
     <title>EXPO COSPIDE 2026 - Emprendimiento y Marketing | Ocotlán, Jalisco</title>
     <meta name="description" content="EXPO COSPIDE 2026 - El punto de encuentro donde líderes y emprendedores se reúnen para convertir ideas en negocios que transforman el mundo. 23 de mayo 2026, Ocotlán, Jalisco.">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
     <style>
@@ -1156,11 +1157,11 @@
                     <li>Acceso talleres y conferencias magistrales</li>
                     <li>Acceso a grabación de <strong>Podcast EN VIVO</strong></li>
                 </ul>
-                <a href="#" class="pricing-btn paid">Comprar Boleto</a>
+                <a href="#" class="pricing-btn paid" onclick="comprarBoleto('price_1TCTNvFlJqxw20GMrkrLrosG'); return false;">Comprar Boleto</a>
             </div>
             <div class="pricing-card featured">
                 <div class="pricing-name">TOP MAKERS – VIP EXPERIENCE</div>
-                <div class="pricing-price">$847</div>
+                <div class="pricing-price">$897</div>
                 <div class="pricing-label">Incluye:</div>
                 <ul class="pricing-list">
                     <li>Pulsera VIP</li>
@@ -1177,7 +1178,7 @@
                     <li><strong>Zona preferencial</strong> en el ciclo de conferencias</li>
                     <li>Boleto para participar en la rifa</li>
                 </ul>
-                <a href="#" class="pricing-btn vip">Comprar VIP</a>
+                <a href="#" class="pricing-btn vip" onclick="comprarBoleto('price_1TCTPFFlJqxw20GMS0D9rv1a'); return false;">Comprar VIP</a>
             </div>
         </div>
     </section>
@@ -1372,6 +1373,22 @@
                 btn.classList.remove('visible');
             }
         });
+
+        // ====== STRIPE CHECKOUT ======
+        const stripe = Stripe('pk_live_51TBKqYFlJqxw20GMB2ANNLaRa1E192Pg4tB3XbbtHFZALeQ96U8VfJ0yZjePJFuZEm57v6G9HIKrimjPVEK40ZM200DKi1hybG');
+
+        function comprarBoleto(priceId) {
+            stripe.redirectToCheckout({
+                lineItems: [{ price: priceId, quantity: 1 }],
+                mode: 'payment',
+                successUrl: window.location.origin + '/gracias.html?session_id={CHECKOUT_SESSION_ID}',
+                cancelUrl: window.location.origin + '/evento.html#boletos',
+            }).then(function (result) {
+                if (result.error) {
+                    alert('Error al procesar el pago: ' + result.error.message);
+                }
+            });
+        }
 
         // ====== PAGE VIEW TRACKING ======
         if (typeof initSupabase === 'function') {
