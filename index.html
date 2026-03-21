@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔥 Masterclass GRATIS: No Es Tu Producto, Eres Tú</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Supabase JS -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
@@ -18,23 +18,23 @@
             
             /* Colores derivados */
             --primary: #7B53F0;
-            --primary-light: #9B7AF5;
-            --primary-dark: #5A35D0;
+            --primary-light: #9A7DF5;
+            --primary-dark: #5a35d0;
             --secondary: #F6FF54;
             --accent: #F6FF54;
             --dark: #232021;
             --darker: #1a1819;
-            --light: #F5F5F5;
-            --gray: #9E9E9E;
+            --light: #232021;
+            --gray: #5f5b60;
             
             /* Colores sólidos (sin gradientes) */
-            --gradient-brand: #7B53F0;
+            --gradient-brand: linear-gradient(125deg, #7B53F0 0%, #a67dff 100%);
             --gradient-purple: #7B53F0;
-            --gradient-dark: #000000;
+            --gradient-dark: #F5F5F5;
             --gradient-glow: #7B53F0;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; background: #000000; color: var(--light); line-height: 1.6; overflow-x: hidden; }
+        body { font-family: 'Outfit', sans-serif; background: var(--blanco-suave); color: var(--dark); line-height: 1.6; overflow-x: hidden; }
         
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
         .particle { position: absolute; width: 4px; height: 4px; background: var(--violeta-intenso); border-radius: 50%; opacity: 0.3; animation: float 15s infinite ease-in-out; }
@@ -54,26 +54,26 @@
         
         .hero-content { text-align: center; max-width: 900px; z-index: 1; }
         .pre-headline { font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: var(--gray); margin-bottom: 15px; font-weight: 500; }
-        .main-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1; margin-bottom: 25px; text-transform: uppercase; }
+        .main-headline { font-family: 'Funnel Display', sans-serif; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1; margin-bottom: 25px; text-transform: uppercase; }
         .main-headline .highlight { color: var(--violeta-intenso); -webkit-text-fill-color: var(--violeta-intenso); }
         .sub-headline { font-size: clamp(1.1rem, 2.8vw, 1.4rem); color: var(--light); margin-bottom: 30px; max-width: 750px; margin-left: auto; margin-right: auto; }
-        .sub-headline strong { color: var(--amarillo-limon); font-weight: 700; }
+        .sub-headline strong { color: var(--violeta-intenso); font-weight: 700; }
         
         .target-audience { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; }
         .target-item { background: rgba(123, 83, 240, 0.1); border: 1px solid rgba(123, 83, 240, 0.3); padding: 12px 22px; border-radius: 50px; font-size: 1rem; }
-        .target-item span { color: var(--amarillo-limon); margin-right: 8px; }
+        .target-item span { color: var(--violeta-intenso); margin-right: 8px; }
         
         .pain-points { background: rgba(123, 83, 240, 0.05); border: 1px solid rgba(123, 83, 240, 0.3); border-radius: 20px; padding: 30px; margin: 30px auto; max-width: 700px; text-align: left; }
         .pain-points h3 { text-align: center; font-size: 1.2rem; margin-bottom: 20px; color: var(--violeta-intenso); }
         .pain-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 1.1rem; }
         .pain-item .icon { color: var(--violeta-intenso); font-size: 1.2rem; flex-shrink: 0; }
-        .breakthrough-text { text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(123, 83, 240, 0.3); font-weight: 600; color: var(--amarillo-limon); }
+        .breakthrough-text { text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(123, 83, 240, 0.3); font-weight: 600; color: var(--violeta-intenso); }
         
         .countdown-container { margin: 40px 0; z-index: 1; text-align: center; }
         .countdown-label { font-size: 14px; color: var(--violeta-intenso); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; font-weight: 700; }
         .countdown { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
         .countdown-item { background: rgba(123, 83, 240, 0.1); border: 1px solid rgba(123, 83, 240, 0.3); border-radius: 12px; padding: 20px 25px; min-width: 90px; }
-        .countdown-number { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--amarillo-limon); line-height: 1; }
+        .countdown-number { font-family: 'Funnel Display', sans-serif; font-size: 3rem; color: var(--violeta-intenso); line-height: 1; }
         .countdown-unit { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gray); margin-top: 5px; }
         
         .cta-container { margin-top: 40px; z-index: 1; text-align: center; }
@@ -85,51 +85,51 @@
         .cta-microcopy span { font-size: 14px; color: var(--gray); }
         .cta-microcopy span::before { content: '✓'; color: var(--amarillo-limon); margin-right: 5px; }
         
-        .video-section { background: #000000; padding: 80px 20px; }
+        .video-section { background: var(--blanco-suave); padding: 80px 20px; }
         .video-intro { max-width: 700px; margin: 0 auto 40px; text-align: center; }
         .video-intro p { color: var(--light); font-size: 1.2rem; line-height: 1.8; }
-        .video-intro p strong { color: var(--amarillo-limon); }
+        .video-intro p strong { color: var(--violeta-intenso); }
         .video-intro .arrow { font-size: 2rem; margin-top: 20px; animation: bounce-down 1s infinite; }
         @keyframes bounce-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
         .video-container { max-width: 800px; margin: 0 auto; }
-        .video-wrapper { position: relative; padding-bottom: 56.25%; background: #111; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); border: 2px solid rgba(123, 83, 240, 0.5); }
-        .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000000; cursor: pointer; transition: all 0.3s ease; }
-        .video-placeholder:hover { background: #111111; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; background: var(--blanco-suave); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); border: 2px solid rgba(123, 83, 240, 0.5); }
+        .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--blanco-suave); cursor: pointer; transition: all 0.3s ease; }
+        .video-placeholder:hover { background: var(--blanco-suave); }
         .play-button { width: 100px; height: 100px; background: var(--gradient-brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; transition: all 0.3s ease; box-shadow: 0 10px 40px rgba(123, 83, 240, 0.4); }
         .play-button:hover { transform: scale(1.1); }
         .play-button svg { width: 40px; height: 40px; fill: var(--dark); margin-left: 5px; }
         .video-text { font-weight: 700; font-size: 1.1rem; color: var(--light); }
         .video-duration { color: var(--gray); font-size: 14px; margin-top: 5px; max-width: 400px; text-align: center; }
         .video-cta { text-align: center; margin-top: 40px; }
-        .video-cta p { color: var(--amarillo-limon); font-weight: 600; font-size: 1.2rem; margin-bottom: 20px; }
+        .video-cta p { color: var(--violeta-intenso); font-weight: 600; font-size: 1.2rem; margin-bottom: 20px; }
         
         .section-title { text-align: center; margin-bottom: 60px; }
-        .section-title h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4rem); text-transform: uppercase; }
+        .section-title h2 { font-family: 'Funnel Display', sans-serif; font-size: clamp(2.5rem, 6vw, 4rem); text-transform: uppercase; }
         .section-title h2 .highlight { color: var(--violeta-intenso); -webkit-text-fill-color: var(--violeta-intenso); }
         
         .learn-section { padding: 100px 20px; background: var(--gradient-dark); }
         .benefits-container { max-width: 900px; margin: 0 auto; }
         .benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .benefits-column h3 { font-size: 1.5rem; margin-bottom: 25px; }
-        .benefits-column.positive h3 { color: var(--amarillo-limon); }
+        .benefits-column.positive h3 { color: var(--dark); }
         .benefits-column.negative h3 { color: var(--violeta-intenso); }
         .benefit-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 18px; padding: 15px; background: rgba(123, 83, 240, 0.05); border-radius: 12px; transition: all 0.3s ease; border: 1px solid transparent; }
         .benefit-item:hover { background: rgba(123, 83, 240, 0.1); transform: translateX(5px); border-color: rgba(123, 83, 240, 0.3); }
         .benefit-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem; }
-        .positive .benefit-icon { background: rgba(246, 255, 84, 0.2); color: var(--amarillo-limon); }
+        .positive .benefit-icon { background: rgba(246, 255, 84, 0.5); color: var(--dark); }
         .negative .benefit-icon { background: rgba(123, 83, 240, 0.2); color: var(--violeta-intenso); }
         .benefit-item p { color: var(--light); font-size: 1.05rem; line-height: 1.5; }
         
-        .for-who-section { padding: 100px 20px; background: #000000; }
+        .for-who-section { padding: 100px 20px; background: var(--blanco-suave); }
         .for-who-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .for-who-card { background: rgba(123, 83, 240, 0.05); border: 1px solid rgba(123, 83, 240, 0.2); border-radius: 20px; padding: 40px; }
         .for-who-card.yes { border-color: rgba(246, 255, 84, 0.4); background: rgba(246, 255, 84, 0.03); }
         .for-who-card.no { border-color: rgba(123, 83, 240, 0.4); }
         .for-who-card h3 { font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
-        .for-who-card.yes h3 { color: var(--amarillo-limon); }
+        .for-who-card.yes h3 { color: var(--dark); }
         .for-who-card.no h3 { color: var(--violeta-intenso); }
         .for-who-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; font-size: 1.05rem; }
-        .for-who-card.yes .for-who-item .icon { color: var(--amarillo-limon); }
+        .for-who-card.yes .for-who-item .icon { color: var(--dark); }
         .for-who-card.no .for-who-item .icon { color: var(--violeta-intenso); }
         
         .presenter-section { padding: 100px 20px; background: var(--gradient-dark); }
@@ -137,14 +137,14 @@
         .presenter-image { position: relative; display: flex; justify-content: center; }
         .presenter-image img { width: 100%; height: 100%; border-radius: 20px; box-shadow: 0 30px 80px rgba(123, 83, 240, 0.4), 0 10px 30px rgba(0, 0, 0, 0.5); object-fit: cover; object-position: top center; }
         .presenter-badge { position: absolute; bottom: 20px; right: -10px; background: var(--amarillo-limon); color: var(--dark); padding: 15px 25px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 10px 30px rgba(246, 255, 84, 0.3); }
-        .presenter-content h3 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; margin-bottom: 20px; }
+        .presenter-content h3 { font-family: 'Funnel Display', sans-serif; font-size: 3rem; margin-bottom: 20px; }
         .presenter-content h3 .name { color: var(--violeta-intenso); }
         .presenter-content p { color: var(--gray); font-size: 1.05rem; line-height: 1.45; margin-bottom: 10px; }
         .presenter-credentials { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; }
         .credential { background: rgba(123, 83, 240, 0.1); border: 1px solid rgba(123, 83, 240, 0.3); padding: 12px 20px; border-radius: 50px; font-size: 0.95rem; }
         .credential span { color: var(--amarillo-limon); margin-right: 8px; }
         
-        .objections-section { padding: 100px 20px; background: #000000; }
+        .objections-section { padding: 100px 20px; background: var(--blanco-suave); }
         .objections-grid { max-width: 900px; margin: 0 auto; display: grid; gap: 25px; }
         .objection-card { background: rgba(123, 83, 240, 0.05); border: 1px solid rgba(123, 83, 240, 0.2); border-radius: 16px; padding: 30px; display: grid; grid-template-columns: auto 1fr; gap: 25px; align-items: start; transition: all 0.3s ease; }
         .objection-card:hover { background: rgba(123, 83, 240, 0.1); border-color: rgba(123, 83, 240, 0.4); }
@@ -159,8 +159,8 @@
         .vip-container { max-width: 700px; margin: 0 auto; position: relative; z-index: 1; }
         .vip-card { background: rgba(123, 83, 240, 0.1); border: 3px solid var(--violeta-intenso); border-radius: 24px; padding: 50px 40px; text-align: center; position: relative; }
         .vip-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--gradient-brand); color: var(--dark); padding: 8px 30px; border-radius: 50px; font-weight: 800; font-size: 14px; text-transform: uppercase; }
-        .vip-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; margin-bottom: 10px; color: var(--violeta-intenso); }
-        .vip-price { font-size: 3rem; font-weight: 800; margin-bottom: 30px; color: var(--amarillo-limon); }
+        .vip-card h3 { font-family: 'Funnel Display', sans-serif; font-size: 2.5rem; margin-bottom: 10px; color: var(--violeta-intenso); }
+        .vip-price { font-size: 3rem; font-weight: 800; margin-bottom: 30px; color: var(--violeta-intenso); }
         .vip-price span { font-size: 1.2rem; color: var(--gray); }
         .vip-benefits { text-align: left; margin-bottom: 30px; }
         .vip-benefit { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid rgba(123, 83, 240, 0.2); }
@@ -170,7 +170,7 @@
         .cta-button.vip { background: var(--violeta-intenso); color: var(--light); }
         .cta-button.vip:hover { box-shadow: 0 15px 50px rgba(123, 83, 240, 0.5); }
         
-        .final-cta { padding: 120px 20px; background: #000000; text-align: center; position: relative; }
+        .final-cta { padding: 120px 20px; background: var(--blanco-suave); text-align: center; position: relative; }
         .final-cta::before { display: none; }
         .final-cta-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
         .event-details-box { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
@@ -179,12 +179,12 @@
         .event-detail .info { text-align: left; }
         .event-detail .label { font-size: 12px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
         .event-detail .value { font-weight: 700; font-size: 1.05rem; }
-        .urgency-message { background: rgba(123, 83, 240, 0.1); border: 1px solid var(--violeta-intenso); padding: 15px 30px; border-radius: 12px; display: inline-block; margin-bottom: 30px; color: var(--violeta-intenso); font-weight: 600; font-size: 1.05rem; }
-        .final-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1; margin-bottom: 20px; }
+        .urgency-message { background: rgba(123, 83, 240, 0.12); border: 1px solid var(--violeta-intenso); padding: 15px 30px; border-radius: 12px; display: inline-block; margin-bottom: 30px; color: var(--dark); font-weight: 600; font-size: 1.05rem; }
+        .final-headline { font-family: 'Funnel Display', sans-serif; font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1; margin-bottom: 20px; }
         .final-headline .highlight { color: var(--violeta-intenso); }
         .final-subtext { font-size: 1.3rem; color: var(--gray); margin-bottom: 40px; }
         
-        footer { background: #000000; padding: 40px 20px; text-align: center; border-top: 1px solid rgba(123, 83, 240, 0.2); }
+        footer { background: var(--blanco-suave); padding: 40px 20px; text-align: center; border-top: 1px solid rgba(123, 83, 240, 0.2); }
         .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
         .footer-links a { color: var(--gray); text-decoration: none; font-size: 13px; transition: color 0.3s ease; }
         .footer-links a:hover { color: var(--violeta-intenso); }
@@ -197,15 +197,15 @@
         
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-        .modal-content { background: #000000; border: 2px solid var(--violeta-intenso); border-radius: 24px; padding: 50px 40px; max-width: 500px; width: 100%; position: relative; animation: modalIn 0.3s ease; }
+        .modal-content { background: var(--blanco-suave); border: 2px solid var(--violeta-intenso); border-radius: 24px; padding: 50px 40px; max-width: 500px; width: 100%; position: relative; animation: modalIn 0.3s ease; }
         @keyframes modalIn { from { opacity: 0; transform: scale(0.9) translateY(-20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--gray); font-size: 1.5rem; cursor: pointer; }
         .modal-close:hover { color: var(--violeta-intenso); }
-        .modal-content h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 10px; }
+        .modal-content h3 { font-family: 'Funnel Display', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 10px; }
         .modal-content h3 .highlight { color: var(--violeta-intenso); }
         .modal-subtitle { text-align: center; color: var(--gray); margin-bottom: 30px; }
         .form-group { margin-bottom: 20px; }
-        .form-group input { width: 100%; padding: 18px 20px; background: rgba(123, 83, 240, 0.1); border: 2px solid rgba(123, 83, 240, 0.3); border-radius: 12px; color: var(--light); font-size: 1rem; font-family: 'Montserrat', sans-serif; transition: all 0.3s ease; }
+        .form-group input { width: 100%; padding: 18px 20px; background: rgba(123, 83, 240, 0.1); border: 2px solid rgba(123, 83, 240, 0.3); border-radius: 12px; color: var(--light); font-size: 1rem; font-family: 'Outfit', sans-serif; transition: all 0.3s ease; }
         .form-group input::placeholder { color: var(--gray); }
         .form-group input:focus { outline: none; border-color: var(--violeta-intenso); background: rgba(123, 83, 240, 0.15); }
         .form-button { width: 100%; padding: 20px; background: var(--amarillo-limon); border: none; border-radius: 12px; color: var(--dark); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; }

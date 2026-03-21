@@ -1,9 +1,25 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/confirmacion", "dest": "/confirmacion.html" },
-    { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/terminos", "dest": "/terminos.html" }
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/evento",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/confirmacion",
+      "dest": "/confirmacion.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/admin.html"
+    },
+    {
+      "src": "/terminos",
+      "dest": "/terminos.html"
+    }
   ]
 }
