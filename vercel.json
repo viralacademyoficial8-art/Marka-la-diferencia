@@ -7,7 +7,7 @@
     },
     {
       "src": "/evento",
-      "dest": "/index.html"
+      "dest": "/evento.html"
     },
     {
       "src": "/confirmacion",
