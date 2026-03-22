@@ -1,29 +1,35 @@
 // =============================================
-// CONFIGURACIÓN DEL EMBUDO - Editar con tus credenciales
+// CONFIGURACIÓN DEL EMBUDO - Landing estática
 // =============================================
 const CONFIG = {
-  // Supabase - Reemplaza con tus credenciales
-  SUPABASE_URL: 'https://zztfordfokshyzgklaly.supabase.co',
-  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6dGZvcmRmb2tzaHl6Z2tsYWx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1OTE3ODUsImV4cCI6MjA4NjE2Nzc4NX0.HSEAKER2R2eT18ExtIHBWUr5Nw9DP0FrXw7O0Pzf72M',
+  // Supabase - Opcional para producción
+  SUPABASE_URL: '',
+  SUPABASE_ANON_KEY: '',
 
   // Evento actual
   EVENTO_SLUG: 'masterclass-2025',
 
-  // Meta Pixel (se carga dinámicamente desde Supabase)
+  // Meta Pixel (se carga dinámicamente)
   META_PIXEL_ID: '',
 
-  // URLs de API (Edge Functions)
+  // URLs de API
   get API_BASE() {
-    return this.SUPABASE_URL + '/functions/v1';
+    return this.SUPABASE_URL ? this.SUPABASE_URL + '/functions/v1' : '';
   }
 };
 
 // =============================================
-// Inicializar Supabase Client
+// Inicializar Supabase Client (opcional)
 // =============================================
 let supabaseClient;
 
 function initSupabase() {
+  // Solo si Supabase está configurado
+  if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
+    console.log('Supabase no configurado - usando modo landing estática');
+    return false;
+  }
+
   if (typeof supabase !== 'undefined' && supabase.createClient) {
     supabaseClient = supabase.createClient(
       CONFIG.SUPABASE_URL,
