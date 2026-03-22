@@ -46,7 +46,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(123, 83, 240, 0.2);
+            box-shadow: 0 4px 20px rgba(123, 83, 240, 0.25);
         }
         .urgency-bar span { color: var(--white); }
         .urgency-bar .spots {
@@ -57,8 +57,10 @@
             margin-left: 10px;
             display: inline-block;
             font-weight: 800;
-            box-shadow: 0 4px 12px rgba(246, 255, 84, 0.3);
+            box-shadow: 0 4px 12px rgba(246, 255, 84, 0.35);
+            transition: all 0.3s ease;
         }
+        .urgency-bar .spots:hover { transform: scale(1.05); }
 
         /* ─── HERO ─── */
         .hero {
@@ -73,14 +75,8 @@
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .badge {
@@ -109,14 +105,8 @@
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .pre-headline {
@@ -138,7 +128,10 @@
             letter-spacing: -1px;
         }
 
-        .main-headline .highlight { color: var(--amarillo-limon); text-shadow: 0 4px 20px rgba(246, 255, 84, 0.3); }
+        .main-headline .highlight {
+            color: var(--amarillo-limon);
+            text-shadow: 0 4px 20px rgba(246, 255, 84, 0.3);
+        }
 
         .sub-headline {
             font-size: clamp(1rem, 2.5vw, 1.3rem);
@@ -195,14 +188,8 @@
         }
 
         @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .pain-points h3 {
@@ -406,10 +393,7 @@
             font-weight: 300;
         }
 
-        .video-intro p strong {
-            color: var(--violeta-intenso);
-            font-weight: 700;
-        }
+        .video-intro p strong { color: var(--violeta-intenso); font-weight: 700; }
 
         .video-intro .arrow {
             font-size: 2.2rem;
@@ -600,10 +584,7 @@
             transition: all 0.3s ease;
         }
 
-        .positive .benefit-icon {
-            background: var(--amarillo-limon);
-            color: var(--dark);
-        }
+        .positive .benefit-icon { background: var(--amarillo-limon); color: var(--dark); }
 
         .negative .benefit-icon {
             background: rgba(255,255,255,0.2);
@@ -758,14 +739,8 @@
         }
 
         @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .presenter-image img {
@@ -805,14 +780,8 @@
         }
 
         @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .presenter-content h3 {
@@ -824,7 +793,10 @@
             line-height: 1.1;
         }
 
-        .presenter-content h3 .name { color: var(--amarillo-limon); text-shadow: 0 4px 12px rgba(246,255,84,0.2); }
+        .presenter-content h3 .name {
+            color: var(--amarillo-limon);
+            text-shadow: 0 4px 12px rgba(246,255,84,0.2);
+        }
 
         .presenter-content p {
             color: rgba(255,255,255,0.82);
@@ -1283,14 +1255,8 @@
         }
 
         @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: scale(0.85) translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.85) translateY(-30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .modal-close {
