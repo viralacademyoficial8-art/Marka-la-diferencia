@@ -7,15 +7,7 @@
     },
     {
       "src": "/evento",
-      "dest": "/evento.html"
-    },
-    {
-      "src": "/masterclass",
-      "dest": "/masterclass.html"
-    },
-    {
-      "src": "/makers-2026",
-      "dest": "/makers-2026.html"
+      "dest": "/index.html"
     },
     {
       "src": "/confirmacion",
