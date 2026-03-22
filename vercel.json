@@ -10,6 +10,10 @@
       "dest": "/evento.html"
     },
     {
+      "src": "/masterclass",
+      "dest": "/masterclass.html"
+    },
+    {
       "src": "/confirmacion",
       "dest": "/confirmacion.html"
     },
