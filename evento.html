@@ -1253,65 +1253,367 @@
         .footer a { color: var(--amarillo-limon); text-decoration: none; }
         .footer a:hover { color: var(--white); }
 
+        /* ====== TICKER STRIP ====== */
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .ticker-strip {
+            background: var(--amarillo-limon);
+            padding: 15px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .ticker-track {
+            display: inline-flex;
+            align-items: center;
+            gap: 0;
+            animation: ticker 25s linear infinite;
+            will-change: transform;
+        }
+        .ticker-track:hover { animation-play-state: paused; }
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 30px;
+        }
+        .ticker-item span {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--dark);
+        }
+        .ticker-dot {
+            width: 5px;
+            height: 5px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ====== PODCAST PULSE ====== */
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        @keyframes pulse-ring2 {
+            0% { transform: scale(1); opacity: 0.25; }
+            100% { transform: scale(1.9); opacity: 0; }
+        }
+        .podcast-rings {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .podcast-rings::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.15);
+            animation: pulse-ring 2.5s ease-out infinite;
+        }
+        .podcast-rings::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.1);
+            animation: pulse-ring2 2.5s ease-out infinite 1.2s;
+        }
+
+        /* ====== POPULAR BADGE ====== */
+        .popular-badge {
+            position: absolute;
+            top: -1px;
+            right: 35px;
+            background: var(--amarillo-limon);
+            color: var(--dark);
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 8px 14px 18px;
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
+        }
+
+        /* ====== ZONE NUMBER WATERMARKS ====== */
+        .zone-card { position: relative; }
+        .zone-num {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(4rem, 8vw, 7rem);
+            font-weight: 900;
+            color: rgba(255,255,255,0.07);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+        .zone-card:nth-child(3) .zone-num { color: rgba(0,0,0,0.04); }
+
+        /* ====== ECOSYSTEM ARROW ====== */
+        .eco-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(255,255,255,0.15);
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.35);
+            margin-top: 30px;
+            transition: all 0.25s;
+            flex-shrink: 0;
+        }
+        .ecosystem-card:hover .eco-arrow {
+            border-color: var(--amarillo-limon);
+            color: var(--amarillo-limon);
+            transform: translateX(6px);
+        }
+
+        /* ====== CTA HEADING ====== */
+        .cta-heading {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 900;
+            color: var(--dark);
+            letter-spacing: -3px;
+            line-height: 0.9;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+        }
+
+        /* ====== WHY SECTION TAG ====== */
+        .section-tag {
+            display: inline-block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--amarillo-limon);
+            padding: 5px 12px;
+            border: 1px solid rgba(246,255,84,0.25);
+            margin-bottom: 10px;
+            vertical-align: top;
+            font-size: 0.6rem;
+        }
+        .why-section .section-title { line-height: 1.15 !important; }
+
+        /* ====== IMPROVED EVENT INFO ====== */
+        .event-info .section-title {
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem) !important;
+            letter-spacing: 2px !important;
+            text-transform: uppercase !important;
+            color: rgba(255,255,255,0.4) !important;
+            padding: 60px 50px 10px !important;
+            font-weight: 600 !important;
+        }
+        .event-location {
+            font-size: clamp(2.5rem, 7vw, 5.5rem) !important;
+            padding: 0 50px 0 !important;
+            line-height: 0.95 !important;
+            letter-spacing: -2px !important;
+        }
+        .event-date {
+            font-size: clamp(2.5rem, 7vw, 5.5rem) !important;
+            padding: 0 50px 30px !important;
+            line-height: 0.95 !important;
+            letter-spacing: -2px !important;
+        }
+        .event-description {
+            max-width: 700px !important;
+            margin: 0 !important;
+            padding: 0 50px 0 !important;
+            text-align: left !important;
+        }
+
+        /* ====== IMPROVED WHY SECTION ====== */
+        .why-card-content { display: flex; flex-direction: column; }
+        .why-card-number { padding-top: 8px; }
+
+        /* ====== MODALITY COLUMN HEADER ====== */
+        .modality-col-header {
+            display: grid;
+            grid-template-columns: 1fr 150px 150px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+        .modality-col-header-empty { padding: 20px 50px; }
+        .modality-col-label {
+            text-align: center;
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 20px 0;
+            color: rgba(255,255,255,0.4);
+        }
+        .modality-col-label.active { color: var(--amarillo-limon); }
+
+        /* ====== ENHANCED SPEAKERS ====== */
+        .speaker-card-inner {
+            position: relative;
+            overflow: hidden;
+        }
+        .speaker-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--amarillo-limon);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+        .speaker-card:hover::after { transform: scaleX(1); }
+
         /* ====== RESPONSIVE ====== */
-        @media (max-width: 1024px) {
+        @media (max-width: 1100px) {
             .speakers-grid { grid-template-columns: repeat(3, 1fr); }
+            .speaker-card:nth-child(n+4) { border-top: 1px solid rgba(255,255,255,0.07); }
+        }
+        @media (max-width: 900px) {
+            .pricing-grid { grid-template-columns: 1fr; }
+            .zones-grid { grid-template-columns: 1fr; }
+            .zone-card:nth-child(3) { grid-column: 1; flex-direction: column; align-items: flex-start; min-height: 300px; }
         }
         @media (max-width: 768px) {
-            .navbar { padding: 0 20px; }
+            .navbar { padding: 0 20px; height: 60px; }
+            .navbar-logo span { font-size: 0.85rem; letter-spacing: 2px; }
             .navbar-links {
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 68px;
+                top: 60px;
                 left: 0;
                 right: 0;
                 background: #0d0d0d;
-                padding: 20px;
-                gap: 15px;
-                border-top: 1px solid rgba(255,255,255,0.08);
+                padding: 24px 20px;
+                gap: 16px;
+                border-top: 2px solid var(--amarillo-limon);
+                z-index: 999;
             }
             .navbar-links.active { display: flex; }
             .hamburger { display: flex; }
-            .hero { min-height: 70vh; }
-            .hero-content { padding: 0 20px 60px; }
-            .hero-title { letter-spacing: -2px; }
-            .hero::before { clip-path: none; background: var(--violeta-intenso); opacity: 0.5; }
+
+            /* HERO MOBILE */
+            .hero { min-height: 100svh; align-items: flex-end; }
+            .hero::before { clip-path: polygon(0 0, 100% 0, 100% 40%, 0 60%); }
+            .hero-content { padding: 0 24px 60px; }
+            .hero-title { font-size: clamp(3rem, 14vw, 5rem); letter-spacing: -2px; }
+            .hero::after { font-size: clamp(5rem, 28vw, 10rem); bottom: -2%; right: -3%; }
+            .countdown { flex-wrap: wrap; }
+            .countdown-item { padding: 14px 18px; flex: 1; min-width: 70px; }
+
+            /* EVENT INFO MOBILE */
+            .event-info .section-title { padding: 50px 24px 10px !important; font-size: 0.75rem !important; }
+            .event-location { font-size: clamp(1.8rem, 8vw, 3rem) !important; padding: 0 24px 0 !important; }
+            .event-date { font-size: clamp(1.8rem, 8vw, 3rem) !important; padding: 0 24px 24px !important; }
+            .event-description { padding: 0 24px 0 !important; }
             .event-features { grid-template-columns: 1fr 1fr; }
+            .event-feature { padding: 28px 16px; }
+
+            /* CTA MOBILE */
+            .cta-banner { padding: 70px 24px; }
+            .cta-heading { font-size: clamp(2rem, 10vw, 3.5rem); margin-bottom: 28px; letter-spacing: -2px; }
+            .cta-button { padding: 18px 40px; letter-spacing: 2px; }
+
+            /* WHAT IS MAKERS MOBILE */
+            .what-is-section .section-title { padding: 60px 24px 0; }
+            .section-description { padding: 20px 24px 40px; }
             .zones-grid { grid-template-columns: 1fr; }
-            .zone-card:nth-child(3) { grid-column: 1; flex-direction: column; align-items: flex-start; min-height: 300px; }
-            .why-card { grid-template-columns: 90px 1fr; gap: 20px; padding: 40px 20px; }
-            .why-card-number { font-size: 3.5rem; }
-            .why-section .section-title { padding: 60px 20px 20px; }
-            .modality-header { flex-direction: column; align-items: flex-start; padding: 50px 20px 30px; }
+            .zone-card { padding: 50px 30px; min-height: 320px; }
+            .zone-card:nth-child(3) { grid-column: 1; flex-direction: column; align-items: flex-start; min-height: 280px; }
+
+            /* WHY ATTEND MOBILE */
+            .why-section .section-title { padding: 60px 24px 20px; }
+            .why-card { grid-template-columns: 80px 1fr; gap: 20px; padding: 36px 24px; }
+            .why-card-number { font-size: 3rem; }
+
+            /* MODALITY MOBILE */
+            .modality-header { flex-direction: column; align-items: flex-start; padding: 50px 24px 30px; gap: 24px; }
+            .modality-title { font-size: clamp(2rem, 8vw, 3rem); }
+            .modality-col-header { grid-template-columns: 1fr 90px 90px; }
+            .modality-col-header-empty { padding: 16px 24px; }
             .modality-row { grid-template-columns: 1fr 90px 90px; }
-            .modality-row .feature-name { padding: 18px 20px; font-size: 0.85rem; }
-            .pricing-section .section-title { padding: 60px 20px 40px; }
+            .modality-row .feature-name { padding: 18px 24px; font-size: 0.82rem; }
+            .modality-row .status { font-size: 1.1rem; padding: 18px 0; }
+            .modality-col-label { padding: 16px 0; font-size: 0.6rem; }
+
+            /* PRICING MOBILE */
+            .pricing-section .section-title { padding: 60px 24px 40px; }
             .pricing-grid { grid-template-columns: 1fr; }
-            .pricing-card { padding: 40px 25px; }
-            .speakers-section .section-title { padding: 60px 20px 10px; }
-            .speakers-section .section-description { padding: 10px 20px 40px; }
+            .pricing-card { padding: 40px 28px; border-right: none; border-bottom: 1px solid #e8e8e8; }
+            .pricing-card:last-child { border-bottom: none; }
+            .popular-badge { right: 20px; }
+
+            /* SPEAKERS MOBILE */
+            .speakers-section .section-title { padding: 60px 24px 10px; }
+            .speakers-section .section-description { padding: 10px 24px 36px; }
             .speakers-grid { grid-template-columns: repeat(2, 1fr); }
+            .speaker-card { padding: 30px 15px; }
+            .speaker-card:nth-child(n+3) { border-top: 1px solid rgba(255,255,255,0.07); }
             .speaker-card:nth-child(n+4) { border-top: 1px solid rgba(255,255,255,0.07); }
-            .podcast-section .section-title { padding: 60px 20px 16px; }
-            .ecosystem-title { padding: 60px 20px 40px; }
+
+            /* PODCAST MOBILE */
+            .podcast-section .section-title { padding: 60px 24px 14px; }
+            .podcast-section .section-description { padding: 0 24px 40px; }
+            .podcast-container { padding: 0 24px 70px; }
+            .podcast-image { width: 220px; }
+
+            /* ECOSYSTEM MOBILE */
+            .ecosystem-title { padding: 60px 24px 40px; font-size: clamp(2rem, 8vw, 3.5rem); }
             .ecosystem-grid { grid-template-columns: 1fr; }
             .ecosystem-card { padding: 50px 30px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
-            .map-section { padding: 50px 20px; }
+            .ecosystem-card:last-child { border-bottom: none; }
+
+            /* MAP MOBILE */
+            .map-section { padding: 50px 24px; }
+            .map-section .section-title { margin-bottom: 20px; }
+            .map-legend { gap: 16px; }
+
+            /* HOSPITALITY MOBILE */
             .hospitality-container { grid-template-columns: 1fr; }
             .hospitality-text { padding: 60px 30px 40px; }
-            .hospitality-btn { padding: 28px 30px; min-width: 0; }
-            .footer { padding: 30px 20px; }
-            .section-title { padding: 60px 20px 0; }
-            .section-description { padding: 20px 20px 50px; }
+            .hospitality-btn { padding: 30px; min-width: 0; min-height: 80px; }
+            .hospitality-text h3 { font-size: clamp(1.8rem, 7vw, 2.5rem); }
+
+            /* FOOTER MOBILE */
+            .footer { padding: 30px 24px; }
+
+            /* TICKER MOBILE */
+            .ticker-strip { padding: 12px 0; }
         }
+
         @media (max-width: 480px) {
-            .event-features { grid-template-columns: 1fr; }
-            .why-card { grid-template-columns: 1fr; }
+            .hero-title { font-size: clamp(2.5rem, 13vw, 4rem); }
+            .hero-subtitle { font-size: 0.72rem; letter-spacing: 3px; }
+            .event-features { grid-template-columns: 1fr 1fr; }
+            .event-feature { padding: 22px 12px; }
+            .event-feature .check { font-size: 1.2rem; margin-bottom: 8px; }
+            .why-card { grid-template-columns: 1fr; gap: 12px; }
+            .why-card-number { font-size: 2.5rem; }
             .speakers-grid { grid-template-columns: repeat(2, 1fr); }
-            .modality-row { grid-template-columns: 1fr 65px 65px; font-size: 0.8rem; }
-            .countdown { flex-wrap: wrap; }
-            .countdown-item { padding: 14px 18px; }
+            .modality-row { grid-template-columns: 1fr 70px 70px; }
+            .modality-row .feature-name { font-size: 0.78rem; padding: 14px 16px; }
+            .cta-heading { font-size: clamp(1.8rem, 9vw, 3rem); }
+            .zones-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1362,6 +1664,29 @@
         </div>
     </section>
 
+    <!-- TICKER STRIP -->
+    <div class="ticker-strip" aria-hidden="true">
+        <div class="ticker-track">
+            <div class="ticker-item"><span>EXPO COSPIDE 2026</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>23 de Mayo</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>Ocotlán, Jalisco</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>Emprendimiento</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>Marketing</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>80+ Stands</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>6 Conferencias</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>Podcast EN VIVO</span><span class="ticker-dot"></span></div>
+            <!-- duplicate for seamless loop -->
+            <div class="ticker-item"><span>EXPO COSPIDE 2026</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>23 de Mayo</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>Ocotlán, Jalisco</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>Emprendimiento</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>Marketing</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>80+ Stands</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>6 Conferencias</span><span class="ticker-dot"></span></div>
+            <div class="ticker-item"><span>Podcast EN VIVO</span><span class="ticker-dot"></span></div>
+        </div>
+    </div>
+
     <!-- AUTORES Y EMPRENDEDORES + INFO -->
     <section class="event-info" id="info">
         <h2 class="section-title">Autores y Emprendedores</h2>
@@ -1396,6 +1721,7 @@
 
     <!-- CTA BANNER -->
     <section class="cta-banner">
+        <p class="cta-heading">¡Tu lugar<br>te espera!</p>
         <a href="#boletos" class="cta-button">¡COMPRAR BOLETO!</a>
     </section>
 
@@ -1410,6 +1736,7 @@
         </p>
         <div class="zones-grid">
             <div class="zone-card">
+                <span class="zone-num">01</span>
                 <div class="zone-icon business">🏢</div>
                 <p class="zone-name">BUSINESS LAND</p>
                 <div class="zone-detail-card">
@@ -1418,6 +1745,7 @@
                 </div>
             </div>
             <div class="zone-card">
+                <span class="zone-num">02</span>
                 <div class="zone-icon creator">🎬</div>
                 <p class="zone-name">CREATOR LAND</p>
                 <div class="zone-detail-card">
@@ -1426,6 +1754,7 @@
                 </div>
             </div>
             <div class="zone-card">
+                <span class="zone-num">03</span>
                 <div class="zone-icon developer">💻</div>
                 <p class="zone-name">DEVELOPER LAND</p>
                 <div class="zone-detail-card">
@@ -1438,32 +1767,42 @@
 
     <!-- ¿POR QUÉ ASISTIR? -->
     <section class="why-section" id="por-que">
-        <h2 class="section-title">¿Por qué asistir a MAKERS 2026?</h2>
+        <h2 class="section-title"><span class="section-tag">5 razones</span><br>¿Por qué asistir a MAKERS 2026?</h2>
         <div class="why-grid">
             <div class="why-card">
-                <div class="why-card-number">1</div>
-                <h3>Aprende de expertos que están creando el futuro</h3>
-                <p>Escucha a conferencistas que compartirán herramientas prácticas sobre emprendimiento, marketing, ventas, inteligencia artificial y desarrollo personal para impulsar tu crecimiento.</p>
+                <div class="why-card-number">01</div>
+                <div class="why-card-content">
+                    <h3>Aprende de expertos que están creando el futuro</h3>
+                    <p>Escucha a conferencistas que compartirán herramientas prácticas sobre emprendimiento, marketing, ventas, inteligencia artificial y desarrollo personal para impulsar tu crecimiento.</p>
+                </div>
             </div>
             <div class="why-card">
-                <div class="why-card-number">2</div>
-                <h3>Conecta con emprendedores, empresarios y líderes</h3>
-                <p>MAKERS reúne a personas que están construyendo proyectos, empresas e ideas que están transformando el mundo. Es el espacio perfecto para crear relaciones, alianzas y nuevas oportunidades.</p>
+                <div class="why-card-number">02</div>
+                <div class="why-card-content">
+                    <h3>Conecta con emprendedores, empresarios y líderes</h3>
+                    <p>MAKERS reúne a personas que están construyendo proyectos, empresas e ideas que están transformando el mundo. Es el espacio perfecto para crear relaciones, alianzas y nuevas oportunidades.</p>
+                </div>
             </div>
             <div class="why-card">
-                <div class="why-card-number">3</div>
-                <h3>Descubre nuevos proyectos y oportunidades</h3>
-                <p>Recorre la expo con más de <strong>80 stands de emprendimientos, empresas y proyectos innovadores</strong> que buscan conectar con personas como tú.</p>
+                <div class="why-card-number">03</div>
+                <div class="why-card-content">
+                    <h3>Descubre nuevos proyectos y oportunidades</h3>
+                    <p>Recorre la expo con más de <strong>80 stands de emprendimientos, empresas y proyectos innovadores</strong> que buscan conectar con personas como tú.</p>
+                </div>
             </div>
             <div class="why-card">
-                <div class="why-card-number">4</div>
-                <h3>Inspírate con historias que nacen de un libro</h3>
-                <p>Conoce a autores que han transformado sus ideas, conocimientos y experiencias en libros que hoy inspiran a otros a crecer y emprender. Descubre cómo lo lograron... y recuerda que <strong>tú también puedes ser uno de ellos.</strong></p>
+                <div class="why-card-number">04</div>
+                <div class="why-card-content">
+                    <h3>Inspírate con historias que nacen de un libro</h3>
+                    <p>Conoce a autores que han transformado sus ideas, conocimientos y experiencias en libros que hoy inspiran a otros a crecer y emprender. Descubre cómo lo lograron... y recuerda que <strong>tú también puedes ser uno de ellos.</strong></p>
+                </div>
             </div>
             <div class="why-card">
-                <div class="why-card-number">5</div>
-                <h3>Forma parte de la comunidad MAKERS</h3>
-                <p>Un espacio donde jóvenes, emprendedores y líderes se reúnen para aprender, compartir ideas y construir juntos un futuro con más oportunidades.</p>
+                <div class="why-card-number">05</div>
+                <div class="why-card-content">
+                    <h3>Forma parte de la comunidad MAKERS</h3>
+                    <p>Un espacio donde jóvenes, emprendedores y líderes se reúnen para aprender, compartir ideas y construir juntos un futuro con más oportunidades.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1476,6 +1815,11 @@
                 <div class="modality-badge estandar">ESTÁNDAR</div>
                 <div class="modality-badge platino">PLATINO</div>
             </div>
+        </div>
+        <div class="modality-col-header">
+            <div class="modality-col-header-empty"></div>
+            <div class="modality-col-label active">ESTÁNDAR</div>
+            <div class="modality-col-label">PLATINO</div>
         </div>
         <div class="modality-table">
             <div class="modality-row">
@@ -1545,7 +1889,8 @@
                 </ul>
                 <a href="#" class="pricing-btn paid">Comprar Boleto</a>
             </div>
-            <div class="pricing-card featured">
+            <div class="pricing-card featured" style="position:relative;">
+                <div class="popular-badge">★ VIP</div>
                 <div class="pricing-name">TOP MAKERS – VIP EXPERIENCE</div>
                 <div class="pricing-price">$847</div>
                 <div class="pricing-label">Incluye:</div>
@@ -1612,7 +1957,9 @@
         <h2 class="section-title">Podcast "EN VIVO"</h2>
         <p class="section-description">Vive la experiencia de una grabación de podcast en vivo durante el evento</p>
         <div class="podcast-container">
-            <div class="podcast-image">🎙️</div>
+            <div class="podcast-rings">
+                <div class="podcast-image">🎙️</div>
+            </div>
         </div>
     </section>
 
@@ -1625,12 +1972,14 @@
                 <p class="ecosystem-subtitle">EXPOSITOR</p>
                 <h3>ÚNETE AL EQUIPO</h3>
                 <p>Forma parte del equipo de expositores y muestra tu proyecto, empresa o emprendimiento a cientos de visitantes.</p>
+                <span class="eco-arrow">→</span>
             </div>
             <div class="ecosystem-card">
                 <div class="ecosystem-card-icon">🤝</div>
                 <p class="ecosystem-subtitle">PATROCINADOR</p>
                 <h3>SÚMATE COMO PATROCINADOR</h3>
                 <p>Somos la oportunidad de generar experiencias y conectar tu marca con emprendedores y líderes.</p>
+                <span class="eco-arrow">→</span>
             </div>
         </div>
     </section>
