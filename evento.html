@@ -56,9 +56,18 @@
         .navbar-logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 0;
         }
-        .navbar-logo img { height: 40px; }
+        .navbar-logo img {
+            height: 65px;
+            max-width: 200px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        .navbar-logo img:hover {
+            transform: scale(1.05);
+        }
         .navbar-logo span {
             color: var(--amarillo-limon);
             font-weight: 900;
@@ -2209,7 +2218,7 @@
     <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="navbar-logo">
-            <span>EXPO COSPIDE</span>
+            <img src="images/logo-makers.png" alt="Makers - EXPO COSPIDE 2026" title="Makers - EXPO COSPIDE 2026">
         </div>
         <div class="hamburger" id="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
