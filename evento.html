@@ -1999,7 +1999,210 @@
             .cta-heading { font-size: clamp(2rem, 11vw, 3.2rem); }
             .zone-card { padding: 50px 30px; min-height: 340px; }
         }
+
+        /* ====== STRIPE CHECKOUT MODAL ====== */
+        .checkout-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .checkout-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkout-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+        }
+
+        .checkout-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--amarillo-limon);
+            padding-bottom: 20px;
+        }
+
+        .checkout-header h2 {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .checkout-price {
+            font-size: 1.4rem;
+            color: var(--amarillo-limon);
+            font-weight: 900;
+        }
+
+        .checkout-details {
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--gray-text);
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        #card-element {
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .StripeElement {
+            box-sizing: border-box;
+            height: 40px;
+            padding: 10px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background-color: white;
+            box-shadow: 0 1px 3px 0 #e6ebf1;
+            -webkit-transition: box-shadow 150ms ease;
+            transition: box-shadow 150ms ease;
+        }
+
+        .StripeElement--focus {
+            box-shadow: 0 1px 3px 0 #cfd7df;
+        }
+
+        .StripeElement--invalid {
+            border-color: var(--red-x);
+        }
+
+        .checkout-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .checkout-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .checkout-btn-pay {
+            background: var(--amarillo-limon);
+            color: var(--dark);
+        }
+
+        .checkout-btn-pay:hover:not(:disabled) {
+            background: #ffff70;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(246, 255, 84, 0.4);
+        }
+
+        .checkout-btn-pay:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .checkout-btn-cancel {
+            background: #f0f0f0;
+            color: var(--dark);
+        }
+
+        .checkout-btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .checkout-error {
+            color: var(--red-x);
+            font-size: 0.9rem;
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 6px;
+            display: none;
+        }
+
+        .checkout-error.show {
+            display: block;
+        }
+
+        .checkout-loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .checkout-loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid rgba(246, 255, 84, 0.1);
+            border-top: 3px solid var(--amarillo-limon);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .checkout-content {
+                padding: 30px 20px;
+            }
+            .checkout-header h2 {
+                font-size: 1.4rem;
+            }
+        }
     </style>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -2413,6 +2616,50 @@
         </div>
     </section>
 
+    <!-- STRIPE CHECKOUT MODAL -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-content">
+            <div class="checkout-header">
+                <h2 id="checkoutTitle">Comprar Boleto</h2>
+                <div class="checkout-price" id="checkoutPrice">$497</div>
+            </div>
+
+            <div class="checkout-details">
+                <div class="detail-item">
+                    <span class="detail-label">Paquete:</span>
+                    <span class="detail-value" id="checkoutPackage">Conference Pass</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Precio:</span>
+                    <span class="detail-value" id="checkoutAmount">$497.00</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Evento:</span>
+                    <span class="detail-value">EXPO COSPIDE 2026</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Fecha:</span>
+                    <span class="detail-value">23 de Mayo</span>
+                </div>
+            </div>
+
+            <form id="checkoutForm">
+                <input type="email" id="email" placeholder="Email" required style="display: none;">
+                <input type="text" id="cardName" placeholder="Nombre completo" required style="width: 100%; padding: 12px; margin-bottom: 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                <div id="card-element"></div>
+                <div class="checkout-error" id="checkoutError"></div>
+                <div class="checkout-loading" id="checkoutLoading">
+                    <div class="spinner"></div>
+                    <p>Procesando pago...</p>
+                </div>
+                <div class="checkout-buttons">
+                    <button type="button" class="checkout-btn checkout-btn-cancel" onclick="closeCheckoutModal()">Cancelar</button>
+                    <button type="submit" class="checkout-btn checkout-btn-pay" id="submitBtn">Pagar Ahora</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer class="footer">
         <p>&copy; 2026 EXPO COSPIDE - Emprendimiento y Marketing. Todos los derechos reservados.</p>
@@ -2498,6 +2745,200 @@
             initSupabase();
             trackPageView('evento-cospide');
         }
+
+        // ====== STRIPE INTEGRATION ======
+        const STRIPE_PUBLIC_KEY = 'pk_live_51QvEa6IIqFT6Vwj9iQvJ3S8iE7K9uL0mNoPqRsT9vW0xXyZaBcDeFgHiJkLmN'; // Reemplaza con tu clave pública
+        let stripe, elements, cardElement;
+
+        function initStripe() {
+            if (STRIPE_PUBLIC_KEY === 'pk_live_51QvEa6IIqFT6Vwj9iQvJ3S8iE7K9uL0mNoPqRsT9vW0xXyZaBcDeFgHiJkLmN') {
+                console.warn('⚠️ Stripe Public Key no configurada. Los pagos no funcionarán en producción.');
+            }
+
+            stripe = Stripe(STRIPE_PUBLIC_KEY);
+            elements = stripe.elements();
+            cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#424770',
+                        fontFamily: 'Outfit, sans-serif',
+                    },
+                    invalid: {
+                        color: '#fa755a',
+                    }
+                }
+            });
+            cardElement.mount('#card-element');
+
+            cardElement.addEventListener('change', (e) => {
+                const displayError = document.getElementById('checkoutError');
+                if (e.error) {
+                    displayError.textContent = e.error.message;
+                    displayError.classList.add('show');
+                } else {
+                    displayError.classList.remove('show');
+                }
+            });
+        }
+
+        let currentPlan = null;
+
+        function openCheckoutModal(plan) {
+            currentPlan = plan;
+            const plans = {
+                free: { title: 'EXPO MAKERS PASS', price: 0, amount: '0.00', package: 'Acceso Gratuito' },
+                conference: { title: 'CONFERENCE MAKERS PASS', price: 497, amount: '497.00', package: 'Acceso a Conferencias' },
+                vip: { title: 'TOP MAKERS – VIP', price: 847, amount: '847.00', package: 'Experiencia VIP Premium' }
+            };
+
+            const info = plans[plan];
+            if (!info) return;
+
+            document.getElementById('checkoutTitle').textContent = info.title;
+            document.getElementById('checkoutPrice').textContent = '$' + info.price;
+            document.getElementById('checkoutAmount').textContent = '$' + info.amount;
+            document.getElementById('checkoutPackage').textContent = info.package;
+
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.add('active');
+
+            if (plan === 'free') {
+                document.getElementById('card-element').style.display = 'none';
+                document.getElementById('submitBtn').textContent = 'REGISTRARME GRATIS';
+                document.getElementById('checkoutForm').onsubmit = (e) => {
+                    e.preventDefault();
+                    registerFree();
+                };
+            } else {
+                document.getElementById('card-element').style.display = 'block';
+                document.getElementById('submitBtn').textContent = 'PAGAR AHORA';
+                if (!stripe) initStripe();
+                document.getElementById('checkoutForm').onsubmit = (e) => {
+                    e.preventDefault();
+                    handleCheckout();
+                };
+            }
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.remove('active');
+            document.getElementById('checkoutError').classList.remove('show');
+            document.getElementById('checkoutLoading').classList.remove('show');
+            document.getElementById('submitBtn').disabled = false;
+            if (document.getElementById('checkoutForm')) {
+                document.getElementById('checkoutForm').reset();
+            }
+        }
+
+        async function registerFree() {
+            const cardName = document.getElementById('cardName').value;
+            if (!cardName) {
+                alert('Por favor ingresa tu nombre');
+                return;
+            }
+
+            document.getElementById('checkoutLoading').classList.add('show');
+            document.getElementById('submitBtn').disabled = true;
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: cardName,
+                        email: cardName + '@evento.local',
+                        plan: 'free',
+                        amount: 0
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert('¡Registración exitosa! Revisa tu email para más detalles.');
+                    closeCheckoutModal();
+                    window.location.href = '/confirmacion?id=' + data.id;
+                } else {
+                    throw new Error('Error en la registración');
+                }
+            } catch (error) {
+                document.getElementById('checkoutError').textContent = 'Error: ' + error.message;
+                document.getElementById('checkoutError').classList.add('show');
+            } finally {
+                document.getElementById('checkoutLoading').classList.remove('show');
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        async function handleCheckout() {
+            const cardName = document.getElementById('cardName').value;
+            const email = document.getElementById('email').value || cardName.toLowerCase().replace(/\\s+/g, '') + '@evento.local';
+
+            if (!cardName) {
+                alert('Por favor ingresa tu nombre');
+                return;
+            }
+
+            document.getElementById('checkoutLoading').classList.add('show');
+            document.getElementById('submitBtn').disabled = true;
+
+            try {
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: currentPlan,
+                        name: cardName,
+                        email: email
+                    })
+                });
+
+                if (!response.ok) throw new Error('Error creating session');
+                const session = await response.json();
+
+                const { error} = await stripe.confirmCardPayment(session.clientSecret, {
+                    payment_method: {
+                        card: cardElement,
+                        billing_details: { name: cardName, email: email }
+                    }
+                });
+
+                if (error) {
+                    document.getElementById('checkoutError').textContent = error.message;
+                    document.getElementById('checkoutError').classList.add('show');
+                } else {
+                    alert('¡Pago exitoso! Revisa tu email para más detalles.');
+                    closeCheckoutModal();
+                    window.location.href = '/confirmacion?status=success';
+                }
+            } catch (error) {
+                document.getElementById('checkoutError').textContent = 'Error: ' + error.message;
+                document.getElementById('checkoutError').classList.add('show');
+            } finally {
+                document.getElementById('checkoutLoading').classList.remove('show');
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        // Inicializar Stripe cuando el documento esté listo
+        document.addEventListener('DOMContentLoaded', initStripe);
+
+        // Agregar event listeners a los botones de precio
+        document.addEventListener('DOMContentLoaded', () => {
+            const freeBtn = document.querySelector('.pricing-btn.free');
+            const paidBtn = document.querySelector('.pricing-btn.paid');
+            const vipBtn = document.querySelector('.pricing-btn.vip');
+
+            if (freeBtn) freeBtn.onclick = (e) => { e.preventDefault(); openCheckoutModal('free'); };
+            if (paidBtn) paidBtn.onclick = (e) => { e.preventDefault(); openCheckoutModal('conference'); };
+            if (vipBtn) vipBtn.onclick = (e) => { e.preventDefault(); openCheckoutModal('vip'); };
+        });
+
+        // Cerrar modal al presionar Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeCheckoutModal();
+        });
     </script>
 </body>
 </html>
