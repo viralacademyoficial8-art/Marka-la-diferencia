@@ -558,74 +558,83 @@
             z-index: 1;
         }
         .event-features {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 40px;
-            margin-top: 80px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 36px;
+            margin-top: 100px;
             border-top: none;
             perspective: 1500px;
             position: relative;
             z-index: 1;
-            height: 520px;
-            padding: 0 100px;
-            overflow: hidden;
-            scroll-behavior: smooth;
-            margin-left: 0;
+            padding: 60px 100px;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .event-feature {
-            background: linear-gradient(145deg, rgba(123,83,240,0.35) 0%, rgba(123,83,240,0.1) 100%);
-            border: 2px solid;
-            border-color: rgba(123,83,240,0.6);
-            border-radius: 32px;
-            padding: 48px 40px;
-            text-align: center;
-            transition: all 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
-            flex: none;
+            width: 100%;
+            height: 420px;
             position: relative;
-            backdrop-filter: blur(50px);
-            overflow: hidden;
+            perspective: 1200px;
+            cursor: pointer;
             animation: floatInCard 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
-            box-shadow: 0 8px 32px rgba(123,83,240,0.2), inset 0 1px 1px rgba(255,255,255,0.1);
         }
-        .event-feature:nth-child(1) {
-            animation-delay: 0.4s;
-            width: 280px;
-            height: 380px;
-            transform: scale(0.9) translateY(20px) rotateZ(-5deg);
-            z-index: 1;
+        .event-feature:nth-child(1) { animation-delay: 0.4s; }
+        .event-feature:nth-child(2) { animation-delay: 0.5s; }
+        .event-feature:nth-child(3) { animation-delay: 0.6s; }
+        .event-feature:nth-child(4) { animation-delay: 0.7s; }
+        .event-feature-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
         }
-        .event-feature:nth-child(2) {
-            animation-delay: 0.5s;
-            width: 320px;
-            height: 420px;
-            transform: scale(1) translateY(0);
-            z-index: 2;
-            border-color: rgba(246,255,84,0.5);
+        .event-feature:hover .event-feature-inner {
+            transform: rotateY(180deg) rotateX(-10deg);
         }
-        .event-feature:nth-child(3) {
-            animation-delay: 0.6s;
-            width: 320px;
-            height: 420px;
-            transform: scale(1) translateY(0);
-            z-index: 2;
-            border-color: rgba(246,255,84,0.5);
+        .event-feature-front,
+        .event-feature-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            border-radius: 32px;
+            text-align: center;
+            border: 2px solid;
         }
-        .event-feature:nth-child(4) {
-            animation-delay: 0.7s;
-            width: 280px;
-            height: 380px;
-            transform: scale(0.9) translateY(20px) rotateZ(5deg);
-            z-index: 1;
+        .event-feature-front {
+            background: linear-gradient(145deg, rgba(123,83,240,0.35) 0%, rgba(123,83,240,0.1) 100%);
+            border-color: rgba(123,83,240,0.6);
+            backdrop-filter: blur(50px);
+            box-shadow: 0 8px 32px rgba(123,83,240,0.3),
+                        inset 0 1px 1px rgba(255,255,255,0.15),
+                        0 0 60px rgba(123,83,240,0.2);
         }
-        .event-feature:hover {
-            background: linear-gradient(145deg, rgba(123,83,240,0.55) 0%, rgba(123,83,240,0.25) 100%);
-            transform: scale(1.08) translateY(-35px) rotateX(8deg) !important;
-            box-shadow: 0 40px 120px rgba(246,255,84,0.8),
-                        0 0 100px rgba(123,83,240,1),
-                        inset 0 1px 0 rgba(255,255,255,0.3);
-            z-index: 100 !important;
-            border-color: rgba(246,255,84,0.8);
+        .event-feature-back {
+            background: linear-gradient(145deg, rgba(246,255,84,0.15) 0%, rgba(123,83,240,0.35) 100%);
+            border-color: rgba(246,255,84,0.6);
+            backdrop-filter: blur(50px);
+            box-shadow: 0 8px 32px rgba(246,255,84,0.3),
+                        inset 0 1px 1px rgba(255,255,255,0.15),
+                        0 0 60px rgba(246,255,84,0.2);
+            transform: rotateY(180deg);
+        }
+        .event-feature:hover .event-feature-front {
+            box-shadow: 0 20px 60px rgba(123,83,240,0.5),
+                        inset 0 1px 1px rgba(255,255,255,0.2),
+                        0 0 80px rgba(123,83,240,0.4);
+        }
+        .event-feature:hover .event-feature-back {
+            box-shadow: 0 20px 60px rgba(246,255,84,0.6),
+                        inset 0 1px 1px rgba(255,255,255,0.2),
+                        0 0 80px rgba(246,255,84,0.5);
         }
         .event-feature::before {
             content: '';
@@ -666,40 +675,43 @@
         }
         .event-feature .check {
             color: var(--amarillo-limon);
-            font-size: clamp(4rem, 8vw, 5.5rem);
-            margin-bottom: 40px;
+            font-size: 4.5rem;
+            margin-bottom: 30px;
             display: block;
             font-weight: 900;
             animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-shadow: 0 0 40px rgba(246,255,84,0.9), 0 0 80px rgba(246,255,84,0.6), 0 0 120px rgba(123,83,240,0.4);
             filter: drop-shadow(0 0 20px rgba(246,255,84,0.8));
         }
-        .event-feature:hover .check {
-            animation: checkPulse 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-shadow: 0 0 50px rgba(246,255,84,1), 0 0 100px rgba(246,255,84,0.8);
-        }
         .event-feature strong {
             color: var(--blanco-suave);
             display: block;
-            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-size: 1.65rem;
             font-weight: 800;
             letter-spacing: -0.5px;
-            margin-bottom: 16px;
+            margin-bottom: 0;
             transition: all 0.6s ease;
-        }
-        .event-feature:hover strong {
-            color: #F6FF54;
-            text-shadow: 0 0 20px rgba(246,255,84,0.6);
         }
         .event-feature div {
-            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+            font-size: 1rem;
             color: rgba(255,255,255,0.7);
-            line-height: 1.95;
-            margin-top: 16px;
+            line-height: 1.8;
+            margin-top: 12px;
             transition: all 0.6s ease;
         }
-        .event-feature:hover div {
-            color: rgba(255,255,255,0.95);
+        .event-feature-back {
+            padding: 50px 35px;
+        }
+        .event-feature-back strong {
+            color: #F6FF54;
+            font-size: 1.8rem;
+            text-shadow: 0 0 20px rgba(246,255,84,0.5);
+            margin-bottom: 16px;
+        }
+        .event-feature-back div {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.05rem;
+            line-height: 1.9;
         }
 
         /* ====== CTA BANNER ====== */
@@ -2510,23 +2522,52 @@
         </p>
         <div class="event-features">
             <div class="event-feature">
-                <span class="check">✔</span>
-                <div>
-                    <strong>6 conferencias magistrales</strong><br>
-                    Expertos en liderazgo, marketing, ventas e IA
+                <div class="event-feature-inner">
+                    <div class="event-feature-front">
+                        <span class="check">✔</span>
+                        <div><strong>6 conferencias magistrales</strong></div>
+                    </div>
+                    <div class="event-feature-back">
+                        <strong>Conferencias</strong>
+                        <div>Expertos en liderazgo, marketing, ventas e IA que compartirán sus mejores prácticas</div>
+                    </div>
                 </div>
             </div>
             <div class="event-feature">
-                <span class="check">✔</span>
-                <div><strong>Podcast en vivo</strong></div>
+                <div class="event-feature-inner">
+                    <div class="event-feature-front">
+                        <span class="check">✔</span>
+                        <div><strong>Podcast en vivo</strong></div>
+                    </div>
+                    <div class="event-feature-back">
+                        <strong>Podcast</strong>
+                        <div>Conversaciones en vivo con líderes y emprendedores que están transformando el mundo</div>
+                    </div>
+                </div>
             </div>
             <div class="event-feature">
-                <span class="check">✔</span>
-                <div><strong>Acceso a la Expo</strong></div>
+                <div class="event-feature-inner">
+                    <div class="event-feature-front">
+                        <span class="check">✔</span>
+                        <div><strong>Acceso a la Expo</strong></div>
+                    </div>
+                    <div class="event-feature-back">
+                        <strong>Expo</strong>
+                        <div>+80 stands con proyectos innovadores, empresas y networking oportunidades</div>
+                    </div>
+                </div>
             </div>
             <div class="event-feature">
-                <span class="check">✔</span>
-                <div><strong>Foro de Autores</strong></div>
+                <div class="event-feature-inner">
+                    <div class="event-feature-front">
+                        <span class="check">✔</span>
+                        <div><strong>Foro de Autores</strong></div>
+                    </div>
+                    <div class="event-feature-back">
+                        <strong>Foro</strong>
+                        <div>Espacio exclusivo para creadores y autores con ideas revolucionarias</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -3165,47 +3206,7 @@
             if (e.key === 'Escape') closeCheckoutModal();
         });
 
-        // 🎪 ENHANCED PARALLAX + CAROUSEL EFFECT
-        document.addEventListener('DOMContentLoaded', () => {
-            const eventFeatures = document.querySelectorAll('.event-feature');
-            const eventFeatureContainer = document.querySelector('.event-features');
-
-            if (!eventFeatures.length || !eventFeatureContainer) return;
-
-            // Guardar transformaciones originales
-            const originalTransforms = Array.from(eventFeatures).map(card => ({
-                transform: card.style.transform,
-                element: card
-            }));
-
-            document.addEventListener('mousemove', (e) => {
-                const rect = eventFeatureContainer.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-
-                const mouseX = (e.clientX - centerX) / 50;
-                const mouseY = (e.clientY - centerY) / 50;
-
-                eventFeatures.forEach((card, index) => {
-                    const baseTransform = originalTransforms[index].transform;
-                    const offset = (index - 1.5) * 8;
-
-                    card.style.transform = `
-                        ${baseTransform.includes('scale') ? baseTransform.match(/scale\([^)]*\)/)[0] : ''}
-                        translateY(calc(${baseTransform.match(/translateY\(([^)]*)\)/) ? baseTransform.match(/translateY\(([^)]*)\)/)[1] : '0'} + ${mouseY * (1 - Math.abs(offset) * 0.05)}px))
-                        translateX(${mouseX * (1 - Math.abs(offset) * 0.05)}px)
-                        ${baseTransform.includes('rotate') ? baseTransform.match(/rotate[XYZ]\([^)]*\)/g).join(' ') : ''}
-                    `;
-                });
-            });
-
-            // Resetear al salir
-            eventFeatureContainer.addEventListener('mouseleave', () => {
-                eventFeatures.forEach((card, index) => {
-                    card.style.transform = originalTransforms[index].transform;
-                });
-            });
-        });
+        // 🎪 FLIP 3D CARD EFFECT - NO JAVASCRIPT NEEDED, PURE CSS3!
     </script>
 </body>
 </html>
