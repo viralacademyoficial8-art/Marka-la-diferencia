@@ -2940,8 +2940,8 @@
                 <!-- PASO 1: OBJETIVO -->
                 <div class="quiz-step active" id="quiz-step-1">
                     <div class="quiz-progress">
-                        <div class="progress-bar" style="width: 25%"></div>
-                        <span class="progress-text">Pregunta 1 de 4</span>
+                        <div class="progress-bar" style="width: 33.33%"></div>
+                        <span class="progress-text">Pregunta 1 de 3</span>
                     </div>
                     <h3 class="quiz-question">¿Cuál es tu principal objetivo?</h3>
                     <div class="quiz-options">
@@ -2966,8 +2966,8 @@
                 <!-- PASO 2: NETWORKING -->
                 <div class="quiz-step" id="quiz-step-2">
                     <div class="quiz-progress">
-                        <div class="progress-bar" style="width: 50%"></div>
-                        <span class="progress-text">Pregunta 2 de 4</span>
+                        <div class="progress-bar" style="width: 66.66%"></div>
+                        <span class="progress-text">Pregunta 2 de 3</span>
                     </div>
                     <h3 class="quiz-question">¿Cuán importante es el networking?</h3>
                     <div class="quiz-options">
@@ -2992,8 +2992,8 @@
                 <!-- PASO 3: TIEMPO -->
                 <div class="quiz-step" id="quiz-step-3">
                     <div class="quiz-progress">
-                        <div class="progress-bar" style="width: 75%"></div>
-                        <span class="progress-text">Pregunta 3 de 4</span>
+                        <div class="progress-bar" style="width: 100%"></div>
+                        <span class="progress-text">Pregunta 3 de 3</span>
                     </div>
                     <h3 class="quiz-question">¿Cuánto tiempo pasarás en el evento?</h3>
                     <div class="quiz-options">
@@ -3011,32 +3011,6 @@
                             <span class="quiz-icon">☀️</span>
                             <span class="quiz-text">Día completo</span>
                             <span class="quiz-desc">Aprovecharé todo el evento</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- PASO 4: PRESUPUESTO -->
-                <div class="quiz-step" id="quiz-step-4">
-                    <div class="quiz-progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                        <span class="progress-text">Pregunta 4 de 4</span>
-                    </div>
-                    <h3 class="quiz-question">¿Cuál es tu presupuesto?</h3>
-                    <div class="quiz-options">
-                        <button class="quiz-option" data-budget="free">
-                            <span class="quiz-icon">💰</span>
-                            <span class="quiz-text">Presupuesto limitado</span>
-                            <span class="quiz-desc">Prefiero gratis o muy económico</span>
-                        </button>
-                        <button class="quiz-option" data-budget="medium">
-                            <span class="quiz-icon">💵</span>
-                            <span class="quiz-text">Presupuesto moderado</span>
-                            <span class="quiz-desc">Puedo invertir hasta $500</span>
-                        </button>
-                        <button class="quiz-option" data-budget="premium">
-                            <span class="quiz-icon">💎</span>
-                            <span class="quiz-text">Presupuesto premium</span>
-                            <span class="quiz-desc">Quiero la mejor experiencia</span>
                         </button>
                     </div>
                 </div>
@@ -3627,12 +3601,11 @@
             if (e.key === 'Escape') closeCheckoutModal();
         });
 
-        // 🎪 ENCUESTA INTERACTIVA AVANZADA DE PRICING ======
+        // 🎪 ENCUESTA INTERACTIVA AVANZADA DE PRICING (3 PASOS) ======
         let quizData = {
             answer: '',
             networking: '',
-            time: '',
-            budget: ''
+            time: ''
         };
         let currentStep = 1;
 
@@ -3653,9 +3626,6 @@
                 goToStep(3);
             } else if (stepNum === 3) {
                 quizData.time = element.getAttribute('data-time');
-                goToStep(4);
-            } else if (stepNum === 4) {
-                quizData.budget = element.getAttribute('data-budget');
                 showQuizResult();
             }
         }
@@ -3673,15 +3643,15 @@
         }
 
         function showQuizResult() {
-            const { answer, networking, time, budget } = quizData;
+            const { answer, networking, time } = quizData;
             let recommendedPackage = '';
             let price = '';
             let reason = '';
             let emoji = '';
             let features = [];
 
-            // LÓGICA INTELIGENTE DE RECOMENDACIÓN
-            if (budget === 'free' || (budget === 'medium' && answer === 'expo')) {
+            // LÓGICA INTELIGENTE DE RECOMENDACIÓN (SIN PRESUPUESTO)
+            if (answer === 'expo') {
                 recommendedPackage = 'EXPO MAKERS PASS';
                 price = 'GRATIS';
                 emoji = '🎉';
@@ -3693,23 +3663,38 @@
                     'Presentaciones de libros',
                     'Networking general'
                 ];
-            } else if (answer === 'conference' || (answer === 'expo' && budget === 'medium') || (answer === 'expo' && networking === 'medium')) {
-                recommendedPackage = 'CONFERENCE MAKERS PASS';
-                price = '$497';
-                emoji = '🎤';
-                reason = 'Balance perfecto entre contenido educativo y precio. Acceso a todas las conferencias y talleres.';
-                features = [
-                    'Todo de EXPO MAKERS PASS',
-                    'Acceso a todos los talleres',
-                    'Conferencias magistrales',
-                    'Podcast en vivo grabado',
-                    'Acceso prioritario a áreas'
-                ];
-            } else if (answer === 'vip' || (networking === 'high') || budget === 'premium') {
+            } else if (answer === 'conference') {
+                if (networking === 'high') {
+                    recommendedPackage = 'TOP MAKERS – VIP EXPERIENCE';
+                    price = '$847';
+                    emoji = '👑';
+                    reason = 'Experiencia premium con acceso prioritario a TODO + networking de alto nivel con speakers.';
+                    features = [
+                        'Pulsera VIP exclusiva',
+                        'Kit Premium (libreta, pluma, libro)',
+                        'Acceso prioritario a todo',
+                        'Zona preferencial en conferencias',
+                        'Foto con Speakers',
+                        'Boleto para rifa especial'
+                    ];
+                } else {
+                    recommendedPackage = 'CONFERENCE MAKERS PASS';
+                    price = '$497';
+                    emoji = '🎤';
+                    reason = 'Balance perfecto entre contenido educativo. Acceso a todas las conferencias y talleres.';
+                    features = [
+                        'Todo de EXPO MAKERS PASS',
+                        'Acceso a todos los talleres',
+                        'Conferencias magistrales',
+                        'Podcast en vivo grabado',
+                        'Acceso prioritario a áreas'
+                    ];
+                }
+            } else if (answer === 'vip') {
                 recommendedPackage = 'TOP MAKERS – VIP EXPERIENCE';
                 price = '$847';
                 emoji = '👑';
-                reason = 'Experiencia premium total. Acceso prioritario a TODO + kit VIP exclusivo + foto con speakers.';
+                reason = 'La experiencia más premium. Acceso prioritario a TODO + kit VIP exclusivo + foto con speakers.';
                 features = [
                     'Pulsera VIP exclusiva',
                     'Kit Premium (libreta, pluma, libro)',
@@ -3752,14 +3737,14 @@
             }
 
             // Transición suave al resultado
-            document.getElementById('quiz-step-4').classList.remove('active');
+            document.getElementById('quiz-step-3').classList.remove('active');
             setTimeout(() => {
                 document.getElementById('quiz-result').classList.add('show');
             }, 300);
         }
 
         function resetQuiz() {
-            quizData = { answer: '', networking: '', time: '', budget: '' };
+            quizData = { answer: '', networking: '', time: '' };
             currentStep = 1;
 
             // Ocultar resultado
