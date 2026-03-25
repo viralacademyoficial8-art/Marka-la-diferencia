@@ -544,18 +544,17 @@
             color: #7B53F0;
             text-align: center;
             padding: 0;
-            line-height: 0.95;
+            line-height: 1;
             margin-bottom: 20px;
             letter-spacing: -2px;
             animation: fadeInUp 0.8s ease-out 0.1s backwards;
-            background: linear-gradient(135deg, #7B53F0 0%, #b9a4ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             position: relative;
             z-index: 1;
-            filter: drop-shadow(0 0 30px rgba(123,83,240,0.5));
             max-width: 900px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         .event-date {
             font-family: 'Funnel Display', sans-serif;
@@ -564,18 +563,17 @@
             color: #F6FF54;
             text-align: center;
             padding: 0;
-            line-height: 0.95;
+            line-height: 1;
             margin-bottom: 80px;
             letter-spacing: -2px;
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
-            background: linear-gradient(90deg, #F6FF54 0%, #ffff99 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 40px rgba(246,255,84,0.6));
             position: relative;
             z-index: 1;
             max-width: 900px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         .event-description {
             font-size: clamp(1.1rem, 2.2vw, 1.35rem);
@@ -591,21 +589,39 @@
             position: relative;
             z-index: 1;
         }
-        .event-icon {
+        .event-icon-emoji {
             display: inline-block;
-            font-size: 1.6em;
-            margin-right: 16px;
+            font-size: 2.2em;
+            margin-right: 20px;
             animation: bounce 2s ease-in-out infinite;
             filter: drop-shadow(0 0 20px rgba(255,255,255,0.5)) drop-shadow(0 0 10px rgba(255,255,255,0.3));
             text-shadow: 0 0 10px rgba(255,255,255,0.4);
+            color: white;
+            -webkit-text-fill-color: white;
+            position: relative;
+            z-index: 2;
         }
         .location-icon {
-            filter: drop-shadow(0 0 25px rgba(123,83,240,0.8)) drop-shadow(0 0 15px rgba(123,83,240,0.5));
+            filter: drop-shadow(0 0 25px rgba(123,83,240,0.9)) drop-shadow(0 0 15px rgba(123,83,240,0.6)) drop-shadow(0 0 40px rgba(123,83,240,0.4));
             animation: locationPulse 2.5s ease-in-out infinite;
         }
         .date-icon {
-            filter: drop-shadow(0 0 25px rgba(246,255,84,0.8)) drop-shadow(0 0 15px rgba(246,255,84,0.5));
+            filter: drop-shadow(0 0 25px rgba(246,255,84,0.9)) drop-shadow(0 0 15px rgba(246,255,84,0.6)) drop-shadow(0 0 40px rgba(246,255,84,0.4));
             animation: datePulse 2.5s ease-in-out infinite;
+        }
+        .event-location-text,
+        .event-date-text {
+            display: inline;
+            background: linear-gradient(135deg, #7B53F0 0%, #b9a4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .event-date-text {
+            background: linear-gradient(90deg, #F6FF54 0%, #ffff99 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .event-features {
             display: grid;
@@ -2565,8 +2581,14 @@
     <!-- AUTORES Y EMPRENDEDORES + INFO -->
     <section class="event-info" id="info">
         <h2 class="section-title">Autores y Emprendedores</h2>
-        <p class="event-location"><span class="event-icon location-icon">📍</span> Ocotlán, Jalisco</p>
-        <p class="event-date"><span class="event-icon date-icon">📅</span> 23 de mayo 2026</p>
+        <p class="event-location">
+            <span class="event-icon-emoji location-icon">📍</span>
+            <span class="event-location-text">Ocotlán, Jalisco</span>
+        </p>
+        <p class="event-date">
+            <span class="event-icon-emoji date-icon">📅</span>
+            <span class="event-date-text">23 de mayo 2026</span>
+        </p>
         <p class="event-description">
             El punto de encuentro donde líderes y emprendedores se reúnen para
             convertir ideas en negocios que transforman el mundo.
