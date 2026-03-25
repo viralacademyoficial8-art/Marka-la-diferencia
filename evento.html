@@ -287,6 +287,10 @@
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
         @keyframes floatInCard {
             from {
                 opacity: 0;
@@ -1089,172 +1093,405 @@
 
 /* ====== PRICING ====== */
         .pricing-section {
-            background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
             position: relative;
             overflow: hidden;
             padding: 120px 100px;
         }
         .pricing-section::before { display: none; }
-        .pricing-section .section-title {
-            color: var(--dark);
+
+        .pricing-header {
+            margin-bottom: 80px;
             position: relative;
             z-index: 1;
-            text-align: left;
-            margin: 0 0 70px;
-            padding: 0;
-            border-bottom: none;
+        }
+        .pricing-header .section-title {
+            color: var(--dark);
             font-size: clamp(3rem, 8vw, 5.2rem);
             font-weight: 900;
             letter-spacing: -2.5px;
-        }
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 48px;
-            max-width: none;
-            margin: 0;
-            position: relative;
-            z-index: 1;
-            align-items: stretch;
+            margin: 0 0 16px;
+            padding: 0;
             border-bottom: none;
         }
-        @media (max-width: 1024px) {
-            .pricing-grid { grid-template-columns: 1fr; }
+        .pricing-subtitle {
+            color: rgba(0,0,0,0.5);
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin: 0;
+            padding: 0;
         }
-        .pricing-card {
-            background: var(--white);
-            border-radius: 36px;
-            padding: 60px 50px;
+
+        /* ====== ENCUESTA INTERACTIVA ====== */
+        .pricing-quiz {
+            margin-bottom: 100px;
+            background: linear-gradient(135deg, rgba(123,83,240,0.08) 0%, rgba(246,255,84,0.05) 100%);
+            border-radius: 48px;
+            padding: 80px;
             position: relative;
-            transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border: 2px solid rgba(123,83,240,0.18);
+            z-index: 1;
+            border: 2px solid rgba(123,83,240,0.15);
             overflow: hidden;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .quiz-step {
+            display: none;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .quiz-step.active {
+            display: block;
+        }
+        .quiz-question {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 900;
             color: var(--dark);
+            text-align: center;
+            margin: 0 0 60px;
+            letter-spacing: -1px;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .quiz-option {
+            background: white;
+            border: 3px solid rgba(123,83,240,0.2);
+            border-radius: 32px;
+            padding: 40px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 12px 36px rgba(0,0,0,0.1);
+            align-items: center;
+            gap: 16px;
         }
-        .pricing-card:last-child { border-right: none; }
+        .quiz-option::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(123,83,240,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            border-radius: 32px;
+        }
+        .quiz-option:hover {
+            border-color: var(--violeta-intenso);
+            transform: translateY(-12px);
+            box-shadow: 0 20px 50px rgba(123,83,240,0.2);
+        }
+        .quiz-option:hover::before { opacity: 1; }
+        .quiz-option.selected {
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #9b85f0 100%);
+            border-color: var(--violeta-intenso);
+            color: white;
+        }
+        .quiz-icon {
+            font-size: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .quiz-text {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.5px;
+        }
+        .quiz-option.selected .quiz-text { color: white; }
+
+        .quiz-result {
+            display: none;
+            text-align: center;
+            animation: zoomIn 0.6s ease-out;
+        }
+        .quiz-result.show {
+            display: block;
+        }
+        .result-card {
+            background: white;
+            border-radius: 32px;
+            padding: 60px 40px;
+            border: 3px solid var(--amarillo-limon);
+            box-shadow: 0 20px 60px rgba(246,255,84,0.25);
+        }
+        .result-card h3 {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 1.4rem;
+            color: rgba(0,0,0,0.5);
+            font-weight: 700;
+            margin: 0 0 16px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .result-package {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 900;
+            color: var(--violeta-intenso);
+            margin: 0 0 16px;
+            letter-spacing: -1px;
+        }
+        .result-reason {
+            font-size: 1.05rem;
+            color: var(--gray-text);
+            margin: 0 0 32px;
+            line-height: 1.8;
+        }
+        .result-close-btn {
+            background: var(--amarillo-limon);
+            color: var(--dark);
+            border: none;
+            padding: 16px 40px;
+            border-radius: 24px;
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .result-close-btn:hover {
+            background: #f0ff40;
+            transform: scale(1.05);
+        }
+
+        /* ====== PRICING CARDS ====== */
+        .pricing-cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        @media (max-width: 1200px) {
+            .pricing-cards-container { grid-template-columns: 1fr; }
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 48px;
+            padding: 50px 40px;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 3px solid rgba(123,83,240,0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+        }
         .pricing-card::before {
             content: '';
             position: absolute;
             inset: 0;
             background: radial-gradient(circle at top right, rgba(123,83,240,0.12), transparent);
             opacity: 0;
-            transition: opacity 0.45s;
-            border-radius: 36px;
+            transition: opacity 0.5s;
+            border-radius: 48px;
+            z-index: 0;
         }
         .pricing-card:hover {
-            background: #ffffff;
-            transform: translateY(-16px);
+            transform: translateY(-24px);
+            box-shadow: 0 32px 80px rgba(123,83,240,0.2);
             border-color: var(--violeta-intenso);
-            box-shadow: 0 20px 60px rgba(123,83,240,0.25);
         }
         .pricing-card:hover::before { opacity: 1; }
-        .pricing-card.featured {
+
+        .pricing-card-free { background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%); }
+        .pricing-card-standard { border-color: var(--violeta-intenso); border-width: 3px; }
+        .pricing-card-vip {
             background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
-            color: var(--white);
-            border: 2px solid var(--amarillo-limon);
-            transform: translateY(-20px);
-            box-shadow: 0 20px 60px rgba(246,255,84,0.3);
+            border-color: var(--amarillo-limon);
+            position: relative;
+            transform: scale(1.02);
         }
-        .pricing-card.featured:hover {
-            background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
-            transform: translateY(-24px);
-            box-shadow: 0 28px 70px rgba(246,255,84,0.35);
+
+        .pricing-card-crown {
+            font-size: 3.5rem;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .pricing-card-header {
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
         }
         .pricing-name {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(0.75rem, 1.5vw, 0.95rem);
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            color: rgba(0,0,0,0.5);
+            font-size: clamp(0.75rem, 1.3vw, 0.95rem);
+            letter-spacing: 3px;
+            margin-bottom: 16px;
+            color: rgba(0,0,0,0.55);
             font-weight: 700;
-            position: relative;
-            z-index: 1;
             text-transform: uppercase;
         }
-        .pricing-card.featured .pricing-name { color: rgba(255,255,255,0.5); }
+        .pricing-card-vip .pricing-name { color: rgba(255,255,255,0.5); }
+
+        .pricing-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0;
+        }
+        .free-badge {
+            background: rgba(123,83,240,0.1);
+            color: var(--violeta-intenso);
+            border: 1px solid var(--violeta-intenso);
+        }
+        .standard-badge {
+            background: var(--violeta-intenso);
+            color: white;
+            border: 1px solid var(--violeta-intenso);
+        }
+        .vip-badge {
+            background: var(--amarillo-limon);
+            color: var(--dark);
+            border: 1px solid var(--amarillo-limon);
+        }
+
+        .pricing-price-section {
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+            padding-bottom: 32px;
+            border-bottom: 2px solid rgba(123,83,240,0.1);
+        }
+        .pricing-card-vip .pricing-price-section { border-bottom-color: rgba(255,255,255,0.1); }
+
         .pricing-price {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(2.5rem, 5.5vw, 4.2rem);
-            color: var(--dark);
-            margin-bottom: 12px;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
             font-weight: 900;
+            color: var(--dark);
             line-height: 1;
-            position: relative;
-            z-index: 1;
             letter-spacing: -2px;
+            margin: 0;
         }
-        .pricing-card.featured .pricing-price { color: var(--amarillo-limon); }
-        .pricing-label {
-            font-size: clamp(0.75rem, 1.3vw, 0.95rem);
-            font-weight: 700;
-            color: rgba(0,0,0,0.55);
-            margin-bottom: 32px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+        .pricing-card-vip .pricing-price { color: var(--amarillo-limon); }
+
+        .pricing-currency {
+            font-size: 0.85rem;
+            color: rgba(0,0,0,0.45);
+            font-weight: 600;
+            display: block;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+        .pricing-card-vip .pricing-currency { color: rgba(255,255,255,0.45); }
+
+        .pricing-features {
+            flex-grow: 1;
+            margin-bottom: 40px;
             position: relative;
             z-index: 1;
-            padding-bottom: 24px;
-            border-bottom: 2px solid #e8e8e8;
         }
-        .pricing-card.featured .pricing-label { color: rgba(255,255,255,0.5); border-bottom-color: rgba(255,255,255,0.12); }
-        .pricing-list {
-            list-style: none;
-            margin-bottom: 40px;
-            flex-grow: 1;
-        }
-        .pricing-list li {
-            padding: 12px 0;
-            font-size: clamp(0.9rem, 1.6vw, 1.05rem);
-            color: var(--gray-text);
+        .feature-item {
             display: flex;
             align-items: flex-start;
             gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(123,83,240,0.08);
+            font-size: 0.95rem;
+            color: var(--gray-text);
             line-height: 1.6;
-            position: relative;
-            z-index: 1;
-            border-bottom: 1px solid #f0f0f0;
         }
-        .pricing-card.featured .pricing-list li { color: rgba(255,255,255,0.7); border-bottom-color: rgba(255,255,255,0.08); }
-        .pricing-list li::before {
-            content: '–';
+        .pricing-card-vip .feature-item {
+            color: rgba(255,255,255,0.7);
+            border-bottom-color: rgba(255,255,255,0.08);
+        }
+        .feature-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .feature-item.highlight {
             color: var(--violeta-intenso);
             font-weight: 700;
-            flex-shrink: 0;
-            font-size: 1rem;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
         }
-        .pricing-card.featured .pricing-list li { color: rgba(255,255,255,0.75); }
-        .pricing-card.featured .pricing-list li::before { color: var(--amarillo-limon); }
+        .pricing-card-vip .feature-item.highlight { color: var(--amarillo-limon); }
+        .feature-icon {
+            flex-shrink: 0;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
         .pricing-btn {
             display: block;
             width: 100%;
-            margin-top: auto;
-            padding: 20px;
-            border: 2px solid var(--dark);
-            border-radius: 16px;
+            padding: 18px 32px;
+            border: none;
+            border-radius: 24px;
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+            font-size: clamp(0.85rem, 1.4vw, 0.95rem);
             font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
             text-align: center;
             text-decoration: none;
-            transition: all 0.35s;
-            letter-spacing: 3px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+            margin-top: auto;
+        }
+
+        .pricing-btn-free {
             background: transparent;
+            border: 2px solid var(--dark);
             color: var(--dark);
         }
-        .pricing-btn:hover { background: var(--dark); color: var(--white); }
-        .pricing-btn.free { border-color: var(--dark); color: var(--dark); }
-        .pricing-btn.paid { border-color: var(--dark); color: var(--dark); }
-        .pricing-btn.vip {
+        .pricing-btn-free:hover {
+            background: var(--dark);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        .pricing-btn-standard {
+            background: var(--violeta-intenso);
+            color: white;
+            border: 2px solid var(--violeta-intenso);
+        }
+        .pricing-btn-standard:hover {
+            background: #8b6fd9;
+            border-color: #8b6fd9;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(123,83,240,0.3);
+        }
+
+        .pricing-btn-vip {
             background: var(--amarillo-limon);
-            border-color: var(--amarillo-limon);
             color: var(--dark);
+            border: 2px solid var(--amarillo-limon);
         }
-        .pricing-btn.vip:hover { background: #f0ff40; border-color: #f0ff40; }
+        .pricing-btn-vip:hover {
+            background: #f0ff40;
+            border-color: #f0ff40;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(246,255,84,0.4);
+        }
 
         /* ====== SPEAKERS ====== */
         .speakers-section {
@@ -2582,61 +2819,188 @@
         </div>
     </section>
 
-    <!-- PRECIOS / BOLETOS -->
+    <!-- PRECIOS / BOLETOS CON ENCUESTA INTERACTIVA -->
     <section class="pricing-section" id="boletos">
-        <h2 class="section-title">Elige tu experiencia</h2>
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <div class="pricing-name">EXPO MAKERS PASS</div>
-                <div class="pricing-price">Acceso gratuito</div>
-                <div class="pricing-label">Incluye:</div>
-                <ul class="pricing-list">
-                    <li>Acceso a la <strong>Expo de Autores y Emprendedores</strong></li>
-                    <li>Recorrido por más de <strong>80 stands</strong></li>
-                    <li>Acceso al <strong>Foro de Autores</strong></li>
-                    <li>Acceso a las presentaciones de libros</li>
-                    <li>Fotografías con autores</li>
-                    <li>Networking con empresarios y emprendedores</li>
-                </ul>
-                <a href="#" class="pricing-btn free">Registrarme Gratis</a>
+        <div class="pricing-header">
+            <h2 class="section-title">Elige tu experiencia</h2>
+            <p class="pricing-subtitle">Descubre cuál es la mejor opción para ti</p>
+        </div>
+
+        <!-- ENCUESTA INTERACTIVA -->
+        <div class="pricing-quiz">
+            <div class="quiz-container">
+                <div class="quiz-step active" id="quiz-step-1">
+                    <h3 class="quiz-question">¿Cuál es tu principal objetivo?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-answer="expo">
+                            <span class="quiz-icon">📚</span>
+                            <span class="quiz-text">Explorar la expo</span>
+                        </button>
+                        <button class="quiz-option" data-answer="conference">
+                            <span class="quiz-icon">🎤</span>
+                            <span class="quiz-text">Asistir a conferencias</span>
+                        </button>
+                        <button class="quiz-option" data-answer="vip">
+                            <span class="quiz-icon">👑</span>
+                            <span class="quiz-text">Experiencia premium</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="quiz-step" id="quiz-step-2">
+                    <h3 class="quiz-question">¿Cuán importante es el networking?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-networking="low">
+                            <span class="quiz-icon">🤔</span>
+                            <span class="quiz-text">No es prioridad</span>
+                        </button>
+                        <button class="quiz-option" data-networking="medium">
+                            <span class="quiz-icon">🤝</span>
+                            <span class="quiz-text">Es importante</span>
+                        </button>
+                        <button class="quiz-option" data-networking="high">
+                            <span class="quiz-icon">🌟</span>
+                            <span class="quiz-text">Es crucial</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="quiz-result" id="quiz-result">
+                    <div class="result-card">
+                        <h3>Tu recomendación:</h3>
+                        <p class="result-package" id="result-package"></p>
+                        <p class="result-reason" id="result-reason"></p>
+                        <button class="result-close-btn" onclick="resetQuiz()">Intentar otra vez</button>
+                    </div>
+                </div>
             </div>
-            <div class="pricing-card">
-                <div class="pricing-name">CONFERENCE MAKERS PASS</div>
-                <div class="pricing-price">$497</div>
-                <div class="pricing-label">Incluye:</div>
-                <ul class="pricing-list">
-                    <li>Acceso a la <strong>Expo de Autores y Emprendedores</strong></li>
-                    <li>Recorrido por más de <strong>80 stands</strong></li>
-                    <li>Acceso al <strong>Foro de Autores</strong></li>
-                    <li>Acceso a las presentaciones de libros</li>
-                    <li>Fotografías con autores</li>
-                    <li>Networking con empresarios y emprendedores</li>
-                    <li>Acceso talleres y conferencias magistrales</li>
-                    <li>Acceso a grabación de <strong>Podcast EN VIVO</strong></li>
-                </ul>
-                <a href="#" class="pricing-btn paid">Comprar Boleto</a>
+        </div>
+
+        <!-- PRICING CARDS -->
+        <div class="pricing-cards-container">
+            <div class="pricing-card pricing-card-free">
+                <div class="pricing-card-header">
+                    <h3 class="pricing-name">EXPO MAKERS PASS</h3>
+                    <div class="pricing-badge free-badge">GRATIS</div>
+                </div>
+                <div class="pricing-price-section">
+                    <span class="pricing-price">$0</span>
+                    <span class="pricing-currency">Acceso completo</span>
+                </div>
+
+                <div class="pricing-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Expo de Autores y Emprendedores</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>80+ stands de emprendedores</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Foro de Autores</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Presentaciones de libros</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Fotografías con autores</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Networking general</span>
+                    </div>
+                </div>
+
+                <a href="#" class="pricing-btn pricing-btn-free">Registrarme Gratis</a>
             </div>
-            <div class="pricing-card featured" style="position:relative;">
-                <div class="popular-badge">★ VIP</div>
-                <div class="pricing-name">TOP MAKERS – VIP EXPERIENCE</div>
-                <div class="pricing-price">$847</div>
-                <div class="pricing-label">Incluye:</div>
-                <ul class="pricing-list">
-                    <li>Pulsera VIP</li>
-                    <li>Kit Premium (libreta, pluma, libro)</li>
-                    <li>Acceso a la <strong>Expo de Autores y Emprendedores</strong></li>
-                    <li>Recorrido por más de <strong>80 stands</strong></li>
-                    <li>Acceso al <strong>Foro de Autores</strong></li>
-                    <li>Acceso a las presentaciones de libros</li>
-                    <li>Fotografías con autores</li>
-                    <li>Networking con empresarios y emprendedores</li>
-                    <li><strong>Acceso prioritario</strong> a talleres y conferencias magistrales</li>
-                    <li>Acceso a grabación de <strong>Podcast EN VIVO</strong></li>
-                    <li>Foto con Speakers</li>
-                    <li><strong>Zona preferencial</strong> en el ciclo de conferencias</li>
-                    <li>Boleto para participar en la rifa</li>
-                </ul>
-                <a href="#" class="pricing-btn vip">Comprar VIP</a>
+
+            <div class="pricing-card pricing-card-standard">
+                <div class="pricing-card-header">
+                    <h3 class="pricing-name">CONFERENCE MAKERS PASS</h3>
+                    <div class="pricing-badge standard-badge">RECOMENDADO</div>
+                </div>
+                <div class="pricing-price-section">
+                    <span class="pricing-price">$497</span>
+                    <span class="pricing-currency">por persona</span>
+                </div>
+
+                <div class="pricing-features">
+                    <div class="feature-item highlight">
+                        <span class="feature-icon">✓</span>
+                        <span>Todo de EXPO MAKERS PASS +</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⭐</span>
+                        <span>Acceso a todos los talleres</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⭐</span>
+                        <span>Conferencias magistrales</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⭐</span>
+                        <span>Podcast en vivo grabado</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⭐</span>
+                        <span>Networking de nivel avanzado</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⭐</span>
+                        <span>Acceso prioritario a áreas</span>
+                    </div>
+                </div>
+
+                <a href="#" class="pricing-btn pricing-btn-standard">Comprar Boleto</a>
+            </div>
+
+            <div class="pricing-card pricing-card-vip">
+                <div class="pricing-card-crown">👑</div>
+                <div class="pricing-card-header">
+                    <h3 class="pricing-name">TOP MAKERS – VIP EXPERIENCE</h3>
+                    <div class="pricing-badge vip-badge">★ ÉLITE</div>
+                </div>
+                <div class="pricing-price-section">
+                    <span class="pricing-price">$847</span>
+                    <span class="pricing-currency">por persona</span>
+                </div>
+
+                <div class="pricing-features vip-features">
+                    <div class="feature-item highlight">
+                        <span class="feature-icon">✓</span>
+                        <span>TODO incluido + experiencia VIP</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👑</span>
+                        <span>Pulsera VIP exclusiva</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👑</span>
+                        <span>Kit Premium (libreta, pluma, libro)</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👑</span>
+                        <span>Acceso prioritario a talleres</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👑</span>
+                        <span>Zona preferencial conferencias</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👑</span>
+                        <span>Foto con Speakers</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👑</span>
+                        <span>Boleto para rifa especial</span>
+                    </div>
+                </div>
+
+                <a href="#" class="pricing-btn pricing-btn-vip">Comprar VIP</a>
             </div>
         </div>
     </section>
@@ -3078,6 +3442,97 @@
         // Cerrar modal al presionar Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeCheckoutModal();
+        });
+
+        // 🎪 ENCUESTA INTERACTIVA DE PRICING ======
+        let quizData = {
+            answer: '',
+            networking: ''
+        };
+
+        function handleQuizOption(element) {
+            const step = element.closest('.quiz-step');
+            const isFirstStep = step.id === 'quiz-step-1';
+
+            // Remover selección anterior
+            step.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+
+            // Guardar respuesta
+            if (isFirstStep) {
+                quizData.answer = element.getAttribute('data-answer');
+                // Avanzar al paso 2
+                setTimeout(() => {
+                    document.getElementById('quiz-step-1').classList.remove('active');
+                    document.getElementById('quiz-step-2').classList.add('active');
+                }, 400);
+            } else {
+                quizData.networking = element.getAttribute('data-networking');
+                // Mostrar resultado
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const { answer, networking } = quizData;
+            let recommendedPackage = '';
+            let reason = '';
+
+            if (answer === 'expo') {
+                recommendedPackage = 'EXPO MAKERS PASS';
+                reason = 'Es perfecto para explorar la expo y networking general sin invertir dinero.';
+            } else if (answer === 'conference') {
+                if (networking === 'high') {
+                    recommendedPackage = 'TOP MAKERS - VIP EXPERIENCE';
+                    reason = 'Incluye acceso prioritario a todo + networking de alto nivel con speakers y expertos.';
+                } else {
+                    recommendedPackage = 'CONFERENCE MAKERS PASS';
+                    reason = 'Tienes acceso a todas las conferencias y talleres a un precio accesible.';
+                }
+            } else if (answer === 'vip') {
+                recommendedPackage = 'TOP MAKERS - VIP EXPERIENCE';
+                reason = 'Es la experiencia más premium con pulsera VIP, kit exclusivo y acceso prioritario a todo.';
+            }
+
+            document.getElementById('result-package').textContent = recommendedPackage;
+            document.getElementById('result-reason').textContent = reason;
+
+            // Transición suave
+            document.getElementById('quiz-step-2').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('quiz-result').classList.add('show');
+            }, 200);
+        }
+
+        function resetQuiz() {
+            quizData = { answer: '', networking: '' };
+            document.getElementById('quiz-step-1').classList.add('active');
+            document.getElementById('quiz-step-2').classList.remove('active');
+            document.getElementById('quiz-result').classList.remove('show');
+
+            document.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+        }
+
+        // Event listeners para opciones de quiz
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', () => handleQuizOption(option));
+            });
+
+            // Actualizar botones de pricing con nuevos selectores
+            const freeBtns = document.querySelectorAll('.pricing-btn-free');
+            const standardBtns = document.querySelectorAll('.pricing-btn-standard');
+            const vipBtns = document.querySelectorAll('.pricing-btn-vip');
+
+            freeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => { e.preventDefault(); openCheckoutModal('free'); });
+            });
+            standardBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => { e.preventDefault(); openCheckoutModal('conference'); });
+            });
+            vipBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => { e.preventDefault(); openCheckoutModal('vip'); });
+            });
         });
 
         // 🎪 FLIP 3D CARD EFFECT - NO JAVASCRIPT NEEDED, PURE CSS3!
