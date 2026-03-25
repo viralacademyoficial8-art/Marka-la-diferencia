@@ -1087,133 +1087,7 @@
             font-weight: 800;
         }
 
-        /* ====== MODALITY TABLE ====== */
-        .modality-section {
-            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #a189ff 100%);
-            position: relative;
-            overflow: hidden;
-            clip-path: none;
-            padding: 120px 100px;
-        }
-        .modality-header {
-            max-width: none;
-            margin: 0 0 70px;
-            padding: 0;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 50px;
-            position: relative;
-            z-index: 1;
-            border-bottom: none;
-        }
-        .modality-title {
-            font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(3.2rem, 10vw, 6rem);
-            color: var(--white);
-            line-height: 0.85;
-            font-weight: 900;
-            letter-spacing: -3.5px;
-            animation: slideInLeft 0.6s ease-out;
-        }
-        .modality-badges {
-            display: flex;
-            gap: 0;
-            flex-wrap: nowrap;
-        }
-        .modality-badge {
-            padding: 18px 40px;
-            border-radius: 0;
-            text-align: center;
-            font-family: 'Funnel Display', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            border: 2px solid transparent;
-            font-weight: 800;
-            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            min-width: 150px;
-            cursor: pointer;
-            animation: scaleIn 0.5s ease-out;
-        }
-        .modality-badge.estandar {
-            background: var(--amarillo-limon);
-            color: var(--dark);
-            border-color: var(--amarillo-limon);
-            box-shadow: 0 4px 12px rgba(246,255,84,0.2);
-        }
-        .modality-badge.estandar:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(246,255,84,0.3);
-        }
-        .modality-badge.platino {
-            background: transparent;
-            color: var(--amarillo-limon);
-            border-color: rgba(246,255,84,0.3);
-        }
-        .modality-badge.platino:hover {
-            border-color: var(--amarillo-limon);
-            background: rgba(246,255,84,0.08);
-            transform: translateY(-4px);
-        }
-        .modality-table {
-            max-width: none;
-            margin: 0;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
-        .modality-row {
-            display: grid;
-            grid-template-columns: 1fr 150px 150px;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            padding: 28px 0;
-        }
-        .modality-row::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(246,255,84,0.06), transparent);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-        .modality-row:last-child { border-bottom: none; }
-        .modality-row:hover {
-            background: rgba(255,255,255,0.08);
-        }
-        .modality-row:hover::before { opacity: 1; }
-        .modality-row:hover .feature-name { color: var(--amarillo-limon); transform: translateX(6px); }
-        .modality-row .feature-name {
-            font-size: clamp(0.95rem, 1.6vw, 1.15rem);
-            color: rgba(255,255,255,0.8);
-            font-weight: 500;
-            transition: all 0.4s;
-            padding: 0 50px;
-            position: relative;
-            z-index: 1;
-        }
-        .modality-row .status {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: 900;
-            padding: 0;
-            position: relative;
-            z-index: 1;
-            transition: transform 0.4s;
-        }
-        .modality-row:hover .status { transform: scale(1.2); }
-        .status-yes { color: var(--amarillo-limon); }
-        .status-no { color: rgba(255,255,255,0.2); }
-
-        /* ====== PRICING ====== */
+/* ====== PRICING ====== */
         .pricing-section {
             background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
             position: relative;
@@ -2123,26 +1997,7 @@
         .why-card-content { display: flex; flex-direction: column; }
         .why-card-number { padding-top: 8px; }
 
-        /* ====== MODALITY COLUMN HEADER ====== */
-        .modality-col-header {
-            display: grid;
-            grid-template-columns: 1fr 150px 150px;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-        }
-        .modality-col-header-empty { padding: 20px 50px; }
-        .modality-col-label {
-            text-align: center;
-            font-family: 'Funnel Display', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 800;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            padding: 20px 0;
-            color: rgba(255,255,255,0.4);
-        }
-        .modality-col-label.active { color: var(--amarillo-limon); }
-
-        /* ====== ENHANCED SPEAKERS ====== */
+/* ====== ENHANCED SPEAKERS ====== */
         .speaker-card-inner {
             position: relative;
             overflow: hidden;
@@ -2231,18 +2086,7 @@
             .why-card h3 { font-size: clamp(1.2rem, 2.8vw, 1.8rem); }
             .why-card p { font-size: clamp(0.95rem, 1.6vw, 1.05rem); }
 
-            /* MODALITY MOBILE */
-            .modality-section { padding: 80px 30px; }
-            .modality-header { flex-direction: column; align-items: flex-start; margin-bottom: 50px; gap: 30px; }
-            .modality-title { font-size: clamp(2.2rem, 8vw, 3.5rem); }
-            .modality-col-header { grid-template-columns: 1fr 90px 90px; }
-            .modality-col-header-empty { padding: 20px 0; }
-            .modality-row { grid-template-columns: 1fr 90px 90px; padding: 20px 0; }
-            .modality-row .feature-name { padding: 0 30px; font-size: 0.9rem; }
-            .modality-row .status { font-size: 1.2rem; padding: 0; }
-            .modality-col-label { padding: 16px 0; font-size: 0.65rem; }
-
-            /* PRICING MOBILE */
+/* PRICING MOBILE */
             .pricing-section { padding: 80px 30px; }
             .pricing-section .section-title { margin-bottom: 50px; font-size: clamp(2.2rem, 8vw, 3.5rem); }
             .pricing-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -2734,54 +2578,6 @@
                     <h3>Forma parte de la comunidad MAKERS</h3>
                     <p>Un espacio donde jóvenes, emprendedores y líderes se reúnen para aprender, compartir ideas y construir juntos un futuro con más oportunidades.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ELIGE TU MODALIDAD -->
-    <section class="modality-section" id="modalidad">
-        <div class="modality-header">
-            <h2 class="modality-title">ELIGE TU<br>MODALIDAD</h2>
-            <div class="modality-badges">
-                <div class="modality-badge estandar">ESTÁNDAR</div>
-                <div class="modality-badge platino">PLATINO</div>
-            </div>
-        </div>
-        <div class="modality-col-header">
-            <div class="modality-col-header-empty"></div>
-            <div class="modality-col-label active">ESTÁNDAR</div>
-            <div class="modality-col-label">PLATINO</div>
-        </div>
-        <div class="modality-table">
-            <div class="modality-row">
-                <span class="feature-name">Acceso al evento durante 24 horas</span>
-                <span class="status status-yes">✅</span>
-                <span class="status status-yes">✅</span>
-            </div>
-            <div class="modality-row">
-                <span class="feature-name">Participación en todas las actividades oficiales *</span>
-                <span class="status status-yes">✅</span>
-                <span class="status status-yes">✅</span>
-            </div>
-            <div class="modality-row">
-                <span class="feature-name">Acceso a conferencias en todas las Tierras Temáticas</span>
-                <span class="status status-yes">✅</span>
-                <span class="status status-yes">✅</span>
-            </div>
-            <div class="modality-row">
-                <span class="feature-name">Registro rápido de ingreso</span>
-                <span class="status status-no">❌</span>
-                <span class="status status-yes">✅</span>
-            </div>
-            <div class="modality-row">
-                <span class="feature-name">Ingreso preferencial al recinto</span>
-                <span class="status status-no">❌</span>
-                <span class="status status-yes">✅</span>
-            </div>
-            <div class="modality-row">
-                <span class="feature-name">Networking de alto nivel con talento, expertos y aliados</span>
-                <span class="status status-yes">✅</span>
-                <span class="status status-yes">✅</span>
             </div>
         </div>
     </section>
