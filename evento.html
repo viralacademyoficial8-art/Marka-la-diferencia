@@ -317,6 +317,20 @@
             50% { transform: translateY(-60px) translateX(-20px); opacity: 0.4; }
             75% { transform: translateY(-30px) translateX(-40px); opacity: 0.55; }
         }
+        @keyframes locationPulse {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1); }
+        }
+        @keyframes datePulse {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.15); }
+            50% { transform: scale(1); }
+        }
+        @keyframes lineShrink {
+            from { width: 0; opacity: 0; }
+            to { width: 200px; opacity: 1; }
+        }
 
         /* ====== HERO ====== */
 
@@ -493,69 +507,102 @@
         }
         .event-info .section-title {
             font-family: 'Outfit', sans-serif;
-            font-size: clamp(0.8rem, 1.4vw, 1rem);
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
             color: var(--amarillo-limon);
-            font-weight: 700;
+            font-weight: 800;
             text-align: left;
             padding: 0;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             max-width: none;
-            margin: 0 0 40px 0;
+            margin: 0 0 50px 0;
             text-transform: uppercase;
             animation: slideInLeft 0.8s ease-out;
             position: relative;
             z-index: 1;
+            text-shadow: 0 0 30px rgba(246,255,84,0.4);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .event-info .section-title::after {
+            content: '';
+            flex: 0 0 auto;
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, #F6FF54 0%, transparent 100%);
+            animation: lineShrink 0.8s ease-out;
+            box-shadow: 0 0 20px rgba(246,255,84,0.5);
         }
         .event-location {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(2.8rem, 7vw, 4.5rem);
+            font-size: clamp(3.2rem, 8vw, 5rem);
             font-weight: 900;
             color: var(--violeta-intenso);
             text-align: left;
             padding: 0;
             line-height: 0.95;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             letter-spacing: -2px;
             animation: slideInLeft 0.8s ease-out 0.1s backwards;
-            background: linear-gradient(135deg, #7B53F0 0%, #a67dff 100%);
+            background: linear-gradient(135deg, #7B53F0 0%, #b9a4ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             position: relative;
             z-index: 1;
+            filter: drop-shadow(0 0 30px rgba(123,83,240,0.5));
+            text-shadow: 0 0 40px rgba(123,83,240,0.3);
         }
         .event-date {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(2.8rem, 7vw, 4.5rem);
+            font-size: clamp(3.2rem, 8vw, 5rem);
             font-weight: 900;
             color: var(--amarillo-limon);
             text-align: left;
             padding: 0;
             line-height: 0.95;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
             letter-spacing: -2px;
             animation: slideInLeft 0.8s ease-out 0.2s backwards;
             background: linear-gradient(90deg, #F6FF54 0%, #ffff99 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 20px rgba(246,255,84,0.3));
+            filter: drop-shadow(0 0 40px rgba(246,255,84,0.6));
             position: relative;
             z-index: 1;
+            text-shadow: 0 0 50px rgba(246,255,84,0.4);
         }
         .event-description {
-            font-size: clamp(1.05rem, 2vw, 1.25rem);
-            color: rgba(255,255,255,0.8);
-            max-width: 750px;
+            font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+            color: rgba(255,255,255,0.85);
+            max-width: 800px;
             margin: 0;
-            line-height: 1.9;
-            font-weight: 400;
+            line-height: 2;
+            font-weight: 500;
             text-align: left;
             padding: 0;
             margin-bottom: 100px;
             animation: fadeInUp 0.8s ease-out 0.3s backwards;
             position: relative;
             z-index: 1;
+        }
+        .event-icon {
+            display: inline-block;
+            font-size: 1.3em;
+            margin-right: 12px;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
+        }
+        .location-icon {
+            color: #7B53F0;
+            filter: drop-shadow(0 0 20px rgba(123,83,240,0.6));
+            animation: locationPulse 2.5s ease-in-out infinite;
+        }
+        .date-icon {
+            color: #F6FF54;
+            filter: drop-shadow(0 0 20px rgba(246,255,84,0.6));
+            animation: datePulse 2.5s ease-in-out infinite;
         }
         .event-features {
             display: grid;
@@ -2514,8 +2561,8 @@
     <!-- AUTORES Y EMPRENDEDORES + INFO -->
     <section class="event-info" id="info">
         <h2 class="section-title">Autores y Emprendedores</h2>
-        <p class="event-location">📍 Ocotlán, Jalisco</p>
-        <p class="event-date">📅 23 de mayo 2026</p>
+        <p class="event-location"><span class="event-icon location-icon">📍</span> Ocotlán, Jalisco</p>
+        <p class="event-date"><span class="event-icon date-icon">📅</span> 23 de mayo 2026</p>
         <p class="event-description">
             El punto de encuentro donde líderes y emprendedores se reúnen para
             convertir ideas en negocios que transforman el mundo.
