@@ -1585,17 +1585,18 @@
         .speakers-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 60px;
+            gap: 80px;
             max-width: none;
             margin: 0;
             position: relative;
             z-index: 1;
+            perspective: 1200px;
         }
         .speaker-card {
             text-align: center;
             padding: 0;
             border-right: none;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: visible;
             background: transparent;
@@ -1604,20 +1605,27 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
+            transform-style: preserve-3d;
         }
         .speaker-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: transparent;
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
             opacity: 0;
-            transition: opacity 0.5s;
-            border-radius: 32px;
+            transition: opacity 0.6s;
+            border-radius: 50%;
             pointer-events: none;
+            filter: blur(30px);
         }
         .speaker-card:last-child { border-right: none; }
         .speaker-card:hover {
-            transform: translateY(-20px) scale(1.08);
+            transform: translateY(-30px) scale(1.15) rotateX(10deg);
+            z-index: 10;
         }
         .speaker-card:hover::before { opacity: 1; }
         .speaker-card:nth-child(n+4) {
@@ -1634,21 +1642,45 @@
             justify-content: center;
             font-size: clamp(2.8rem, 6vw, 4rem);
             overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             z-index: 2;
-            background: linear-gradient(135deg, var(--violeta-intenso) 0%, var(--amarillo-limon) 100%);
-            box-shadow: 0 0 30px rgba(123,83,240,0.5), 0 20px 60px rgba(246,255,84,0.3);
-            animation: float 3s ease-in-out infinite;
+            border: 3px solid;
+            box-shadow: 0 0 40px, 0 0 80px, inset 0 0 40px rgba(255,255,255,0.2);
+            animation: float 4s ease-in-out infinite, pulse-glow 2s ease-in-out infinite;
+            transform-style: preserve-3d;
         }
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            0%, 100% { transform: translateY(0px) rotateZ(-5deg); }
+            50% { transform: translateY(-25px) rotateZ(5deg); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+        @keyframes particle-float {
+            0% { opacity: 1; transform: translateY(0px) translateX(0px); }
+            100% { opacity: 0; transform: translateY(-60px) translateX(var(--tx, 0px)); }
+        }
+        .speaker-card::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .speaker-card:hover::after {
+            animation: particle-burst 0.8s ease-out;
+        }
+        @keyframes particle-burst {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
         }
         .speaker-card:hover .speaker-photo {
-            transform: scale(1.3) rotate(-15deg);
-            box-shadow: 0 0 50px rgba(246,255,84,0.8), 0 30px 80px rgba(123,83,240,0.6), inset 0 0 30px rgba(255,255,255,0.3);
-            animation: none;
+            transform: scale(1.4) rotate(-20deg) rotateY(20deg) rotateX(-10deg);
+            filter: brightness(1.5) saturate(1.3);
         }
         .speaker-photo img {
             width: 100%;
@@ -1657,6 +1689,72 @@
             position: relative;
             z-index: 0;
         }
+        /* Neon Cyberpunk Colors por Speaker */
+        .speaker-card:nth-child(1) .speaker-photo {
+            background: linear-gradient(135deg, #00ffff 0%, #0099ff 100%);
+            border-color: #00ffff;
+            box-shadow: 0 0 40px #00ffff, 0 0 80px #00ffff, inset 0 0 40px rgba(255,255,255,0.2);
+        }
+        .speaker-card:nth-child(1):hover .speaker-photo {
+            box-shadow: 0 0 60px #00ffff, 0 0 120px #00ffff, 0 0 200px rgba(0,255,255,0.8);
+        }
+        .speaker-card:nth-child(1) .speaker-specialty { color: #00ffff; }
+        .speaker-card:nth-child(1):hover .speaker-specialty { color: #00ffff; text-shadow: 0 0 20px #00ffff; }
+
+        .speaker-card:nth-child(2) .speaker-photo {
+            background: linear-gradient(135deg, #ff006e 0%, #ff1493 100%);
+            border-color: #ff006e;
+            box-shadow: 0 0 40px #ff006e, 0 0 80px #ff006e, inset 0 0 40px rgba(255,255,255,0.2);
+        }
+        .speaker-card:nth-child(2):hover .speaker-photo {
+            box-shadow: 0 0 60px #ff006e, 0 0 120px #ff006e, 0 0 200px rgba(255,0,110,0.8);
+        }
+        .speaker-card:nth-child(2) .speaker-specialty { color: #ff006e; }
+        .speaker-card:nth-child(2):hover .speaker-specialty { color: #ff006e; text-shadow: 0 0 20px #ff006e; }
+
+        .speaker-card:nth-child(3) .speaker-photo {
+            background: linear-gradient(135deg, #39ff14 0%, #7fff00 100%);
+            border-color: #39ff14;
+            box-shadow: 0 0 40px #39ff14, 0 0 80px #39ff14, inset 0 0 40px rgba(255,255,255,0.2);
+        }
+        .speaker-card:nth-child(3):hover .speaker-photo {
+            box-shadow: 0 0 60px #39ff14, 0 0 120px #39ff14, 0 0 200px rgba(57,255,20,0.8);
+        }
+        .speaker-card:nth-child(3) .speaker-specialty { color: #39ff14; }
+        .speaker-card:nth-child(3):hover .speaker-specialty { color: #39ff14; text-shadow: 0 0 20px #39ff14; }
+
+        .speaker-card:nth-child(4) .speaker-photo {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffaa00 100%);
+            border-color: #ff8c00;
+            box-shadow: 0 0 40px #ff8c00, 0 0 80px #ff8c00, inset 0 0 40px rgba(255,255,255,0.2);
+        }
+        .speaker-card:nth-child(4):hover .speaker-photo {
+            box-shadow: 0 0 60px #ff8c00, 0 0 120px #ff8c00, 0 0 200px rgba(255,140,0,0.8);
+        }
+        .speaker-card:nth-child(4) .speaker-specialty { color: #ff8c00; }
+        .speaker-card:nth-child(4):hover .speaker-specialty { color: #ff8c00; text-shadow: 0 0 20px #ff8c00; }
+
+        .speaker-card:nth-child(5) .speaker-photo {
+            background: linear-gradient(135deg, #b300ff 0%, #7b68ee 100%);
+            border-color: #b300ff;
+            box-shadow: 0 0 40px #b300ff, 0 0 80px #b300ff, inset 0 0 40px rgba(255,255,255,0.2);
+        }
+        .speaker-card:nth-child(5):hover .speaker-photo {
+            box-shadow: 0 0 60px #b300ff, 0 0 120px #b300ff, 0 0 200px rgba(179,0,255,0.8);
+        }
+        .speaker-card:nth-child(5) .speaker-specialty { color: #b300ff; }
+        .speaker-card:nth-child(5):hover .speaker-specialty { color: #b300ff; text-shadow: 0 0 20px #b300ff; }
+
+        .speaker-card:nth-child(6) .speaker-photo {
+            background: linear-gradient(135deg, #ff0080 0%, #ff4500 100%);
+            border-color: #ff0080;
+            box-shadow: 0 0 40px #ff0080, 0 0 80px #ff0080, inset 0 0 40px rgba(255,255,255,0.2);
+        }
+        .speaker-card:nth-child(6):hover .speaker-photo {
+            box-shadow: 0 0 60px #ff0080, 0 0 120px #ff0080, 0 0 200px rgba(255,0,128,0.8);
+        }
+        .speaker-card:nth-child(6) .speaker-specialty { color: #ff0080; }
+        .speaker-card:nth-child(6):hover .speaker-specialty { color: #ff0080; text-shadow: 0 0 20px #ff0080; }
         .speaker-name {
             font-family: 'Funnel Display', sans-serif;
             font-weight: 900;
