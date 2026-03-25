@@ -1585,7 +1585,7 @@
         .speakers-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 50px;
+            gap: 60px;
             max-width: none;
             margin: 0;
             position: relative;
@@ -1593,32 +1593,31 @@
         }
         .speaker-card {
             text-align: center;
-            padding: 50px 40px;
+            padding: 0;
             border-right: none;
-            transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, rgba(123, 83, 240, 0.1) 0%, rgba(246, 255, 84, 0.05) 100%);
-            border-radius: 32px;
-            border: 2px solid rgba(123, 83, 240, 0.3);
-            backdrop-filter: blur(10px);
+            overflow: visible;
+            background: transparent;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
         }
         .speaker-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(246,255,84,0.25), transparent 70%);
+            background: transparent;
             opacity: 0;
-            transition: opacity 0.45s;
+            transition: opacity 0.5s;
             border-radius: 32px;
             pointer-events: none;
         }
         .speaker-card:last-child { border-right: none; }
         .speaker-card:hover {
-            background: linear-gradient(135deg, rgba(123, 83, 240, 0.2) 0%, rgba(246, 255, 84, 0.12) 100%);
-            border-color: var(--amarillo-limon);
-            transform: translateY(-16px) scale(1.03);
-            box-shadow: 0 24px 80px rgba(246,255,84,0.35), 0 0 40px rgba(123, 83, 240, 0.2);
+            transform: translateY(-20px) scale(1.08);
         }
         .speaker-card:hover::before { opacity: 1; }
         .speaker-card:nth-child(n+4) {
@@ -1626,26 +1625,30 @@
             border-top: none;
         }
         .speaker-photo {
-            width: 75%;
-            margin: 0 auto;
-            aspect-ratio: 1/1;
-            background: linear-gradient(135deg, rgba(123,83,240,0.5) 0%, rgba(246,255,84,0.35) 100%);
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: clamp(2.8rem, 6vw, 4rem);
-            margin-bottom: 32px;
             overflow: hidden;
-            border: 4px solid rgba(246,255,84,0.6);
-            transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
-            box-shadow: 0 12px 36px rgba(123,83,240,0.35), inset 0 0 20px rgba(246,255,84,0.2), 0 0 30px rgba(246,255,84,0.15);
+            z-index: 2;
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, var(--amarillo-limon) 100%);
+            box-shadow: 0 0 30px rgba(123,83,240,0.5), 0 20px 60px rgba(246,255,84,0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
         }
         .speaker-card:hover .speaker-photo {
-            border-color: var(--amarillo-limon);
-            transform: scale(1.25) rotate(8deg);
-            box-shadow: 0 20px 60px rgba(246,255,84,0.45), inset 0 0 35px rgba(246,255,84,0.3), 0 0 40px rgba(123, 83, 240, 0.3);
+            transform: scale(1.3) rotate(-15deg);
+            box-shadow: 0 0 50px rgba(246,255,84,0.8), 0 30px 80px rgba(123,83,240,0.6), inset 0 0 30px rgba(255,255,255,0.3);
+            animation: none;
         }
         .speaker-photo img {
             width: 100%;
@@ -1656,32 +1659,86 @@
         }
         .speaker-name {
             font-family: 'Funnel Display', sans-serif;
-            font-weight: 800;
+            font-weight: 900;
             font-size: clamp(1.1rem, 2.2vw, 1.4rem);
             background: linear-gradient(135deg, var(--amarillo-limon) 0%, rgba(246, 255, 84, 0.8) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             letter-spacing: -0.7px;
             transition: all 0.4s ease;
+            z-index: 2;
+            position: relative;
         }
         .speaker-card:hover .speaker-name {
             background: linear-gradient(135deg, rgba(246, 255, 84, 1) 0%, var(--amarillo-limon) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 0 20px rgba(246,255,84,0.5);
         }
-        .speaker-role {
-            font-size: clamp(0.75rem, 1.3vw, 0.95rem);
-            color: rgba(246, 255, 84, 0.8);
-            font-weight: 600;
+        .speaker-specialty {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+            color: var(--violeta-intenso);
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            transition: color 0.4s ease;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            transition: all 0.4s ease;
+            z-index: 2;
+            position: relative;
         }
-        .speaker-card:hover .speaker-role {
+        .speaker-card:hover .speaker-specialty {
             color: var(--amarillo-limon);
+            transform: scale(1.1);
+        }
+        .speaker-description {
+            font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+            margin-bottom: 16px;
+            transition: color 0.4s ease;
+            z-index: 2;
+            position: relative;
+            line-height: 1.4;
+            max-width: 200px;
+        }
+        .speaker-card:hover .speaker-description {
+            color: var(--amarillo-limon);
+        }
+        .speaker-socials {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            z-index: 2;
+            position: relative;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease 0.1s;
+        }
+        .speaker-card:hover .speaker-socials {
+            opacity: 1;
+            transform: translateY(0px);
+        }
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, var(--amarillo-limon) 100%);
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(123,83,240,0.4);
+        }
+        .social-icon:hover {
+            transform: scale(1.2) rotate(10deg);
+            box-shadow: 0 12px 30px rgba(246,255,84,0.6);
         }
 
         /* ====== PODCAST ====== */
@@ -3036,32 +3093,68 @@
             <div class="speaker-card">
                 <div class="speaker-photo">🎤</div>
                 <p class="speaker-name">Speaker 1</p>
-                <p class="speaker-role">Próximamente</p>
+                <p class="speaker-specialty">Marketing</p>
+                <p class="speaker-description">Experto en estrategias digitales</p>
+                <div class="speaker-socials">
+                    <a href="#" class="social-icon">📱</a>
+                    <a href="#" class="social-icon">🎬</a>
+                    <a href="#" class="social-icon">👔</a>
+                </div>
             </div>
             <div class="speaker-card">
                 <div class="speaker-photo">🎤</div>
                 <p class="speaker-name">Speaker 2</p>
-                <p class="speaker-role">Próximamente</p>
+                <p class="speaker-specialty">Ventas</p>
+                <p class="speaker-description">Especialista en cierre de deals</p>
+                <div class="speaker-socials">
+                    <a href="#" class="social-icon">📱</a>
+                    <a href="#" class="social-icon">🎬</a>
+                    <a href="#" class="social-icon">👔</a>
+                </div>
             </div>
             <div class="speaker-card">
                 <div class="speaker-photo">🎤</div>
                 <p class="speaker-name">Speaker 3</p>
-                <p class="speaker-role">Próximamente</p>
+                <p class="speaker-specialty">IA</p>
+                <p class="speaker-description">Pionero en inteligencia artificial</p>
+                <div class="speaker-socials">
+                    <a href="#" class="social-icon">📱</a>
+                    <a href="#" class="social-icon">🎬</a>
+                    <a href="#" class="social-icon">👔</a>
+                </div>
             </div>
             <div class="speaker-card">
                 <div class="speaker-photo">🎤</div>
                 <p class="speaker-name">Speaker 4</p>
-                <p class="speaker-role">Próximamente</p>
+                <p class="speaker-specialty">Liderazgo</p>
+                <p class="speaker-description">Coach empresarial de élite</p>
+                <div class="speaker-socials">
+                    <a href="#" class="social-icon">📱</a>
+                    <a href="#" class="social-icon">🎬</a>
+                    <a href="#" class="social-icon">👔</a>
+                </div>
             </div>
             <div class="speaker-card">
                 <div class="speaker-photo">🎤</div>
                 <p class="speaker-name">Speaker 5</p>
-                <p class="speaker-role">Próximamente</p>
+                <p class="speaker-specialty">Emprendimiento</p>
+                <p class="speaker-description">Fundador de startups exitosas</p>
+                <div class="speaker-socials">
+                    <a href="#" class="social-icon">📱</a>
+                    <a href="#" class="social-icon">🎬</a>
+                    <a href="#" class="social-icon">👔</a>
+                </div>
             </div>
             <div class="speaker-card">
                 <div class="speaker-photo">🎤</div>
                 <p class="speaker-name">Speaker 6</p>
-                <p class="speaker-role">Próximamente</p>
+                <p class="speaker-specialty">Innovación</p>
+                <p class="speaker-description">Transformador digital</p>
+                <div class="speaker-socials">
+                    <a href="#" class="social-icon">📱</a>
+                    <a href="#" class="social-icon">🎬</a>
+                    <a href="#" class="social-icon">👔</a>
+                </div>
             </div>
         </div>
     </section>
