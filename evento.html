@@ -1101,78 +1101,141 @@
         .pricing-section::before { display: none; }
 
         .pricing-header {
-            margin-bottom: 80px;
+            margin-bottom: 100px;
             position: relative;
             z-index: 1;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
         }
         .pricing-header .section-title {
-            color: var(--dark);
-            font-size: clamp(3rem, 8vw, 5.2rem);
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, var(--dark) 50%, var(--amarillo-limon) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: clamp(3.5rem, 9vw, 5.8rem);
             font-weight: 900;
-            letter-spacing: -2.5px;
-            margin: 0 0 16px;
+            letter-spacing: -3px;
+            margin: 0 0 24px;
             padding: 0;
             border-bottom: none;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .pricing-header .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 6px;
+            background: linear-gradient(90deg, var(--violeta-intenso), var(--amarillo-limon));
+            border-radius: 3px;
+            box-shadow: 0 0 30px rgba(123,83,240,0.4);
+            animation: glow 2s ease-in-out infinite;
         }
         .pricing-subtitle {
-            color: rgba(0,0,0,0.5);
-            font-size: clamp(1rem, 1.8vw, 1.3rem);
-            font-weight: 500;
-            letter-spacing: 1px;
-            margin: 0;
+            color: rgba(0,0,0,0.6);
+            font-size: clamp(1.05rem, 2vw, 1.35rem);
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin: 50px 0 0;
             padding: 0;
+            text-transform: uppercase;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
 /* ====== PRICING CARDS ====== */
         .pricing-cards-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            gap: 48px;
             position: relative;
             z-index: 1;
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
+            padding: 0 40px;
         }
         @media (max-width: 1200px) {
-            .pricing-cards-container { grid-template-columns: 1fr; }
+            .pricing-cards-container { grid-template-columns: 1fr; gap: 40px; }
         }
 
         .pricing-card {
             background: white;
-            border-radius: 48px;
-            padding: 50px 40px;
+            border-radius: 56px;
+            padding: 60px 48px;
             position: relative;
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border: 3px solid rgba(123,83,240,0.15);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 4px solid rgba(123,83,240,0.2);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            animation: floatInCard 0.8s ease-out both;
         }
+        .pricing-card:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-card:nth-child(2) { animation-delay: 0.2s; }
+        .pricing-card:nth-child(3) { animation-delay: 0.3s; }
+
         .pricing-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at top right, rgba(123,83,240,0.12), transparent);
+            background: radial-gradient(circle at top right, rgba(123,83,240,0.2), transparent 70%);
             opacity: 0;
-            transition: opacity 0.5s;
-            border-radius: 48px;
+            transition: opacity 0.6s;
+            border-radius: 56px;
             z-index: 0;
         }
+        .pricing-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(123,83,240,0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.6s;
+            z-index: 2;
+        }
         .pricing-card:hover {
-            transform: translateY(-24px);
-            box-shadow: 0 32px 80px rgba(123,83,240,0.2);
+            transform: translateY(-32px) scale(1.02);
+            box-shadow: 0 40px 100px rgba(123,83,240,0.25);
             border-color: var(--violeta-intenso);
         }
         .pricing-card:hover::before { opacity: 1; }
+        .pricing-card:hover::after { opacity: 1; }
 
-        .pricing-card-free { background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%); }
-        .pricing-card-standard { border-color: var(--violeta-intenso); border-width: 3px; }
+        .pricing-card-free {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9ff 100%);
+            border-color: rgba(123,83,240,0.3);
+        }
+        .pricing-card-free:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #f0ebff 100%);
+        }
+
+        .pricing-card-standard {
+            border-color: var(--violeta-intenso);
+            border-width: 4px;
+            box-shadow: 0 20px 60px rgba(123,83,240,0.15);
+        }
+        .pricing-card-standard:hover {
+            box-shadow: 0 40px 100px rgba(123,83,240,0.3);
+        }
+
         .pricing-card-vip {
             background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
             border-color: var(--amarillo-limon);
             position: relative;
             transform: scale(1.02);
+            box-shadow: 0 20px 60px rgba(246,255,84,0.15);
+        }
+        .pricing-card-vip:hover {
+            transform: translateY(-32px) scale(1.04);
+            box-shadow: 0 40px 100px rgba(246,255,84,0.25);
         }
 
         .pricing-card-crown {
@@ -1191,161 +1254,193 @@
         }
         .pricing-name {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(0.75rem, 1.3vw, 0.95rem);
-            letter-spacing: 3px;
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            letter-spacing: 4px;
             margin-bottom: 16px;
-            color: rgba(0,0,0,0.55);
-            font-weight: 700;
+            color: rgba(0,0,0,0.65);
+            font-weight: 800;
             text-transform: uppercase;
         }
-        .pricing-card-vip .pricing-name { color: rgba(255,255,255,0.5); }
+        .pricing-card-vip .pricing-name { color: rgba(255,255,255,0.6); }
 
         .pricing-badge {
             display: inline-block;
-            padding: 8px 20px;
-            border-radius: 20px;
+            padding: 10px 28px;
+            border-radius: 25px;
             font-family: 'Funnel Display', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 2px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
             margin-bottom: 0;
+            transition: all 0.3s ease;
         }
         .free-badge {
-            background: rgba(123,83,240,0.1);
+            background: linear-gradient(135deg, rgba(123,83,240,0.15) 0%, rgba(123,83,240,0.08) 100%);
             color: var(--violeta-intenso);
-            border: 1px solid var(--violeta-intenso);
+            border: 2px solid var(--violeta-intenso);
         }
         .standard-badge {
-            background: var(--violeta-intenso);
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #9b85f0 100%);
             color: white;
-            border: 1px solid var(--violeta-intenso);
+            border: 2px solid var(--violeta-intenso);
+            box-shadow: 0 8px 20px rgba(123,83,240,0.3);
         }
         .vip-badge {
-            background: var(--amarillo-limon);
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #f0f550 100%);
             color: var(--dark);
-            border: 1px solid var(--amarillo-limon);
+            border: 2px solid var(--amarillo-limon);
+            box-shadow: 0 8px 20px rgba(246,255,84,0.3);
         }
 
         .pricing-price-section {
             margin-bottom: 40px;
             position: relative;
             z-index: 1;
-            padding-bottom: 32px;
-            border-bottom: 2px solid rgba(123,83,240,0.1);
+            padding-bottom: 40px;
+            border-bottom: 3px solid rgba(123,83,240,0.12);
         }
-        .pricing-card-vip .pricing-price-section { border-bottom-color: rgba(255,255,255,0.1); }
+        .pricing-card-vip .pricing-price-section { border-bottom-color: rgba(246,255,84,0.15); }
 
         .pricing-price {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 900;
             color: var(--dark);
             line-height: 1;
             letter-spacing: -2px;
             margin: 0;
         }
-        .pricing-card-vip .pricing-price { color: var(--amarillo-limon); }
+        .pricing-card-vip .pricing-price {
+            color: var(--amarillo-limon);
+            text-shadow: 0 0 20px rgba(246,255,84,0.3);
+        }
 
         .pricing-currency {
-            font-size: 0.85rem;
-            color: rgba(0,0,0,0.45);
-            font-weight: 600;
+            font-size: 0.9rem;
+            color: rgba(0,0,0,0.5);
+            font-weight: 700;
             display: block;
-            margin-top: 8px;
+            margin-top: 12px;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        .pricing-card-vip .pricing-currency { color: rgba(255,255,255,0.45); }
+        .pricing-card-vip .pricing-currency { color: rgba(255,255,255,0.5); }
 
         .pricing-features {
             flex-grow: 1;
-            margin-bottom: 40px;
+            margin-bottom: 48px;
             position: relative;
             z-index: 1;
         }
         .feature-item {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 18px;
-            padding-bottom: 18px;
-            border-bottom: 1px solid rgba(123,83,240,0.08);
-            font-size: 0.95rem;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(123,83,240,0.1);
+            font-size: 0.98rem;
             color: var(--gray-text);
-            line-height: 1.6;
+            line-height: 1.7;
+            font-weight: 500;
         }
         .pricing-card-vip .feature-item {
-            color: rgba(255,255,255,0.7);
-            border-bottom-color: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.75);
+            border-bottom-color: rgba(246,255,84,0.1);
         }
         .feature-item:last-child { border-bottom: none; padding-bottom: 0; }
         .feature-item.highlight {
             color: var(--violeta-intenso);
-            font-weight: 700;
-            margin-bottom: 24px;
-            padding-bottom: 24px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom-color: rgba(123,83,240,0.2);
+            border-bottom-width: 3px;
+            font-size: 1.02rem;
         }
-        .pricing-card-vip .feature-item.highlight { color: var(--amarillo-limon); }
+        .pricing-card-vip .feature-item.highlight {
+            color: var(--amarillo-limon);
+            border-bottom-color: rgba(246,255,84,0.2);
+        }
         .feature-icon {
             flex-shrink: 0;
-            font-size: 1.2rem;
-            margin-top: 2px;
+            font-size: 1.3rem;
+            margin-top: 3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
         }
 
         .pricing-btn {
             display: block;
             width: 100%;
-            padding: 18px 32px;
+            padding: 20px 40px;
             border: none;
-            border-radius: 24px;
+            border-radius: 28px;
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(0.85rem, 1.4vw, 0.95rem);
-            font-weight: 800;
+            font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+            font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
             text-align: center;
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            letter-spacing: 2px;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            letter-spacing: 3px;
             position: relative;
             z-index: 1;
             margin-top: auto;
+            overflow: hidden;
+        }
+        .pricing-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.3), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: -1;
         }
 
         .pricing-btn-free {
             background: transparent;
-            border: 2px solid var(--dark);
+            border: 3px solid var(--dark);
             color: var(--dark);
         }
         .pricing-btn-free:hover {
             background: var(--dark);
             color: white;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+            border-color: var(--dark);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3);
         }
 
         .pricing-btn-standard {
-            background: var(--violeta-intenso);
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #9b85f0 100%);
             color: white;
-            border: 2px solid var(--violeta-intenso);
+            border: 3px solid var(--violeta-intenso);
+            box-shadow: 0 12px 30px rgba(123,83,240,0.2);
         }
         .pricing-btn-standard:hover {
-            background: #8b6fd9;
+            background: linear-gradient(135deg, #8b6fd9 0%, #7d5ad0 100%);
             border-color: #8b6fd9;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(123,83,240,0.3);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(123,83,240,0.4);
         }
 
         .pricing-btn-vip {
-            background: var(--amarillo-limon);
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #f0ff40 100%);
             color: var(--dark);
-            border: 2px solid var(--amarillo-limon);
+            border: 3px solid var(--amarillo-limon);
+            box-shadow: 0 12px 30px rgba(246,255,84,0.3);
+            font-weight: 900;
         }
         .pricing-btn-vip:hover {
-            background: #f0ff40;
-            border-color: #f0ff40;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(246,255,84,0.4);
+            background: linear-gradient(135deg, #f0ff40 0%, #ffff60 100%);
+            border-color: #ffff60;
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(246,255,84,0.5);
         }
 
         /* ====== SPEAKERS ====== */
