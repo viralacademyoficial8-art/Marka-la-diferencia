@@ -541,7 +541,7 @@
             font-family: 'Funnel Display', sans-serif;
             font-size: clamp(3.2rem, 8vw, 5rem);
             font-weight: 900;
-            color: var(--violeta-intenso);
+            color: #7B53F0;
             text-align: center;
             padding: 0;
             line-height: 0.95;
@@ -555,14 +555,13 @@
             position: relative;
             z-index: 1;
             filter: drop-shadow(0 0 30px rgba(123,83,240,0.5));
-            text-shadow: 0 0 40px rgba(123,83,240,0.3);
             max-width: 900px;
         }
         .event-date {
             font-family: 'Funnel Display', sans-serif;
             font-size: clamp(3.2rem, 8vw, 5rem);
             font-weight: 900;
-            color: var(--amarillo-limon);
+            color: #F6FF54;
             text-align: center;
             padding: 0;
             line-height: 0.95;
@@ -576,7 +575,6 @@
             filter: drop-shadow(0 0 40px rgba(246,255,84,0.6));
             position: relative;
             z-index: 1;
-            text-shadow: 0 0 50px rgba(246,255,84,0.4);
             max-width: 900px;
         }
         .event-description {
@@ -595,19 +593,18 @@
         }
         .event-icon {
             display: inline-block;
-            font-size: 1.3em;
-            margin-right: 12px;
+            font-size: 1.6em;
+            margin-right: 16px;
             animation: bounce 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.5)) drop-shadow(0 0 10px rgba(255,255,255,0.3));
+            text-shadow: 0 0 10px rgba(255,255,255,0.4);
         }
         .location-icon {
-            color: #7B53F0;
-            filter: drop-shadow(0 0 20px rgba(123,83,240,0.6));
+            filter: drop-shadow(0 0 25px rgba(123,83,240,0.8)) drop-shadow(0 0 15px rgba(123,83,240,0.5));
             animation: locationPulse 2.5s ease-in-out infinite;
         }
         .date-icon {
-            color: #F6FF54;
-            filter: drop-shadow(0 0 20px rgba(246,255,84,0.6));
+            filter: drop-shadow(0 0 25px rgba(246,255,84,0.8)) drop-shadow(0 0 15px rgba(246,255,84,0.5));
             animation: datePulse 2.5s ease-in-out infinite;
         }
         .event-features {
