@@ -1250,7 +1250,21 @@
             transform: scale(1.05);
         }
         .pricing-card-standard::before {
-            display: none;
+            content: 'POPULAR';
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff6b6b 0%, var(--amarillo-limon) 100%);
+            color: white;
+            padding: 8px 40px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            z-index: 10;
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
+            text-transform: uppercase;
         }
         .pricing-card-standard::after { display: none; }
         .pricing-card-standard:hover {
@@ -1275,21 +1289,7 @@
             overflow: hidden;
         }
         .pricing-card-vip::before {
-            content: 'POPULAR';
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff88 100%);
-            color: #0f0f1f;
-            padding: 12px 26px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 900;
-            letter-spacing: 1.2px;
-            z-index: 10;
-            box-shadow: 0 8px 24px rgba(246, 255, 84, 0.35);
-            text-transform: uppercase;
-            white-space: nowrap;
+            display: none;
         }
         .pricing-card-vip::after { display: none; }
         .pricing-card-vip:hover {
