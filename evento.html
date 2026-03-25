@@ -1289,7 +1289,21 @@
             overflow: hidden;
         }
         .pricing-card-vip::before {
-            display: none;
+            content: 'POPULAR';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff88 100%);
+            color: #0f0f1f;
+            padding: 12px 26px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            z-index: 10;
+            box-shadow: 0 8px 24px rgba(246, 255, 84, 0.35);
+            text-transform: uppercase;
+            white-space: nowrap;
         }
         .pricing-card-vip::after { display: none; }
         .pricing-card-vip:hover {
