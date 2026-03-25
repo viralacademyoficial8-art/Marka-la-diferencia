@@ -1204,12 +1204,12 @@
         .pricing-card:nth-child(3) { animation-delay: 0.3s; }
 
         .pricing-card-free {
-            background: linear-gradient(to bottom, #f8f9ff 0%, #f0f0ff 100%);
-            border: 2px solid rgba(123,83,240,0.25);
-            border-radius: 32px;
+            background: linear-gradient(135deg, #ffffff 0%, #f9f6ff 50%, #ede6ff 100%);
+            border: 3px solid var(--violeta-intenso);
+            border-radius: 36px;
             position: relative;
-            box-shadow: 0 15px 40px rgba(123,83,240,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
-            padding: 48px 40px;
+            box-shadow: 0 20px 60px rgba(123,83,240,0.15), inset 0 1px 0 rgba(255,255,255,0.95), 0 0 40px rgba(123,83,240,0.1);
+            padding: 52px 44px;
             display: flex;
             flex-direction: column;
             gap: 32px;
@@ -1221,150 +1221,154 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, rgba(123,83,240,0.3), transparent);
+            height: 5px;
+            background: linear-gradient(90deg, transparent, var(--violeta-intenso), var(--amarillo-limon), transparent);
             z-index: 2;
         }
         .pricing-card-free::after {
             content: '';
             position: absolute;
-            top: -100px;
-            right: -100px;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(123,83,240,0.05) 0%, transparent 70%);
+            top: -120px;
+            right: -80px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(123,83,240,0.12) 0%, transparent 70%);
             border-radius: 50%;
             z-index: 0;
             animation: float 6s ease-in-out infinite;
         }
         .pricing-card-free:hover {
-            background: linear-gradient(to bottom, #ffffff 0%, #f5f1ff 100%);
-            box-shadow: 0 30px 80px rgba(123,83,240,0.15), inset 0 1px 0 rgba(255,255,255,0.9);
-            transform: translateY(-20px);
+            background: linear-gradient(135deg, #ffffff 0%, #f0e8ff 50%, #dcc6ff 100%);
+            box-shadow: 0 40px 100px rgba(123,83,240,0.25), inset 0 1px 0 rgba(255,255,255,0.95), 0 0 60px rgba(123,83,240,0.2);
+            transform: translateY(-24px);
+            border-color: rgba(123,83,240,0.8);
         }
 
         .pricing-card-standard {
-            background: linear-gradient(135deg, #6b4bff 0%, #7d5bff 50%, #8e6dff 100%);
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #8b5ff0 50%, #9b7bff 100%);
             border: none;
-            border-radius: 40px;
-            box-shadow: 0 30px 80px rgba(123,83,240,0.35), inset 0 1px 0 rgba(255,255,255,0.15), 0 0 40px rgba(123,83,240,0.2);
+            border-radius: 44px;
+            box-shadow: 0 40px 100px rgba(123,83,240,0.4), inset 0 1px 0 rgba(255,255,255,0.2), 0 0 50px rgba(123,83,240,0.3);
             position: relative;
-            padding: 56px 48px;
-            transform: scale(1.05);
-            animation: vipCardGlow 3s ease-in-out infinite;
+            padding: 64px 52px;
+            transform: scale(1.08);
+            animation: vipCardGlow 2.8s ease-in-out infinite;
+            overflow: hidden;
         }
         .pricing-card-standard::before {
-            content: '✨ RECOMENDADO ✨';
+            content: '⚡ MÁS VENDIDO ⚡';
             position: absolute;
-            top: -20px;
+            top: -18px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(90deg, #ff6b6b, #ffa366, #ffd93d);
-            color: white;
-            padding: 8px 32px;
-            border-radius: 20px;
-            font-size: 0.7rem;
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffed4e 100%);
+            color: var(--dark);
+            padding: 10px 40px;
+            border-radius: 24px;
+            font-size: 0.75rem;
             font-weight: 900;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             z-index: 10;
-            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
+            box-shadow: 0 12px 32px rgba(246,255,84,0.4), inset 0 -2px 0 rgba(0,0,0,0.1);
+            text-transform: uppercase;
         }
         .pricing-card-standard::after {
             content: '';
             position: absolute;
-            bottom: -40px;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
-            width: 300px;
-            height: 200px;
-            background: radial-gradient(ellipse at center, rgba(123,83,240,0.25) 0%, transparent 70%);
+            width: 350px;
+            height: 250px;
+            background: radial-gradient(ellipse at center, rgba(246,255,84,0.15) 0%, transparent 70%);
             border-radius: 50%;
             z-index: 0;
-            animation: pulse 3s ease-in-out infinite;
+            animation: pulse 2.8s ease-in-out infinite;
         }
         .pricing-card-standard:hover {
-            transform: translateY(-30px) scale(1.07);
-            box-shadow: 0 50px 130px rgba(123,83,240,0.5), inset 0 1px 0 rgba(255,255,255,0.2), 0 0 80px rgba(123,83,240,0.3);
+            transform: translateY(-36px) scale(1.1);
+            box-shadow: 0 60px 150px rgba(123,83,240,0.6), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 100px rgba(246,255,84,0.2);
             animation: none;
         }
-        .pricing-card-standard .pricing-name { color: rgba(255,255,255,0.8); }
-        .pricing-card-standard .pricing-price { color: white; }
-        .pricing-card-standard .pricing-currency { color: rgba(255,255,255,0.7); }
-        .pricing-card-standard .pricing-price-section { border-bottom-color: rgba(255,255,255,0.2); }
-        .pricing-card-standard .feature-item { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.15); }
-        .pricing-card-standard .feature-item.highlight { color: #ffff70; }
+        .pricing-card-standard .pricing-name { color: rgba(255,255,255,0.9); }
+        .pricing-card-standard .pricing-price { color: var(--amarillo-limon); text-shadow: 0 0 20px rgba(246,255,84,0.4); }
+        .pricing-card-standard .pricing-currency { color: rgba(255,255,255,0.8); }
+        .pricing-card-standard .pricing-price-section { border-bottom-color: rgba(246,255,84,0.2); }
+        .pricing-card-standard .feature-item { color: rgba(255,255,255,0.9); border-bottom-color: rgba(246,255,84,0.15); }
+        .pricing-card-standard .feature-item.highlight { color: var(--amarillo-limon); font-weight: 900; }
 
         .pricing-card-vip {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 50%, #000000 100%);
-            border: 3px solid var(--amarillo-limon);
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a0a 50%, #0f0f08 100%);
+            border: 4px solid var(--amarillo-limon);
             position: relative;
-            border-radius: 28px;
-            box-shadow: 0 40px 100px rgba(246,255,84,0.25), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 60px rgba(246,255,84,0.2);
-            padding: 64px 50px;
-            transform: scale(1.02);
-            animation: vipCardGlow 3s ease-in-out infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 0 100%);
+            border-radius: 36px;
+            box-shadow: 0 50px 120px rgba(246,255,84,0.3), inset 0 1px 0 rgba(255,255,255,0.1), 0 0 80px rgba(246,255,84,0.25);
+            padding: 68px 56px;
+            transform: scale(1.04);
+            animation: vipCardGlow 2.8s ease-in-out infinite;
+            overflow: hidden;
         }
         .pricing-card-vip::before {
-            content: '👑 ELITE ✨';
+            content: '👑 VIP ELITE 👑';
             position: absolute;
-            top: -25px;
-            right: 30px;
-            background: linear-gradient(135deg, #ffd93d 0%, #ffed4e 100%);
-            color: #0a0a0a;
-            padding: 12px 40px;
-            border-radius: 25px;
-            font-size: 0.8rem;
+            top: -22px;
+            right: 35px;
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff80 100%);
+            color: var(--dark);
+            padding: 12px 44px;
+            border-radius: 28px;
+            font-size: 0.78rem;
             font-weight: 900;
             letter-spacing: 3px;
             z-index: 10;
-            box-shadow: 0 10px 30px rgba(246,255,84,0.4);
+            box-shadow: 0 14px 40px rgba(246,255,84,0.5), inset 0 -2px 0 rgba(0,0,0,0.2);
+            text-transform: uppercase;
         }
         .pricing-card-vip::after {
             content: '';
             position: absolute;
-            top: -80px;
-            right: -80px;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(246,255,84,0.25) 0%, transparent 65%);
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(246,255,84,0.3) 0%, transparent 65%);
             border-radius: 50%;
             z-index: 0;
-            animation: pulse 3s ease-in-out infinite;
+            animation: pulse 2.8s ease-in-out infinite;
         }
         .pricing-card-vip:hover {
-            transform: translateY(-35px) scale(1.04);
-            box-shadow: 0 60px 150px rgba(246,255,84,0.4), inset 0 1px 0 rgba(255,255,255,0.15), 0 0 100px rgba(246,255,84,0.3);
+            transform: translateY(-40px) scale(1.06);
+            box-shadow: 0 70px 160px rgba(246,255,84,0.45), inset 0 2px 0 rgba(246,255,84,0.15), 0 0 120px rgba(246,255,84,0.35);
             animation: none;
         }
 
         .pricing-card-crown {
-            font-size: 4.5rem;
+            font-size: 5rem;
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 15px;
+            right: 25px;
             z-index: 10;
-            animation: crownSpin 2.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 25px rgba(246,255,84,0.8)) drop-shadow(0 0 50px rgba(246,255,84,0.5));
-            text-shadow: 0 0 20px rgba(246,255,84,1), 0 0 40px rgba(246,255,84,0.6);
+            animation: crownSpin 2.2s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(246,255,84,1)) drop-shadow(0 0 60px rgba(246,255,84,0.6)) drop-shadow(0 0 90px rgba(246,255,84,0.3));
+            text-shadow: 0 0 25px rgba(246,255,84,1), 0 0 50px rgba(246,255,84,0.7), 0 0 80px rgba(246,255,84,0.4);
         }
         .pricing-card-crown::before {
             content: '';
             position: absolute;
-            inset: -20px;
-            background: radial-gradient(circle, rgba(246,255,84,0.4) 0%, rgba(246,255,84,0.15) 40%, transparent 70%);
+            inset: -25px;
+            background: radial-gradient(circle, rgba(246,255,84,0.5) 0%, rgba(246,255,84,0.2) 40%, transparent 70%);
             border-radius: 50%;
-            animation: pulse 2.5s ease-in-out infinite;
+            animation: pulse 2.2s ease-in-out infinite;
             z-index: -1;
-            box-shadow: inset 0 0 30px rgba(246,255,84,0.3);
+            box-shadow: inset 0 0 40px rgba(246,255,84,0.4);
         }
         .pricing-card-crown::after {
             content: '';
             position: absolute;
-            inset: -25px;
-            border: 2px solid rgba(246,255,84,0.3);
+            inset: -30px;
+            border: 3px solid rgba(246,255,84,0.4);
             border-radius: 50%;
-            animation: borderGlow 2.5s ease-in-out infinite;
+            animation: borderGlow 2.2s ease-in-out infinite;
         }
 
         .pricing-card-header {
@@ -1418,38 +1422,41 @@
             transition: opacity 0.4s;
         }
         .free-badge {
-            background: linear-gradient(135deg, #e8e0ff 0%, #d8ccff 100%);
-            color: var(--violeta-intenso);
-            border: 2px solid var(--violeta-intenso);
-        }
-        .free-badge:hover {
-            background: linear-gradient(135deg, #d8ccff 0%, #c8b8ff 100%);
-            box-shadow: 0 8px 24px rgba(123,83,240,0.3);
-        }
-        .standard-badge {
-            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #a56fff 100%);
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #8b5ff0 100%);
             color: white;
             border: 2px solid var(--violeta-intenso);
-            box-shadow: 0 10px 30px rgba(123,83,240,0.35), 0 0 20px rgba(123,83,240,0.25);
+            box-shadow: 0 10px 30px rgba(123,83,240,0.35), 0 0 25px rgba(123,83,240,0.2);
+            animation: badgePulse 2.8s ease-in-out infinite;
+        }
+        .free-badge:hover {
+            box-shadow: 0 12px 40px rgba(123,83,240,0.5), 0 0 40px rgba(123,83,240,0.35);
+            transform: scale(1.1);
+            animation: none;
+        }
+        .standard-badge {
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff80 100%);
+            color: var(--dark);
+            border: 2px solid var(--amarillo-limon);
+            box-shadow: 0 12px 35px rgba(246,255,84,0.45), 0 0 30px rgba(246,255,84,0.3);
             font-weight: 900;
             animation: badgePulse 2.5s ease-in-out infinite;
         }
         .standard-badge:hover {
-            box-shadow: 0 12px 40px rgba(123,83,240,0.55), 0 0 40px rgba(123,83,240,0.4);
-            transform: scale(1.08);
+            box-shadow: 0 14px 45px rgba(246,255,84,0.6), 0 0 50px rgba(246,255,84,0.4);
+            transform: scale(1.12);
             animation: none;
         }
         .vip-badge {
-            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff50 100%);
-            color: #1a1a1a;
-            border: 2px solid var(--amarillo-limon);
-            box-shadow: 0 10px 30px rgba(246,255,84,0.5), 0 0 30px rgba(246,255,84,0.35);
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff80 100%);
+            color: var(--dark);
+            border: 3px solid var(--amarillo-limon);
+            box-shadow: 0 12px 40px rgba(246,255,84,0.55), 0 0 40px rgba(246,255,84,0.4);
             font-weight: 900;
-            animation: badgePulse 2.5s ease-in-out infinite;
+            animation: badgePulse 2.3s ease-in-out infinite;
         }
         .vip-badge:hover {
-            box-shadow: 0 12px 40px rgba(246,255,84,0.65), 0 0 50px rgba(246,255,84,0.45);
-            transform: scale(1.08);
+            box-shadow: 0 14px 50px rgba(246,255,84,0.7), 0 0 60px rgba(246,255,84,0.5);
+            transform: scale(1.12);
             animation: none;
         }
 
@@ -1464,7 +1471,7 @@
 
         .pricing-price {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+            font-size: clamp(3rem, 6vw, 4.5rem);
             font-weight: 900;
             color: var(--dark);
             line-height: 1;
@@ -1472,9 +1479,11 @@
             margin: 0;
             position: relative;
         }
+        .pricing-card-free .pricing-price { color: var(--violeta-intenso); }
+        .pricing-card-standard .pricing-price { color: var(--amarillo-limon); text-shadow: 0 0 25px rgba(246,255,84,0.5), 0 0 50px rgba(246,255,84,0.3); }
         .pricing-card-vip .pricing-price {
             color: var(--amarillo-limon);
-            text-shadow: 0 0 30px rgba(246,255,84,0.5), 0 0 60px rgba(246,255,84,0.3);
+            text-shadow: 0 0 35px rgba(246,255,84,0.7), 0 0 70px rgba(246,255,84,0.4), 0 0 100px rgba(246,255,84,0.2);
             animation: priceGlow 2.5s ease-in-out infinite;
         }
 
@@ -1589,16 +1598,16 @@
         }
 
         .pricing-btn-free {
-            background: transparent;
-            border: 3px solid var(--dark);
-            color: var(--dark);
+            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #8b5ff0 100%);
+            border: 3px solid var(--violeta-intenso);
+            color: white;
+            box-shadow: 0 16px 40px rgba(123,83,240,0.25), 0 0 25px rgba(123,83,240,0.1);
         }
         .pricing-btn-free:hover {
-            background: var(--dark);
-            color: white;
-            border-color: var(--dark);
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.15), inset 0 0 20px rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, #8b5ff0 0%, #7b4fe0 100%);
+            border-color: #8b5ff0;
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 28px 70px rgba(123,83,240,0.4), 0 0 50px rgba(123,83,240,0.25), 0 0 80px rgba(123,83,240,0.12);
         }
         .pricing-btn-free:hover::after {
             opacity: 1;
@@ -1606,31 +1615,32 @@
         }
 
         .pricing-btn-standard {
-            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #a56fff 100%);
-            color: white;
-            border: 3px solid var(--violeta-intenso);
-            box-shadow: 0 14px 35px rgba(123,83,240,0.3), 0 0 20px rgba(123,83,240,0.1);
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff70 100%);
+            color: var(--dark);
+            border: 3px solid var(--amarillo-limon);
+            box-shadow: 0 16px 40px rgba(246,255,84,0.35), 0 0 35px rgba(246,255,84,0.2);
+            font-weight: 900;
         }
         .pricing-btn-standard:hover {
-            background: linear-gradient(135deg, #9b75ff 0%, #8b65ff 100%);
-            border-color: #a56fff;
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 28px 70px rgba(123,83,240,0.55), 0 0 50px rgba(123,83,240,0.35), 0 0 80px rgba(123,83,240,0.15);
+            background: linear-gradient(135deg, #ffff70 0%, #ffffa0 100%);
+            border-color: #ffffa0;
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 32px 80px rgba(246,255,84,0.6), 0 0 60px rgba(246,255,84,0.4), 0 0 100px rgba(246,255,84,0.25);
         }
         .pricing-btn-standard:hover::before { opacity: 1; }
 
         .pricing-btn-vip {
-            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff50 100%);
-            color: #1a1a1a;
-            border: 3px solid var(--amarillo-limon);
-            box-shadow: 0 14px 35px rgba(246,255,84,0.4), 0 0 30px rgba(246,255,84,0.2);
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff80 100%);
+            color: var(--dark);
+            border: 4px solid var(--amarillo-limon);
+            box-shadow: 0 16px 40px rgba(246,255,84,0.45), 0 0 40px rgba(246,255,84,0.3);
             font-weight: 900;
         }
         .pricing-btn-vip:hover {
-            background: linear-gradient(135deg, #ffff60 0%, #ffff80 100%);
-            border-color: #ffff80;
-            transform: translateY(-10px) scale(1.04);
-            box-shadow: 0 28px 70px rgba(246,255,84,0.65), 0 0 60px rgba(246,255,84,0.45), 0 0 100px rgba(246,255,84,0.25);
+            background: linear-gradient(135deg, #ffff80 0%, #ffffa5 100%);
+            border-color: #ffffa5;
+            transform: translateY(-14px) scale(1.06);
+            box-shadow: 0 36px 90px rgba(246,255,84,0.7), 0 0 70px rgba(246,255,84,0.5), 0 0 120px rgba(246,255,84,0.3);
         }
         .pricing-btn-vip:hover::before { opacity: 1; }
 
