@@ -287,6 +287,16 @@
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes floatInCard {
+            from {
+                opacity: 0;
+                transform: translateY(100px) scale(0.7);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
 
         /* ====== HERO ====== */
 
@@ -530,34 +540,61 @@
             z-index: 1;
         }
         .event-features {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
             margin-top: 0;
             border-top: none;
-            perspective: 1200px;
+            perspective: 1500px;
             position: relative;
             z-index: 1;
+            height: 600px;
+            padding: 0 40px;
         }
         .event-feature {
-            background: linear-gradient(145deg, rgba(123,83,240,0.25) 0%, rgba(123,83,240,0.05) 100%);
+            background: linear-gradient(145deg, rgba(123,83,240,0.3) 0%, rgba(123,83,240,0.08) 100%);
             border: 2px solid transparent;
             border-image: linear-gradient(135deg, #7B53F0 0%, #F6FF54 100%) 1;
-            border-radius: 24px;
-            padding: 72px 52px;
+            border-radius: 28px;
+            padding: 56px 48px;
             text-align: center;
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
             flex: none;
-            min-width: 0;
-            position: relative;
+            width: 320px;
+            position: absolute;
             backdrop-filter: blur(40px);
             overflow: hidden;
-            animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+            animation: floatInCard 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
         }
-        .event-feature:nth-child(1) { animation-delay: 0.4s; }
-        .event-feature:nth-child(2) { animation-delay: 0.5s; }
-        .event-feature:nth-child(3) { animation-delay: 0.6s; }
-        .event-feature:nth-child(4) { animation-delay: 0.7s; }
+        .event-feature:nth-child(1) {
+            animation-delay: 0.4s;
+            transform: translateX(-280px) translateY(60px) rotateY(-25deg) rotateZ(-8deg) scale(0.85);
+            z-index: 1;
+        }
+        .event-feature:nth-child(2) {
+            animation-delay: 0.5s;
+            transform: translateX(-90px) translateY(20px) rotateY(-12deg) rotateZ(-4deg) scale(0.92);
+            z-index: 2;
+        }
+        .event-feature:nth-child(3) {
+            animation-delay: 0.6s;
+            transform: translateX(90px) translateY(20px) rotateY(12deg) rotateZ(4deg) scale(0.92);
+            z-index: 2;
+        }
+        .event-feature:nth-child(4) {
+            animation-delay: 0.7s;
+            transform: translateX(280px) translateY(60px) rotateY(25deg) rotateZ(8deg) scale(0.85);
+            z-index: 1;
+        }
+        .event-feature:hover {
+            background: linear-gradient(145deg, rgba(123,83,240,0.5) 0%, rgba(123,83,240,0.2) 100%);
+            transform: translateY(-40px) scale(1.08) rotateX(10deg) rotateZ(0deg) !important;
+            box-shadow: 0 60px 150px rgba(246,255,84,0.7),
+                        0 0 120px rgba(123,83,240,1),
+                        inset 0 1px 0 rgba(255,255,255,0.25);
+            z-index: 100 !important;
+        }
         .event-feature::before {
             content: '';
             position: absolute;
@@ -3094,6 +3131,47 @@
         // Cerrar modal al presionar Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeCheckoutModal();
+        });
+
+        // 🎪 PARALLAX EFFECT PARA TARJETAS ESCALONADAS
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventFeatures = document.querySelectorAll('.event-feature');
+            const eventFeatureContainer = document.querySelector('.event-features');
+
+            if (!eventFeatures.length || !eventFeatureContainer) return;
+
+            document.addEventListener('mousemove', (e) => {
+                const rect = eventFeatureContainer.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                const mouseX = e.clientX - centerX;
+                const mouseY = e.clientY - centerY;
+
+                const angle = Math.atan2(mouseY, mouseX);
+                const distance = Math.min(Math.hypot(mouseX, mouseY), 300) / 100;
+
+                eventFeatures.forEach((card, index) => {
+                    const offsetX = Math.cos(angle) * distance * 15;
+                    const offsetY = Math.sin(angle) * distance * 15;
+
+                    card.style.transform = card.style.transform.replace(/translateX\([^)]*\)/g, `translateX(calc(var(--base-x, 0px) + ${offsetX}px))`);
+                });
+            });
+
+            // Resetear posiciones al salir del viewport
+            document.addEventListener('mouseleave', () => {
+                eventFeatures.forEach(card => {
+                    card.style.transform = '';
+                    card.classList.remove('parallax-active');
+                });
+            });
+
+            // Guardar posiciones base
+            eventFeatures.forEach((card, index) => {
+                const computedStyle = window.getComputedStyle(card);
+                const transform = card.getAttribute('data-base-transform') || '';
+            });
         });
     </script>
 </body>
