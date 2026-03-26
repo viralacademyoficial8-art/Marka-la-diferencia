@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
+    <script src="ticket-inventory.js"></script>
     <style>
         :root {
             --amarillo-limon: #F6FF54;
@@ -1389,6 +1390,103 @@
             box-shadow: 0 14px 50px rgba(0,208,132,0.7), 0 0 60px rgba(0,208,132,0.5);
             transform: scale(1.12);
             animation: none;
+        }
+
+        /* Disponibilidad de boletos */
+        .availability-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.2) 0%, rgba(123, 83, 240, 0.2) 100%);
+            border: 1px solid rgba(246, 255, 84, 0.4);
+            color: #F6FF54;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 12px;
+            animation: fadeInScale 0.4s ease-out;
+        }
+
+        .availability-badge.low-stock {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+        }
+
+        .sold-out-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 12px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .pricing-progress {
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(246, 255, 84, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #F6FF54 0%, #00d084 100%);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 15px rgba(246, 255, 84, 0.5);
+        }
+
+        .progress-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        .pricing-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #666;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .pricing-btn:disabled:hover {
+            transform: none;
+        }
+
+        .sold-out-btn {
+            background: linear-gradient(135deg, #666 0%, #555 100%) !important;
+            color: #999 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+            transform: none !important;
+            text-decoration: line-through;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .pricing-price-section {
@@ -3784,7 +3882,15 @@
                     </div>
                 </div>
 
-                <a href="checkout.html?plan=free" class="pricing-btn pricing-btn-free">Registrarme Gratis</a>
+                <div class="pricing-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-free" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-free"></div>
+                </div>
+
+                <div id="availability-free"></div>
+                <a href="checkout.html?plan=free" class="pricing-btn pricing-btn-free" id="btn-free">Registrarme Gratis</a>
             </div>
 
             <div class="pricing-card pricing-card-standard">
@@ -3824,7 +3930,15 @@
                     </div>
                 </div>
 
-                <a href="checkout.html?plan=conference" class="pricing-btn pricing-btn-standard">Comprar Boleto</a>
+                <div class="pricing-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-conference" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-conference"></div>
+                </div>
+
+                <div id="availability-conference"></div>
+                <a href="checkout.html?plan=conference" class="pricing-btn pricing-btn-standard" id="btn-conference">Comprar Boleto</a>
             </div>
 
             <div class="pricing-card pricing-card-vip">
@@ -3868,7 +3982,15 @@
                     </div>
                 </div>
 
-                <a href="checkout.html?plan=vip" class="pricing-btn pricing-btn-vip">Comprar VIP</a>
+                <div class="pricing-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-vip" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-vip"></div>
+                </div>
+
+                <div id="availability-vip"></div>
+                <a href="checkout.html?plan=vip" class="pricing-btn pricing-btn-vip" id="btn-vip">Comprar VIP</a>
             </div>
         </div>
     </section>
@@ -4451,6 +4573,76 @@
         // Botones de pricing
         // Pricing buttons now redirect directly to checkout.html
         // Event listeners removed to allow normal navigation
+
+        // ====== TICKET INVENTORY SYSTEM ======
+        function updateTicketAvailability(ticketType) {
+            const status = getTicketStatus(ticketType);
+            const availDiv = document.getElementById(`availability-${ticketType}`);
+            const progressFill = document.getElementById(`progress-${ticketType}`);
+            const progressText = document.getElementById(`progress-text-${ticketType}`);
+            const btn = document.getElementById(`btn-${ticketType}`);
+            const percent = getProgressPercent(ticketType);
+
+            if (!availDiv) return;
+
+            // Actualizar barra de progreso
+            if (progressFill) {
+                progressFill.style.width = percent + '%';
+            }
+
+            // Actualizar texto de progreso
+            if (progressText) {
+                progressText.textContent = `${status.sold} / ${status.limit} vendidos`;
+            }
+
+            if (status.isSoldOut) {
+                // SOLD OUT
+                availDiv.innerHTML = '<div class="sold-out-badge">❌ AGOTADO</div>';
+                if (btn) {
+                    btn.classList.add('sold-out-btn');
+                    btn.href = '#';
+                    btn.style.pointerEvents = 'none';
+                    btn.textContent = 'SOLD OUT';
+                }
+            } else {
+                // Mostrar disponibilidad
+                const remaining = status.available;
+                let badgeClass = '';
+                let badgeText = '';
+
+                if (remaining <= 5) {
+                    badgeClass = 'low-stock';
+                    badgeText = `⚠️ Solo ${remaining} disponibles`;
+                } else {
+                    badgeText = `✓ ${remaining} disponibles`;
+                }
+
+                availDiv.innerHTML = `<div class="availability-badge ${badgeClass}">${badgeText}</div>`;
+
+                if (btn) {
+                    btn.classList.remove('sold-out-btn');
+                    btn.style.pointerEvents = 'auto';
+                    const originalText = {
+                        free: 'Registrarme Gratis',
+                        conference: 'Comprar Boleto',
+                        vip: 'Comprar VIP'
+                    };
+                    btn.textContent = originalText[ticketType] || 'Comprar';
+                }
+            }
+        }
+
+        // Actualizar todas las disponibilidades al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTicketAvailability('free');
+            updateTicketAvailability('conference');
+            updateTicketAvailability('vip');
+
+            // Escuchar cambios en inventario
+            window.addEventListener('ticketInventoryUpdated', (event) => {
+                updateTicketAvailability(event.detail.ticketType);
+            });
+        });
 
         // 🎪 FLIP 3D CARD EFFECT - NO JAVASCRIPT NEEDED, PURE CSS3!
     </script>

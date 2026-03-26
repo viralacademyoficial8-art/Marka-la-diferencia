@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="ticket-inventory.js"></script>
     <style>
         * {
             margin: 0;
@@ -567,6 +568,27 @@
                 key => STRIPE_CONFIG.products[key].name === selectedProduct.name
             );
             document.getElementById('productIcon').textContent = icons[productKey] || '🎫';
+
+            // Actualizar disponibilidad
+            updateAvailabilityInfo(productKey);
+        }
+
+        function updateAvailabilityInfo(productKey) {
+            if (!productKey) return;
+
+            const available = getAvailable(productKey);
+            const limit = STRIPE_CONFIG.products[productKey]?.limit || 0;
+
+            if (available <= 0) {
+                showError('Lo siento, este paquete ya está agotado');
+                document.getElementById('submitBtn').disabled = true;
+            } else if (available <= 10) {
+                showSuccess(`⚠️ Solo quedan ${available} boletos disponibles de ${limit}`);
+                document.getElementById('submitBtn').disabled = false;
+            } else {
+                hideError();
+                document.getElementById('submitBtn').disabled = false;
+            }
         }
 
         // Manejo del formulario
@@ -599,6 +621,23 @@
                 return;
             }
 
+            // Obtener el key del producto seleccionado
+            const productKey = Object.keys(STRIPE_CONFIG.products).find(
+                key => STRIPE_CONFIG.products[key].name === selectedProduct.name
+            );
+
+            // Verificar disponibilidad
+            if (!isAvailable(productKey)) {
+                showError('Lo siento, este paquete ya está agotado');
+                return;
+            }
+
+            // Decrementar boleto del inventario
+            if (!decrementTicket(productKey)) {
+                showError('No hay boletos disponibles');
+                return;
+            }
+
             // Guardar información
             const orderData = {
                 product: selectedProduct.name,
@@ -607,7 +646,8 @@
                 phone,
                 company,
                 price: 0,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                orderId: 'FREE-' + Date.now()
             };
 
             localStorage.setItem('lastOrder', JSON.stringify(orderData));
