@@ -2327,6 +2327,19 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.15);
         }
 
+        /* Responsive floating buttons */
+        @media (max-width: 768px) {
+            .whatsapp-float { bottom: 15px; left: 15px; }
+            .whatsapp-icon { width: 52px; height: 52px; }
+            .whatsapp-icon svg { width: 26px; height: 26px; }
+            .whatsapp-tooltip { font-size: 0.7rem; padding: 8px 12px; }
+        }
+        @media (max-width: 480px) {
+            .whatsapp-float { bottom: 10px; left: 10px; gap: 8px; }
+            .whatsapp-icon { width: 48px; height: 48px; }
+            .whatsapp-icon svg { width: 24px; height: 24px; }
+        }
+
         /* ====== SCROLL TO TOP ====== */
         .scroll-top {
             position: fixed;
@@ -2353,6 +2366,13 @@
         }
         .scroll-top.visible { opacity: 1; transform: translateY(0); }
         .scroll-top:hover { background: var(--dark); color: var(--amarillo-limon); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(246,255,84,0.4); }
+
+        @media (max-width: 768px) {
+            .scroll-top { bottom: 15px; right: 15px; width: 48px; height: 48px; font-size: 1.1rem; }
+        }
+        @media (max-width: 480px) {
+            .scroll-top { bottom: 10px; right: 10px; width: 44px; height: 44px; font-size: 0.95rem; }
+        }
 
         /* ====== FOOTER ====== */
         .footer {
