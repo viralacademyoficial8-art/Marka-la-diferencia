@@ -518,6 +518,82 @@
             font-weight: 700;
         }
 
+        /* ====== HERO RESPONSIVE DESIGN ====== */
+        @media (max-width: 1024px) {
+            .hero-content { padding: clamp(40px, 5vw, 60px) clamp(20px, 4vw, 60px) clamp(50px, 7vw, 100px); gap: clamp(35px, 4vw, 50px); }
+            .hero-title { font-size: clamp(2.2rem, 12vw, 8rem); letter-spacing: -3px; }
+            .hero-title .year { font-size: clamp(2.4rem, 6vw, 3.5rem); margin-left: 12px; }
+            .hero-label { font-size: clamp(0.65rem, 1.2vw, 0.85rem); letter-spacing: 8px; }
+            .hero-label::before { width: 45px; }
+            .hero-subtitle { font-size: clamp(1rem, 2.2vw, 1.3rem); letter-spacing: 4px; }
+            .countdown { gap: 20px; }
+            .countdown-item { padding: 35px 40px; min-width: 130px; }
+            .countdown-number { font-size: clamp(2.4rem, 5.5vw, 4rem); }
+            .countdown-unit { font-size: clamp(0.65rem, 1.1vw, 0.85rem); margin-top: 12px; }
+        }
+
+        @media (max-width: 900px) {
+            .hero-content { padding: clamp(40px, 5vw, 55px) clamp(20px, 3.5vw, 50px) clamp(45px, 6vw, 90px); gap: clamp(30px, 3.5vw, 45px); }
+            .hero-title { font-size: clamp(2.2rem, 11vw, 6rem); }
+            .hero-title .year { font-size: clamp(2.2rem, 5.5vw, 3rem); }
+            .countdown-item { padding: 30px 35px; min-width: 120px; }
+            .countdown-number { font-size: clamp(2.2rem, 5vw, 3.5rem); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content { padding: clamp(30px, 4vw, 50px) clamp(16px, 3vw, 40px) clamp(40px, 5vw, 80px); gap: clamp(25px, 3vw, 40px); }
+            .hero-title { font-size: clamp(1.8rem, 10vw, 4.5rem); letter-spacing: -2.5px; }
+            .hero-title .year { font-size: clamp(2rem, 5vw, 2.8rem); margin-left: 10px; vertical-align: baseline; }
+            .hero-label { font-size: clamp(0.6rem, 1rem, 0.8rem); letter-spacing: 6px; margin-bottom: 15px; }
+            .hero-label::before { width: 40px; height: 2px; }
+            .hero-subtitle { font-size: clamp(0.9rem, 1.8vw, 1.1rem); letter-spacing: 3px; }
+            .hero::after { font-size: clamp(5rem, 25vw, 10rem); bottom: -3%; right: -4%; }
+            .countdown { gap: 16px; flex-wrap: wrap; }
+            .countdown-item { padding: 28px 32px; min-width: 110px; flex: 0 1 auto; }
+            .countdown-number { font-size: clamp(2rem, 4.5vw, 3rem); }
+            .countdown-unit { font-size: clamp(0.6rem, 0.95vw, 0.8rem); margin-top: 10px; letter-spacing: 2px; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-content { padding: clamp(25px, 3.5vw, 40px) clamp(14px, 2.5vw, 35px) clamp(35px, 4.5vw, 70px); gap: clamp(20px, 2.5vw, 35px); }
+            .hero-title { font-size: clamp(1.6rem, 8.5vw, 3.5rem); }
+            .hero-title .year { font-size: clamp(1.8rem, 4.5vw, 2.4rem); }
+            .hero-label { font-size: clamp(0.55rem, 0.9rem, 0.75rem); gap: 10px; }
+            .hero-label::before { width: 35px; }
+            .hero-subtitle { font-size: clamp(0.85rem, 1.6vw, 1rem); }
+            .countdown { gap: 14px; }
+            .countdown-item { padding: 24px 28px; min-width: 100px; }
+            .countdown-number { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+            .countdown-unit { font-size: clamp(0.55rem, 0.85vw, 0.75rem); margin-top: 8px; letter-spacing: 2px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content { padding: clamp(20px, 3vw, 35px) clamp(12px, 2vw, 30px) clamp(30px, 4vw, 60px); gap: clamp(18px, 2vw, 30px); }
+            .hero-title { font-size: clamp(1.4rem, 7.5vw, 2.8rem); letter-spacing: -2px; }
+            .hero-title .year { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-left: 8px; }
+            .hero-label { font-size: clamp(0.5rem, 0.8rem, 0.7rem); gap: 8px; margin-bottom: 12px; }
+            .hero-label::before { width: 30px; }
+            .hero-subtitle { font-size: clamp(0.8rem, 1.4vw, 0.95rem); letter-spacing: 2px; }
+            .hero::after { font-size: clamp(4rem, 20vw, 8rem); bottom: -5%; right: -5%; }
+            .countdown { gap: 12px; flex-wrap: wrap; }
+            .countdown-item { padding: 20px 24px; min-width: 90px; }
+            .countdown-number { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+            .countdown-unit { font-size: clamp(0.5rem, 0.8vw, 0.7rem); margin-top: 6px; letter-spacing: 1.5px; }
+        }
+
+        @media (max-width: 380px) {
+            .hero-content { padding: clamp(18px, 2.5vw, 30px) clamp(10px, 1.5vw, 25px) clamp(28px, 3.5vw, 55px); gap: clamp(16px, 1.5vw, 25px); }
+            .hero-title { font-size: clamp(1.3rem, 6.5vw, 2.4rem); }
+            .hero-title .year { font-size: clamp(1.4rem, 3.5vw, 2rem); margin-left: 6px; }
+            .hero-label { font-size: 0.55rem; gap: 6px; }
+            .hero-label::before { width: 25px; }
+            .hero-subtitle { font-size: clamp(0.75rem, 1.2vw, 0.9rem); }
+            .countdown { gap: 10px; }
+            .countdown-item { padding: 18px 20px; min-width: 85px; }
+            .countdown-number { font-size: clamp(1.4rem, 3vw, 2rem); }
+            .countdown-unit { font-size: clamp(0.48rem, 0.7vw, 0.65rem); margin-top: 5px; }
+        }
+
         /* ====== EVENT INFO ====== */
         .event-info {
             background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
@@ -3344,11 +3420,16 @@
             /* HERO MOBILE */
             .hero { min-height: 100svh; align-items: flex-end; }
             .hero::before { clip-path: polygon(0 0, 100% 0, 100% 40%, 0 60%); }
-            .hero-content { padding: 0 30px 80px; gap: 50px; }
-            .hero-title { font-size: clamp(3.2rem, 16vw, 5.5rem); letter-spacing: -2.5px; }
-            .hero::after { font-size: clamp(6rem, 32vw, 12rem); bottom: -2%; right: -3%; }
-            .countdown { flex-wrap: wrap; gap: 16px; }
-            .countdown-item { padding: 24px 22px; flex: 1; min-width: 80px; }
+            .hero-content { padding: clamp(20px, 3vw, 40px) clamp(12px, 2vw, 35px) clamp(40px, 5vw, 80px); gap: clamp(22px, 2.5vw, 40px); }
+            .hero-title { font-size: clamp(1.5rem, 9vw, 4rem); letter-spacing: -2.5px; }
+            .hero-title .year { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-left: 8px; }
+            .hero-label { font-size: clamp(0.55rem, 1rem, 0.8rem); }
+            .hero-subtitle { font-size: clamp(0.85rem, 1.8vw, 1.05rem); }
+            .hero::after { font-size: clamp(4rem, 22vw, 9rem); bottom: -3%; right: -4%; }
+            .countdown { flex-wrap: wrap; gap: 14px; }
+            .countdown-item { padding: 24px 24px; flex: 0 1 auto; min-width: 95px; }
+            .countdown-number { font-size: clamp(1.8rem, 4.2vw, 2.8rem); }
+            .countdown-unit { font-size: clamp(0.6rem, 0.95vw, 0.8rem); }
 
             /* EVENT INFO MOBILE */
             .event-info { padding: 80px 30px; }
@@ -3429,13 +3510,17 @@
         }
 
         @media (max-width: 480px) {
-            .hero-content { padding: 0 24px 60px; gap: 40px; }
-            .hero-title { font-size: clamp(2.2rem, 12vw, 3.8rem); }
-            .hero-subtitle { font-size: 1rem; letter-spacing: 3px; }
-            .hero::after { font-size: clamp(4rem, 20vw, 8rem); bottom: -8%; right: -5%; }
-            .countdown { gap: 14px; flex-wrap: wrap; }
-            .countdown-item { padding: 18px 14px; min-width: 60px; }
-            .countdown-number { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+            .hero-content { padding: clamp(18px, 2.5vw, 30px) clamp(10px, 1.5vw, 26px) clamp(30px, 4vw, 60px); gap: clamp(18px, 2vw, 30px); }
+            .hero-title { font-size: clamp(1.3rem, 7.5vw, 2.8rem); letter-spacing: -2px; }
+            .hero-title .year { font-size: clamp(1.5rem, 4vw, 2.2rem); margin-left: 6px; }
+            .hero-label { font-size: clamp(0.5rem, 0.8rem, 0.7rem); gap: 6px; margin-bottom: 10px; }
+            .hero-label::before { width: 28px; }
+            .hero-subtitle { font-size: clamp(0.75rem, 1.4vw, 0.95rem); letter-spacing: 2px; }
+            .hero::after { font-size: clamp(3.5rem, 18vw, 7rem); bottom: -5%; right: -5%; }
+            .countdown { gap: 12px; flex-wrap: wrap; }
+            .countdown-item { padding: 18px 20px; min-width: 85px; }
+            .countdown-number { font-size: clamp(1.5rem, 3.5vw, 2.3rem); }
+            .countdown-unit { font-size: clamp(0.5rem, 0.8vw, 0.7rem); margin-top: 5px; }
             .event-features { grid-template-columns: 1fr; }
             .event-feature { padding: 28px 20px; }
             .event-feature .check { font-size: 2rem; margin-bottom: 12px; }
