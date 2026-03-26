@@ -1883,73 +1883,20 @@
 
         /* ====== PODCAST ====== */
         .podcast-section {
-            background: var(--amarillo-limon);
+            background: transparent;
             text-align: center;
             position: relative;
             overflow: hidden;
-            padding: 120px 100px 100px;
+            padding: 0;
+            margin: 0;
         }
         .podcast-section::before { display: none; }
-        .podcast-section .section-title {
-            color: var(--dark);
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 0 20px 24px;
-            margin: 0;
-            font-size: clamp(3rem, 8vw, 5.2rem);
-            font-weight: 900;
-            letter-spacing: -2.5px;
-        }
-        .podcast-section .section-description {
-            color: rgba(0,0,0,0.6);
-            padding: 0 20px 70px;
-            margin: 0 auto;
-            text-align: center;
-            max-width: 600px;
-            font-size: clamp(1rem, 1.8vw, 1.2rem);
-            font-weight: 500;
-        }
-        .podcast-container {
-            max-width: 450px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 20px 0;
-            gap: 0;
-            grid-template-columns: none;
-        }
-        .podcast-image {
-            width: 320px;
-            aspect-ratio: 1/1;
-            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 6rem;
-            overflow: hidden;
-            border: 4px solid rgba(0,0,0,0.1);
-            box-shadow: 0 0 0 20px rgba(0,0,0,0.08), 0 0 0 40px rgba(0,0,0,0.04), inset 0 0 40px rgba(246,255,84,0.12);
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            order: 1;
-        }
-        .podcast-image:hover {
-            transform: scale(1.12);
-            border-color: rgba(0,0,0,0.15);
-            box-shadow: 0 0 0 20px rgba(0,0,0,0.08), 0 0 0 40px rgba(0,0,0,0.04), inset 0 0 50px rgba(0,0,0,0.1), 0 0 50px rgba(0,0,0,0.08);
-        }
-        .podcast-image img {
+        .podcast-full-image {
             width: 100%;
-            height: 100%;
+            height: auto;
+            display: block;
+            max-width: 100%;
             object-fit: cover;
-            border-radius: 50%;
-            position: relative;
-            z-index: 0;
         }
 
         /* ====== ECOSYSTEM ====== */
@@ -2758,12 +2705,6 @@
             .speaker-card:nth-child(n+3) { border-top: none; }
             .speaker-card:nth-child(n+4) { border-top: none; }
 
-            /* PODCAST MOBILE */
-            .podcast-section { padding: 80px 30px 60px; }
-            .podcast-section .section-title { margin-bottom: 16px; font-size: clamp(2.2rem, 8vw, 3.5rem); }
-            .podcast-section .section-description { margin-bottom: 50px; font-size: clamp(0.95rem, 1.8vw, 1.1rem); }
-            .podcast-container { padding: 0; }
-            .podcast-image { width: 280px; }
 
             /* ECOSYSTEM MOBILE */
             .ecosystem-title { padding: 80px 30px 60px; font-size: clamp(2.2rem, 8vw, 3.5rem); }
@@ -3463,13 +3404,7 @@
 
     <!-- PODCAST EN VIVO -->
     <section class="podcast-section" id="podcast">
-        <h2 class="section-title">Podcast "EN VIVO"</h2>
-        <p class="section-description">Vive la experiencia de una grabación de podcast en vivo durante el evento</p>
-        <div class="podcast-container">
-            <div class="podcast-rings">
-                <div class="podcast-image">🎙️</div>
-            </div>
-        </div>
+        <img src="./IMG_8202.JPEG" alt="Podcast EN VIVO" class="podcast-full-image">
     </section>
 
     <!-- ECOSISTEMA -->
