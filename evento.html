@@ -2650,13 +2650,15 @@
 
         /* ====== RESPONSIVE ====== */
         @media (max-width: 1100px) {
-            .speakers-grid { grid-template-columns: repeat(3, 1fr); }
-            .speaker-card:nth-child(n+4) { border-top: 1px solid rgba(255,255,255,0.07); }
+            .speakers-grid { grid-template-columns: repeat(2, 1fr); gap: 60px; }
+            .speaker-card:nth-child(n+3) { border-top: 1px solid rgba(255,255,255,0.07); }
         }
         @media (max-width: 900px) {
+            .speakers-grid { grid-template-columns: 1fr; gap: 50px; }
             .pricing-grid { grid-template-columns: 1fr; }
             .zones-grid { grid-template-columns: 1fr; }
             .zone-card:nth-child(3) { grid-column: 1; flex-direction: column; align-items: flex-start; min-height: 300px; }
+            .why-grid { grid-template-columns: 1fr; gap: 32px; }
         }
         /* ====== TABLET OPTIMIZATION (1024px and below) ====== */
         @media (max-width: 1024px) {
@@ -2680,6 +2682,9 @@
 
             .ecosystem-section { padding: 80px 60px; min-height: 600px; }
             .ecosystem-title { margin: 0 0 100px 0; }
+
+            .event-features { padding: 50px 40px; gap: 60px; }
+            .event-feature { height: 280px; }
 
             .navbar { padding: 20px 40px; }
         }
