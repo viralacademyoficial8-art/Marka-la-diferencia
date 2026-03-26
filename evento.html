@@ -2011,6 +2011,31 @@
             object-fit: cover;
         }
 
+        /* Podcast Section Responsive */
+        @media (max-width: 1024px) {
+            .podcast-full-image {
+                max-height: 70vh;
+            }
+        }
+        @media (max-width: 768px) {
+            .podcast-section {
+                margin-bottom: 40px;
+            }
+            .podcast-full-image {
+                max-height: 50vh;
+                border-radius: 8px;
+            }
+        }
+        @media (max-width: 480px) {
+            .podcast-section {
+                margin-bottom: 30px;
+            }
+            .podcast-full-image {
+                max-height: 40vh;
+                border-radius: 6px;
+            }
+        }
+
         /* ====== ECOSYSTEM ====== */
         .ecosystem-section {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0d0d1f 100%);
@@ -2297,6 +2322,54 @@
             flex-shrink: 0;
         }
         .legend-dot.autores { background: var(--amarillo-limon); }
+
+        /* Map Section Responsive */
+        @media (max-width: 1024px) {
+            .map-section {
+                padding: 60px 40px;
+            }
+            .map-section .section-title {
+                margin-bottom: 40px;
+                font-size: clamp(1.8rem, 5vw, 2.8rem);
+            }
+        }
+        @media (max-width: 768px) {
+            .map-section {
+                padding: 50px 30px;
+            }
+            .map-section .section-title {
+                margin-bottom: 30px;
+                font-size: clamp(1.5rem, 4vw, 2.4rem);
+            }
+            .map-legend {
+                gap: 16px;
+                margin-bottom: 20px;
+            }
+            .map-legend-item {
+                font-size: 0.75rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .map-section {
+                padding: 40px 20px;
+            }
+            .map-section .section-title {
+                margin-bottom: 25px;
+                font-size: clamp(1.3rem, 3vw, 2rem);
+            }
+            .map-legend {
+                gap: 12px;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            .map-legend-item {
+                font-size: 0.7rem;
+            }
+            .map-container {
+                border-radius: 8px;
+                overflow: hidden;
+            }
+        }
         .legend-dot.emprendimiento { background: var(--violeta-intenso); }
         .legend-dot.empresas { background: #3b82f6; }
         .legend-dot.conferencias { background: #f59e0b; }
