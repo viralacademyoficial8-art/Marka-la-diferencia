@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
     <script src="ticket-inventory.js"></script>
+    <script src="orders-manager.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -232,6 +234,36 @@
             gap: 16px;
         }
 
+        .qty-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(246, 255, 84, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #F6FF54;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            border-color: #F6FF54;
+            background: rgba(246, 255, 84, 0.15);
+            transform: scale(1.05);
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+
+        #quantity {
+            font-weight: 700;
+        }
+
         /* Stripe Element */
         .stripe-element {
             padding: 14px 16px;
@@ -454,6 +486,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="quantity">Cantidad de Boletos *</label>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <button type="button" id="decrement-qty" class="qty-btn">−</button>
+                            <input type="number" id="quantity" value="1" min="1" max="100" required style="flex: 1; text-align: center; font-size: 1.1rem; font-weight: 700;">
+                            <button type="button" id="increment-qty" class="qty-btn">+</button>
+                        </div>
+                        <div id="availability-message" style="font-size: 0.85rem; color: #F6FF54; margin-top: 8px; text-align: center;"></div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="fullName">Nombre Completo *</label>
                         <input type="text" id="fullName" placeholder="Juan Pérez" required>
                     </div>
@@ -502,6 +544,8 @@
         let elements;
         let cardElement;
         let selectedProduct = null;
+        let selectedProductKey = null;
+        let selectedQuantity = 1;
 
         // Configuración de Stripe Elements
         function initStripe() {
@@ -535,10 +579,34 @@
         // Actualizar resumen cuando cambia el producto
         document.getElementById('productSelect').addEventListener('change', (e) => {
             const selected = e.target.value;
+            selectedProductKey = selected;
             if (selected && STRIPE_CONFIG.products[selected]) {
                 selectedProduct = STRIPE_CONFIG.products[selected];
+                selectedQuantity = 1;
+                document.getElementById('quantity').value = 1;
                 updateOrderSummary();
             }
+        });
+
+        // Controles de cantidad
+        document.getElementById('quantity').addEventListener('change', (e) => {
+            selectedQuantity = Math.max(1, Math.min(100, parseInt(e.target.value) || 1));
+            e.target.value = selectedQuantity;
+            updateOrderSummary();
+        });
+
+        document.getElementById('increment-qty').addEventListener('click', (e) => {
+            e.preventDefault();
+            selectedQuantity = Math.min(100, selectedQuantity + 1);
+            document.getElementById('quantity').value = selectedQuantity;
+            updateOrderSummary();
+        });
+
+        document.getElementById('decrement-qty').addEventListener('click', (e) => {
+            e.preventDefault();
+            selectedQuantity = Math.max(1, selectedQuantity - 1);
+            document.getElementById('quantity').value = selectedQuantity;
+            updateOrderSummary();
         });
 
         function updateOrderSummary() {
@@ -546,7 +614,10 @@
 
             document.getElementById('productName').textContent = selectedProduct.name;
             document.getElementById('productDesc').textContent = selectedProduct.description;
-            document.getElementById('productPrice').textContent = selectedProduct.price.toFixed(2);
+
+            // Calcular total
+            const totalPrice = selectedProduct.price * selectedQuantity;
+            document.getElementById('productPrice').textContent = totalPrice.toFixed(2);
 
             const featuresList = document.getElementById('featuresList');
             featuresList.innerHTML = selectedProduct.features
@@ -558,19 +629,26 @@
                 `)
                 .join('');
 
+            // Mostrar cantidad en el resumen
+            if (selectedQuantity > 1) {
+                featuresList.innerHTML += `
+                    <div class="feature-item" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px;">
+                        <i class="fas fa-tag"></i>
+                        <span><strong>Cantidad: ${selectedQuantity} boletos</strong></span>
+                    </div>
+                `;
+            }
+
             // Actualizar iconos
             const icons = {
                 free: '🎟️',
                 conference: '🎤',
                 vip: '👑'
             };
-            const productKey = Object.keys(STRIPE_CONFIG.products).find(
-                key => STRIPE_CONFIG.products[key].name === selectedProduct.name
-            );
-            document.getElementById('productIcon').textContent = icons[productKey] || '🎫';
+            document.getElementById('productIcon').textContent = icons[selectedProductKey] || '🎫';
 
             // Actualizar disponibilidad
-            updateAvailabilityInfo(productKey);
+            updateAvailabilityInfo(selectedProductKey);
         }
 
         function updateAvailabilityInfo(productKey) {
@@ -578,16 +656,31 @@
 
             const available = getAvailable(productKey);
             const limit = STRIPE_CONFIG.products[productKey]?.limit || 0;
+            const availabilityMsg = document.getElementById('availability-message');
 
             if (available <= 0) {
                 showError('Lo siento, este paquete ya está agotado');
                 document.getElementById('submitBtn').disabled = true;
+                availabilityMsg.textContent = '❌ Agotado';
+                availabilityMsg.style.color = '#ff6b6b';
+            } else if (selectedQuantity > available) {
+                const msg = `⚠️ Solo hay ${available} disponibles (pediste ${selectedQuantity})`;
+                showError(msg);
+                document.getElementById('submitBtn').disabled = true;
+                availabilityMsg.textContent = msg;
+                availabilityMsg.style.color = '#fca5a5';
             } else if (available <= 10) {
-                showSuccess(`⚠️ Solo quedan ${available} boletos disponibles de ${limit}`);
+                const msg = `⚠️ Solo quedan ${available} boletos`;
+                showSuccess(msg);
                 document.getElementById('submitBtn').disabled = false;
+                availabilityMsg.textContent = msg;
+                availabilityMsg.style.color = '#fca5a5';
             } else {
+                const msg = `✓ ${available} disponibles`;
                 hideError();
                 document.getElementById('submitBtn').disabled = false;
+                availabilityMsg.textContent = msg;
+                availabilityMsg.style.color = '#86efac';
             }
         }
 
@@ -621,44 +714,69 @@
                 return;
             }
 
-            // Obtener el key del producto seleccionado
-            const productKey = Object.keys(STRIPE_CONFIG.products).find(
-                key => STRIPE_CONFIG.products[key].name === selectedProduct.name
-            );
+            showLoading(true);
 
-            // Verificar disponibilidad
-            if (!isAvailable(productKey)) {
-                showError('Lo siento, este paquete ya está agotado');
+            // Validar disponibilidad para la cantidad
+            const validation = validateAvailability(selectedProductKey, selectedQuantity);
+            if (!validation.valid) {
+                showError(validation.message);
+                showLoading(false);
                 return;
             }
 
-            // Decrementar boleto del inventario
-            if (!decrementTicket(productKey)) {
-                showError('No hay boletos disponibles');
-                return;
-            }
+            // Decrementar boletos del inventario
+            const decrementResult = decrementInventoryBatch(selectedProductKey, selectedQuantity);
+            decrementResult.then(result => {
+                if (!result.success) {
+                    showError(result.error);
+                    showLoading(false);
+                    return;
+                }
 
-            // Guardar información
-            const orderData = {
-                product: selectedProduct.name,
-                fullName,
-                email,
-                phone,
-                company,
-                price: 0,
-                timestamp: new Date().toISOString(),
-                orderId: 'FREE-' + Date.now()
-            };
+                // Crear orden
+                createOrder({
+                    fullName,
+                    email,
+                    phone,
+                    company,
+                    ticketType: selectedProductKey,
+                    quantity: selectedQuantity,
+                    unitPrice: selectedProduct.price,
+                    totalPrice: selectedProduct.price * selectedQuantity
+                }).then(orderResult => {
+                    if (!orderResult.success) {
+                        showError('Error creando la orden');
+                        showLoading(false);
+                        return;
+                    }
 
-            localStorage.setItem('lastOrder', JSON.stringify(orderData));
+                    // Guardar información local
+                    const orderData = {
+                        product: selectedProduct.name,
+                        quantity: selectedQuantity,
+                        fullName,
+                        email,
+                        phone,
+                        company,
+                        totalPrice: selectedProduct.price * selectedQuantity,
+                        timestamp: new Date().toISOString(),
+                        orderId: orderResult.orderId
+                    };
 
-            // Mostrar mensaje de éxito
-            showSuccess('¡Acceso confirmado! Revisa tu email para más detalles.');
+                    localStorage.setItem('lastOrder', JSON.stringify(orderData));
 
-            // Redirigir después de 2 segundos
-            setTimeout(() => {
-                window.location.href = 'evento.html?success=true';
-            }, 2000);
+                    // Mostrar mensaje de éxito
+                    showSuccess(`¡${selectedQuantity} acceso${selectedQuantity > 1 ? 's' : ''} confirmado! Revisa tu email para más detalles.`);
+
+                    // Redirigir después de 2 segundos
+                    setTimeout(() => {
+                        window.location.href = 'evento.html?success=true';
+                    }, 2000);
+                });
+            }).catch(error => {
+                showError('Error procesando la orden');
+                showLoading(false);
+            });
         }
 
         function handlePaidCheckout() {
@@ -671,20 +789,59 @@
                 return;
             }
 
-            // Guardar información en sessionStorage
-            sessionStorage.setItem('checkoutData', JSON.stringify({
+            // Validar disponibilidad
+            const validation = validateAvailability(selectedProductKey, selectedQuantity);
+            if (!validation.valid) {
+                showError(validation.message);
+                return;
+            }
+
+            showLoading(true);
+
+            // Crear orden pendiente en Supabase
+            createOrder({
                 fullName,
                 email,
                 phone,
-                product: selectedProduct.name,
-                price: selectedProduct.price
-            }));
+                company: document.getElementById('company').value,
+                ticketType: selectedProductKey,
+                quantity: selectedQuantity,
+                unitPrice: selectedProduct.price,
+                totalPrice: selectedProduct.price * selectedQuantity
+            }).then(orderResult => {
+                if (!orderResult.success) {
+                    showError('Error creando la orden');
+                    showLoading(false);
+                    return;
+                }
 
-            // Redirigir al link de pago de Stripe
-            showLoading(true);
-            setTimeout(() => {
-                window.location.href = selectedProduct.link + '?client_reference_id=' + email;
-            }, 500);
+                // Guardar información en sessionStorage
+                sessionStorage.setItem('checkoutData', JSON.stringify({
+                    fullName,
+                    email,
+                    phone,
+                    product: selectedProduct.name,
+                    quantity: selectedQuantity,
+                    unitPrice: selectedProduct.price,
+                    totalPrice: selectedProduct.price * selectedQuantity,
+                    orderId: orderResult.orderId
+                }));
+
+                // Construir URL de Stripe con cantidad
+                const stripeUrl = selectedProduct.link +
+                    '?client_reference_id=' + encodeURIComponent(email) +
+                    '&prefilled_email=' + encodeURIComponent(email) +
+                    '&prefilled_name=' + encodeURIComponent(fullName) +
+                    (selectedQuantity > 1 ? '&quantity=' + selectedQuantity : '');
+
+                // Redirigir al link de pago de Stripe
+                setTimeout(() => {
+                    window.location.href = stripeUrl;
+                }, 500);
+            }).catch(error => {
+                showError('Error procesando la orden');
+                showLoading(false);
+            });
         }
 
         // Funciones auxiliares
