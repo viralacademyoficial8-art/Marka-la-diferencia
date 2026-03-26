@@ -2661,31 +2661,36 @@
         }
         /* ====== TABLET OPTIMIZATION (1024px and below) ====== */
         @media (max-width: 1024px) {
-            .what-is-section { padding: 100px 60px; }
+            .what-is-section { padding: 80px 50px; }
             .what-is-section .section-title { margin-bottom: 40px; }
 
-            .why-section { padding: 100px 60px; }
+            .why-section { padding: 80px 50px; }
             .why-section .section-title { margin-bottom: 40px; }
+            .why-grid { gap: 36px; }
 
-            .pricing-section { padding: 100px 60px; }
+            .pricing-section { padding: 80px 50px; }
             .pricing-section .section-title { margin-bottom: 40px; }
+            .pricing-cards-container { gap: 32px; }
 
-            .speaker-section { padding: 100px 60px; }
-            .speaker-section .section-title { margin-bottom: 50px; }
+            .speakers-section { padding: 80px 50px; }
+            .speakers-section .section-title { margin-bottom: 40px; }
+            .speakers-grid { gap: 50px; }
 
-            .map-section { padding: 100px 60px; }
+            .map-section { padding: 80px 50px; }
             .map-section .section-title { margin-bottom: 40px; }
 
-            .hospitality-section { padding: 80px 60px; }
-            .hospitality-section .section-title { margin-bottom: 40px; }
+            .hospitality-text { padding: 60px 50px; }
+            .hospitality-text h3 { margin-bottom: 20px; }
 
-            .ecosystem-section { padding: 80px 60px; min-height: 600px; }
-            .ecosystem-title { margin: 0 0 100px 0; }
+            .ecosystem-section { padding: 70px 40px; min-height: 550px; }
+            .ecosystem-title { margin: 0 0 80px 0; font-size: clamp(2.2rem, 6vw, 4rem); }
+            .ecosystem-grid { gap: 20px; }
+            .ecosystem-card { width: clamp(250px, 80vw, 380px); padding: 50px; }
 
-            .event-features { padding: 50px 40px; gap: 60px; }
+            .event-features { padding: 50px 40px; gap: 50px; }
             .event-feature { height: 280px; }
 
-            .navbar { padding: 20px 40px; }
+            .navbar { padding: 15px 30px; }
         }
 
         @media (max-width: 768px) {
@@ -2767,21 +2772,23 @@
 
 
             /* ECOSYSTEM MOBILE */
-            .ecosystem-title { padding: 80px 30px 60px; font-size: clamp(2.2rem, 8vw, 3.5rem); }
-            .ecosystem-grid { grid-template-columns: 1fr; }
-            .ecosystem-card { padding: 60px 40px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
-            .ecosystem-card:last-child { border-bottom: none; }
+            .ecosystem-title { margin: 0 0 60px 0; font-size: clamp(2rem, 6vw, 3.2rem); }
+            .ecosystem-grid { flex-direction: column; gap: 20px; }
+            .ecosystem-card { width: 100%; max-width: none; padding: 45px 30px; }
+            .ecosystem-card-1 { transform: translateY(0); }
+            .ecosystem-card-2 { transform: translateY(0); }
 
             /* MAP MOBILE */
-            .map-section { padding: 80px 30px; }
-            .map-section .section-title { margin-bottom: 40px; }
-            .map-legend { gap: 20px; }
+            .map-section { padding: 60px 30px; }
+            .map-section .section-title { margin-bottom: 30px; font-size: clamp(1.6rem, 5vw, 2.4rem); }
+            .map-legend { gap: 16px; }
+            .map-legend-item { font-size: 0.7rem; }
 
             /* HOSPITALITY MOBILE */
             .hospitality-section { padding: 0; }
             .hospitality-container { grid-template-columns: 1fr; }
-            .hospitality-text { padding: 80px 40px 50px; }
-            .hospitality-btn { padding: 40px 50px; min-width: auto; min-height: auto; }
+            .hospitality-text { padding: 60px 30px 40px; }
+            .hospitality-btn { padding: 35px 40px; min-width: auto; min-height: auto; letter-spacing: 3px; }
             .hospitality-text h3 { font-size: clamp(2rem, 7vw, 3rem); }
             .hospitality-text p { font-size: clamp(0.95rem, 1.8vw, 1.1rem); }
 
@@ -2827,6 +2834,39 @@
             .hospitality-section .section-title { font-size: clamp(1.8rem, 5vw, 2.5rem); }
 
             .map-legend-item { font-size: 0.7rem; gap: 6px; }
+
+            /* Additional 480px optimizations */
+            .countdown { gap: 12px; }
+            .countdown-item { padding: 18px 14px; font-size: 0.85rem; }
+            .countdown-number { font-size: clamp(1.8rem, 5vw, 2.8rem); }
+            .countdown-label { font-size: 0.65rem; }
+
+            .zone-card { padding: 35px 20px; min-height: 300px; border-radius: 20px; }
+            .zone-card:nth-child(3) { padding: 35px 20px; min-height: 280px; }
+            .zone-num { font-size: 2rem; }
+            .zone-icon { font-size: 3rem; }
+            .zone-name { font-size: clamp(1rem, 3vw, 1.4rem); }
+
+            .ecosystem-card { padding: 35px 20px; }
+            .ecosystem-card-icon { width: 100px; height: 100px; font-size: 3rem; }
+            .ecosystem-card h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
+            .eco-arrow { width: 50px; height: 50px; font-size: 1.2rem; margin-top: 12px; }
+
+            .pricing-card h3 { font-size: clamp(1.2rem, 3vw, 1.6rem); }
+            .pricing-card p { font-size: clamp(0.9rem, 2vw, 1rem); }
+
+            .speaker-card { gap: 12px; padding: 30px 20px; }
+            .speaker-photo { width: clamp(80px, 20vw, 120px); height: clamp(80px, 20vw, 120px); }
+            .speaker-name { font-size: clamp(1rem, 3vw, 1.3rem); }
+            .speaker-specialty { font-size: clamp(0.8rem, 2vw, 0.95rem); }
+            .speaker-description { font-size: clamp(0.75rem, 1.5vw, 0.9rem); line-height: 1.5; }
+
+            .hospitality-text { padding: 40px 20px; }
+            .hospitality-text h3 { font-size: clamp(1.6rem, 5vw, 2.4rem); margin-bottom: 16px; }
+            .hospitality-text p { font-size: clamp(0.85rem, 1.5vw, 1rem); }
+            .hospitality-btn { padding: 30px 25px; font-size: clamp(0.9rem, 2vw, 1.1rem); letter-spacing: 2px; }
+
+            .podcast-full-image { width: 100%; max-height: 60vh; }
         }
 
         /* ====== STRIPE CHECKOUT MODAL ====== */
