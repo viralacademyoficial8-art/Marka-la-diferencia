@@ -404,11 +404,11 @@
             width: 100%;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 80px 80px 120px;
+            padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 80px) clamp(60px, 8vw, 120px);
             animation: slideInUp 0.8s ease-out both;
             display: flex;
             flex-direction: column;
-            gap: 60px;
+            gap: clamp(40px, 5vw, 60px);
             text-align: center;
             align-items: center;
         }
@@ -434,7 +434,7 @@
         }
         .hero-title {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(5.5rem, 18vw, 15rem);
+            font-size: clamp(2.2rem, 14vw, 15rem);
             color: var(--white);
             line-height: 0.8;
             text-transform: uppercase;
@@ -880,7 +880,7 @@
         .what-is-section {
             background: #f8f8f8;
             position: relative;
-            padding: 120px 100px;
+            padding: clamp(60px, 8vw, 120px) clamp(30px, 6vw, 100px);
         }
         .section-title {
             font-family: 'Funnel Display', sans-serif;
@@ -1017,7 +1017,7 @@
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             position: relative;
             overflow: hidden;
-            padding: 120px 100px;
+            padding: clamp(60px, 8vw, 120px) clamp(30px, 6vw, 100px);
         }
         .why-section .section-title {
             color: var(--white);
@@ -1125,7 +1125,7 @@
             background: linear-gradient(135deg, #0f0f1f 0%, #1a1a2e 100%);
             position: relative;
             overflow: hidden;
-            padding: 140px 60px;
+            padding: clamp(60px, 8vw, 140px) clamp(30px, 6vw, 60px);
         }
         .pricing-section::before { display: none; }
         .pricing-section::after { display: none; }
@@ -1557,7 +1557,7 @@
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             position: relative;
             overflow: hidden;
-            padding: 120px 100px;
+            padding: clamp(60px, 8vw, 120px) clamp(30px, 6vw, 100px);
         }
         .speakers-section::before { display: none; }
         .speakers-section .section-title {
@@ -1906,8 +1906,8 @@
             position: relative;
             overflow: visible;
             clip-path: none;
-            padding: 100px 50px;
-            min-height: 650px;
+            padding: clamp(60px, 8vw, 100px) clamp(25px, 5vw, 50px);
+            min-height: 600px;
         }
         .ecosystem-title {
             font-family: 'Funnel Display', sans-serif;
@@ -1925,7 +1925,7 @@
             display: flex;
             justify-content: center;
             align-items: stretch;
-            gap: -100px;
+            gap: 30px;
             max-width: 1300px;
             margin: 0 auto;
             position: relative;
@@ -1958,7 +1958,6 @@
             animation-delay: 0.2s;
             border-color: #00ffc8;
             z-index: 2;
-            margin-right: 30px;
             transform: translateY(0);
         }
 
@@ -1966,7 +1965,7 @@
             animation-delay: 0.4s;
             border-color: #ff6b9d;
             z-index: 1;
-            transform: translateY(60px);
+            transform: translateY(40px);
         }
 
         .ecosystem-card::before {
@@ -2136,7 +2135,7 @@
 
         /* ====== MAP / CROQUIS ====== */
         .map-section {
-            padding: 100px 100px;
+            padding: clamp(60px, 8vw, 100px) clamp(30px, 6vw, 100px);
             background: #111;
             position: relative;
             overflow: hidden;
@@ -2252,7 +2251,7 @@
             z-index: 1;
         }
         .hospitality-text {
-            padding: 100px 100px;
+            padding: clamp(50px, 8vw, 100px) clamp(30px, 6vw, 100px);
         }
         .hospitality-text h3 {
             font-family: 'Funnel Display', sans-serif;
