@@ -2805,8 +2805,9 @@
         @media (max-width: 480px) {
             .hero-content { padding: 0 24px 60px; gap: 40px; }
             .hero-title { font-size: clamp(2.2rem, 12vw, 3.8rem); }
-            .hero-subtitle { font-size: 0.9rem; letter-spacing: 3px; }
-            .countdown { gap: 12px; flex-wrap: wrap; }
+            .hero-subtitle { font-size: 1rem; letter-spacing: 3px; }
+            .hero::after { font-size: clamp(4rem, 20vw, 8rem); bottom: -8%; right: -5%; }
+            .countdown { gap: 14px; flex-wrap: wrap; }
             .countdown-item { padding: 18px 14px; min-width: 60px; }
             .countdown-number { font-size: clamp(1.8rem, 5vw, 2.6rem); }
             .event-features { grid-template-columns: 1fr; }
