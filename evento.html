@@ -2143,15 +2143,20 @@
         }
         .map-section::before { display: none; }
         .map-section .section-title {
-            color: var(--white);
+            background: linear-gradient(135deg, #7B53F0 0%, #F6FF54 50%, #7B53F0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             position: relative;
             z-index: 1;
-            text-align: left;
+            text-align: center;
             padding: 0;
             margin: 0 0 50px;
             font-size: clamp(2rem, 4.5vw, 3.2rem);
-            font-weight: 700;
+            font-weight: 900;
             letter-spacing: -1.5px;
+            text-shadow: 0 4px 20px rgba(123, 83, 240, 0.3);
+            filter: drop-shadow(0 4px 15px rgba(246, 255, 84, 0.2));
         }
         .map-container {
             max-width: 1200px;
