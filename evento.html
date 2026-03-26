@@ -2380,31 +2380,125 @@
 
         /* ====== FOOTER ====== */
         .footer {
-            padding: 50px 100px;
-            background: #0d0d0d;
-            color: rgba(255,255,255,0.4);
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a2e 100%);
+            border-top: 2px solid var(--amarillo-limon);
+            color: rgba(255,255,255,0.8);
             font-size: clamp(0.8rem, 1.5vw, 0.95rem);
-            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 80px 100px 40px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto 60px;
+        }
+        .footer-section { display: flex; flex-direction: column; gap: 16px; }
+        .footer-title {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff99 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            letter-spacing: -1px;
+        }
+        .footer-description {
+            color: rgba(255,255,255,0.7);
+            margin: 0;
+            line-height: 1.6;
+        }
+        .footer-date {
+            color: var(--amarillo-limon);
+            margin: 0;
+            font-weight: 600;
+        }
+        .footer-heading {
+            color: var(--white);
+            font-weight: 700;
+            margin: 0;
+            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .footer-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 0;
+        }
+        .footer-links a::before {
+            content: '→';
+            margin-right: 8px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: var(--amarillo-limon);
+            padding-left: 8px;
+        }
+        .footer-links a:hover::before {
+            opacity: 1;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 16px;
+        }
+        .social-footer {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(246, 255, 84, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--amarillo-limon);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(246, 255, 84, 0.3);
+        }
+        .social-footer:hover {
+            background: var(--amarillo-limon);
+            color: #0d0d0d;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(246, 255, 84, 0.3);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+        }
+        .footer-bottom p { margin: 0; }
         .footer p { position: relative; z-index: 1; margin: 0; }
-        .footer a { color: var(--amarillo-limon); text-decoration: none; font-weight: 600; word-break: break-word; }
-        .footer a:hover { color: var(--white); }
         @media (max-width: 480px) {
             .footer a { display: block; margin: 4px 0; }
         }
 
         /* Footer responsive */
         @media (max-width: 1024px) {
-            .footer { padding: 40px 60px; }
+            .footer { padding: 60px 60px 40px; }
+            .footer-content { grid-template-columns: 1fr 1fr; gap: 40px; }
         }
         @media (max-width: 768px) {
-            .footer { padding: 40px 30px; }
+            .footer { padding: 50px 30px 40px; }
+            .footer-content { grid-template-columns: 1fr; gap: 40px; }
         }
         @media (max-width: 480px) {
-            .footer { padding: 30px 20px; gap: 8px; }
+            .footer { padding: 40px 20px 30px; }
+            .footer-content { grid-template-columns: 1fr; gap: 30px; }
+            .footer-socials { justify-content: center; }
         }
 
         /* ====== TICKER STRIP ====== */
@@ -3650,8 +3744,42 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <p>&copy; 2026 EXPO COSPIDE - Emprendimiento y Marketing. Todos los derechos reservados.</p>
-        <p style="margin-top: 8px;"><a href="/terminos">Términos y condiciones</a></p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">EXPO COSPIDE 2026</h3>
+                <p class="footer-description">El punto de encuentro donde líderes y emprendedores transforman ideas en negocios.</p>
+                <p class="footer-date">📅 23 de Mayo 2026 | Ocotlán, Jalisco</p>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-heading">Navegación</h4>
+                <ul class="footer-links">
+                    <li><a href="#que-es">¿Qué es COSPIDE?</a></li>
+                    <li><a href="#por-que">Por qué asistir</a></li>
+                    <li><a href="#boletos">Boletos</a></li>
+                    <li><a href="#speakers">Speakers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-heading">Información</h4>
+                <ul class="footer-links">
+                    <li><a href="/terminos">Términos y condiciones</a></li>
+                    <li><a href="/privacidad">Política de privacidad</a></li>
+                    <li><a href="mailto:info@expocospide.com">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-heading">Síguenos</h4>
+                <div class="footer-socials">
+                    <a href="#" class="social-footer" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-footer" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-footer" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-footer" title="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EXPO COSPIDE - Emprendimiento y Marketing. Todos los derechos reservados.</p>
+        </div>
     </footer>
 
     <!-- WHATSAPP FLOAT -->
