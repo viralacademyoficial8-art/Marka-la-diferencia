@@ -3784,7 +3784,7 @@
                     </div>
                 </div>
 
-                <a href="#" class="pricing-btn pricing-btn-free">Registrarme Gratis</a>
+                <a href="checkout.html?plan=free" class="pricing-btn pricing-btn-free">Registrarme Gratis</a>
             </div>
 
             <div class="pricing-card pricing-card-standard">
@@ -3824,7 +3824,7 @@
                     </div>
                 </div>
 
-                <a href="#" class="pricing-btn pricing-btn-standard">Comprar Boleto</a>
+                <a href="checkout.html?plan=conference" class="pricing-btn pricing-btn-standard">Comprar Boleto</a>
             </div>
 
             <div class="pricing-card pricing-card-vip">
@@ -3868,7 +3868,7 @@
                     </div>
                 </div>
 
-                <a href="#" class="pricing-btn pricing-btn-vip">Comprar VIP</a>
+                <a href="checkout.html?plan=vip" class="pricing-btn pricing-btn-vip">Comprar VIP</a>
             </div>
         </div>
     </section>
@@ -4449,21 +4449,8 @@
         });
 
         // Botones de pricing
-        document.addEventListener('DOMContentLoaded', () => {
-            const freeBtns = document.querySelectorAll('.pricing-btn-free');
-            const standardBtns = document.querySelectorAll('.pricing-btn-standard');
-            const vipBtns = document.querySelectorAll('.pricing-btn-vip');
-
-            freeBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => { e.preventDefault(); openCheckoutModal('free'); });
-            });
-            standardBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => { e.preventDefault(); openCheckoutModal('conference'); });
-            });
-            vipBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => { e.preventDefault(); openCheckoutModal('vip'); });
-            });
-        });
+        // Pricing buttons now redirect directly to checkout.html
+        // Event listeners removed to allow normal navigation
 
         // 🎪 FLIP 3D CARD EFFECT - NO JAVASCRIPT NEEDED, PURE CSS3!
     </script>

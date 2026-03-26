@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprar Boletos - EXPO MAKERS 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .checkout-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: slideInDown 0.6s ease-out;
+        }
+
+        .checkout-header h1 {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #F6FF54 0%, #ffff99 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .checkout-header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        /* Resumen del pedido */
+        .order-summary {
+            background: linear-gradient(135deg, rgba(123, 83, 240, 0.15) 0%, rgba(246, 255, 84, 0.08) 100%);
+            border: 1px solid rgba(246, 255, 84, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .order-summary h2 {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: #F6FF54;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(246, 255, 84, 0.2);
+        }
+
+        .product-icon {
+            font-size: 2.5rem;
+        }
+
+        .product-details h3 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-details p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .price-display {
+            background: rgba(246, 255, 84, 0.1);
+            border: 1px solid rgba(246, 255, 84, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .price-display .currency {
+            font-size: 1.2rem;
+            color: #F6FF54;
+            font-weight: 700;
+        }
+
+        .price-display .amount {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #F6FF54;
+            line-height: 1;
+        }
+
+        .features-list {
+            margin-bottom: 30px;
+        }
+
+        .features-list h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .feature-item i {
+            color: #22c55e;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        /* Formulario de pago */
+        .checkout-form {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #F6FF54;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(246, 255, 84, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #F6FF54;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(246, 255, 84, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Stripe Element */
+        .stripe-element {
+            padding: 14px 16px;
+            border: 2px solid rgba(246, 255, 84, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .stripe-element.StripeElement--focus {
+            border-color: #F6FF54;
+            box-shadow: 0 0 20px rgba(246, 255, 84, 0.2);
+        }
+
+        /* Botón de compra */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #F6FF54 0%, #ffff99 100%);
+            color: #232021;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 12px 32px rgba(246, 255, 84, 0.3);
+            margin-bottom: 16px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 48px rgba(246, 255, 84, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .submit-btn.loading {
+            position: relative;
+        }
+
+        .submit-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            right: 20px;
+            margin-top: -10px;
+            border: 3px solid rgba(35, 32, 33, 0.3);
+            border-radius: 50%;
+            border-top-color: #232021;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Link de vuelta */
+        .back-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .back-link a {
+            color: #F6FF54;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link a:hover {
+            transform: translateX(-4px);
+        }
+
+        /* Mensajes de error/éxito */
+        .message {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: none;
+            animation: slideInDown 0.4s ease-out;
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+        }
+
+        .message.success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            color: #86efac;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        /* Loader */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(246, 255, 84, 0.3);
+            border-top-color: #F6FF54;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .loader-text {
+            color: #F6FF54;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <!-- Header -->
+        <div class="checkout-header">
+            <h1>🎟️ Compra tu Boleto</h1>
+            <p>EXPO MAKERS 2026 - 23 de Mayo, Ocotlán, Jalisco</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="checkout-content">
+            <!-- Resumen del Pedido -->
+            <div class="order-summary">
+                <h2>Resumen</h2>
+
+                <div class="product-info">
+                    <div class="product-icon" id="productIcon">🎫</div>
+                    <div class="product-details">
+                        <h3 id="productName">Selecciona un paquete</h3>
+                        <p id="productDesc">Elige tu plan de acceso</p>
+                    </div>
+                </div>
+
+                <div class="price-display">
+                    <div class="currency">$</div>
+                    <div class="amount" id="productPrice">0.00</div>
+                </div>
+
+                <div class="features-list">
+                    <h4>✓ Incluye:</h4>
+                    <div id="featuresList"></div>
+                </div>
+
+                <div style="padding: 20px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; text-align: center;">
+                    <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8);">💳 Pago 100% seguro con Stripe</p>
+                </div>
+            </div>
+
+            <!-- Formulario de Pago -->
+            <div class="checkout-form">
+                <div id="errorMessage" class="message error"></div>
+                <div id="successMessage" class="message success"></div>
+
+                <form id="checkoutForm">
+                    <div class="form-group">
+                        <label for="productSelect">Selecciona tu Paquete *</label>
+                        <select id="productSelect" required>
+                            <option value="">-- Elige tu plan --</option>
+                            <option value="free">EXPO MAKERS PASS - Gratuito</option>
+                            <option value="conference">CONFERENCE PASS - $497</option>
+                            <option value="vip">VIP PASS - $897</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Nombre Completo *</label>
+                        <input type="text" id="fullName" placeholder="Juan Pérez" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico *</label>
+                        <input type="email" id="email" placeholder="correo@ejemplo.com" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" placeholder="+52 1 33 4320 2969">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Empresa/Proyecto</label>
+                            <input type="text" id="company" placeholder="Mi empresa (opcional)">
+                        </div>
+                    </div>
+
+                    <div id="cardElement" class="stripe-element"></div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        💳 Procesar Pago
+                    </button>
+
+                    <div class="back-link">
+                        <a href="evento.html#boletos">
+                            <i class="fas fa-arrow-left"></i> Volver a los Boletos
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <div class="loader-text">Procesando pago...</div>
+    </div>
+
+    <script src="stripe-config.js"></script>
+    <script>
+        // Variables globales
+        let elements;
+        let cardElement;
+        let selectedProduct = null;
+
+        // Configuración de Stripe Elements
+        function initStripe() {
+            elements = stripe.elements();
+            cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#ffffff',
+                        '::placeholder': {
+                            color: 'rgba(255, 255, 255, 0.4)'
+                        }
+                    },
+                    invalid: {
+                        color: '#ff6b6b'
+                    }
+                }
+            });
+            cardElement.mount('#cardElement');
+
+            // Manejo de errores del card element
+            cardElement.addEventListener('change', (e) => {
+                if (e.error) {
+                    showError(e.error.message);
+                } else {
+                    hideError();
+                }
+            });
+        }
+
+        // Actualizar resumen cuando cambia el producto
+        document.getElementById('productSelect').addEventListener('change', (e) => {
+            const selected = e.target.value;
+            if (selected && STRIPE_CONFIG.products[selected]) {
+                selectedProduct = STRIPE_CONFIG.products[selected];
+                updateOrderSummary();
+            }
+        });
+
+        function updateOrderSummary() {
+            if (!selectedProduct) return;
+
+            document.getElementById('productName').textContent = selectedProduct.name;
+            document.getElementById('productDesc').textContent = selectedProduct.description;
+            document.getElementById('productPrice').textContent = selectedProduct.price.toFixed(2);
+
+            const featuresList = document.getElementById('featuresList');
+            featuresList.innerHTML = selectedProduct.features
+                .map(feature => `
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>${feature}</span>
+                    </div>
+                `)
+                .join('');
+
+            // Actualizar iconos
+            const icons = {
+                free: '🎟️',
+                conference: '🎤',
+                vip: '👑'
+            };
+            const productKey = Object.keys(STRIPE_CONFIG.products).find(
+                key => STRIPE_CONFIG.products[key].name === selectedProduct.name
+            );
+            document.getElementById('productIcon').textContent = icons[productKey] || '🎫';
+        }
+
+        // Manejo del formulario
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!selectedProduct) {
+                showError('Por favor selecciona un paquete');
+                return;
+            }
+
+            // Si es gratuito, redirigir directamente
+            if (selectedProduct.price === 0) {
+                handleFreeCheckout();
+                return;
+            }
+
+            // Para pagos, usar el link de Stripe
+            handlePaidCheckout();
+        });
+
+        function handleFreeCheckout() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const company = document.getElementById('company').value;
+
+            if (!fullName || !email) {
+                showError('Por favor completa nombre y email');
+                return;
+            }
+
+            // Guardar información
+            const orderData = {
+                product: selectedProduct.name,
+                fullName,
+                email,
+                phone,
+                company,
+                price: 0,
+                timestamp: new Date().toISOString()
+            };
+
+            localStorage.setItem('lastOrder', JSON.stringify(orderData));
+
+            // Mostrar mensaje de éxito
+            showSuccess('¡Acceso confirmado! Revisa tu email para más detalles.');
+
+            // Redirigir después de 2 segundos
+            setTimeout(() => {
+                window.location.href = 'evento.html?success=true';
+            }, 2000);
+        }
+
+        function handlePaidCheckout() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            if (!fullName || !email) {
+                showError('Por favor completa nombre y email');
+                return;
+            }
+
+            // Guardar información en sessionStorage
+            sessionStorage.setItem('checkoutData', JSON.stringify({
+                fullName,
+                email,
+                phone,
+                product: selectedProduct.name,
+                price: selectedProduct.price
+            }));
+
+            // Redirigir al link de pago de Stripe
+            showLoading(true);
+            setTimeout(() => {
+                window.location.href = selectedProduct.link + '?client_reference_id=' + email;
+            }, 500);
+        }
+
+        // Funciones auxiliares
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function hideError() {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.classList.remove('show');
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.classList.add('show');
+        }
+
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('show', show);
+            document.getElementById('submitBtn').disabled = show;
+        }
+
+        // Inicializar cuando carga la página
+        document.addEventListener('DOMContentLoaded', () => {
+            initStripe();
+
+            // Verificar parámetros de URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const plan = urlParams.get('plan');
+
+            if (plan && STRIPE_CONFIG.products[plan]) {
+                // Preseleccionar el plan
+                document.getElementById('productSelect').value = plan;
+                const event = new Event('change', { bubbles: true });
+                document.getElementById('productSelect').dispatchEvent(event);
+            }
+
+            // Verificar si viene de un pago exitoso
+            if (urlParams.get('success')) {
+                showSuccess('¡Compra completada! Revisa tu email para el recibo.');
+            }
+        });
+    </script>
+</body>
+</html>
