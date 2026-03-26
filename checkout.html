@@ -638,22 +638,22 @@
             if (available <= 0) {
                 showError('Lo siento, este paquete ya está agotado');
                 document.getElementById('submitBtn').disabled = true;
-                availabilityMsg.textContent = '❌ Agotado';
+                availabilityMsg.textContent = '❌ Agotado - No hay más disponibles';
                 availabilityMsg.style.color = '#ff6b6b';
             } else if (selectedQuantity > available) {
-                const msg = `⚠️ Solo hay ${available} disponibles (pediste ${selectedQuantity})`;
+                const msg = `⚠️ Bajo stock - Solo ${available} restantes`;
                 showError(msg);
                 document.getElementById('submitBtn').disabled = true;
                 availabilityMsg.textContent = msg;
                 availabilityMsg.style.color = '#fca5a5';
             } else if (available <= 10) {
-                const msg = `⚠️ Solo quedan ${available} boletos`;
+                const msg = `⚠️ Bajo stock - Solo ${available} restantes`;
                 showSuccess(msg);
                 document.getElementById('submitBtn').disabled = false;
                 availabilityMsg.textContent = msg;
                 availabilityMsg.style.color = '#fca5a5';
             } else {
-                const msg = `✓ ${available} disponibles`;
+                const msg = `✓ En stock - ${available} disponibles`;
                 hideError();
                 document.getElementById('submitBtn').disabled = false;
                 availabilityMsg.textContent = msg;
