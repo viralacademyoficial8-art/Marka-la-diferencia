@@ -547,33 +547,10 @@
         let selectedProductKey = null;
         let selectedQuantity = 1;
 
-        // Configuración de Stripe Elements
+        // Configuración de Stripe (para futuros usos)
         function initStripe() {
-            elements = stripe.elements();
-            cardElement = elements.create('card', {
-                style: {
-                    base: {
-                        fontSize: '16px',
-                        color: '#ffffff',
-                        '::placeholder': {
-                            color: 'rgba(255, 255, 255, 0.4)'
-                        }
-                    },
-                    invalid: {
-                        color: '#ff6b6b'
-                    }
-                }
-            });
-            cardElement.mount('#cardElement');
-
-            // Manejo de errores del card element
-            cardElement.addEventListener('change', (e) => {
-                if (e.error) {
-                    showError(e.error.message);
-                } else {
-                    hideError();
-                }
-            });
+            // Stripe.js ya está inicializado en stripe-config.js
+            // cardElement no es necesario ya que usamos Stripe Checkout
         }
 
         // Actualizar resumen cuando cambia el producto
@@ -827,21 +804,57 @@
                     orderId: orderResult.orderId
                 }));
 
-                // Construir URL de Stripe con cantidad
-                const stripeUrl = selectedProduct.link +
-                    '?client_reference_id=' + encodeURIComponent(email) +
-                    '&prefilled_email=' + encodeURIComponent(email) +
-                    '&prefilled_name=' + encodeURIComponent(fullName) +
-                    (selectedQuantity > 1 ? '&quantity=' + selectedQuantity : '');
-
-                // Redirigir al link de pago de Stripe
-                setTimeout(() => {
-                    window.location.href = stripeUrl;
-                }, 500);
+                // Crear sesión de checkout con Stripe
+                createCheckoutSession({
+                    ticketType: selectedProductKey,
+                    quantity: selectedQuantity,
+                    email,
+                    fullName
+                });
             }).catch(error => {
                 showError('Error procesando la orden');
                 showLoading(false);
             });
+        }
+
+        async function createCheckoutSession(data) {
+            try {
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    showError(result.error || 'Error creando sesión de pago');
+                    showLoading(false);
+                    return;
+                }
+
+                if (result.isFree) {
+                    showSuccess('¡Acceso gratuito confirmado!');
+                    setTimeout(() => {
+                        window.location.href = 'evento.html?success=true';
+                    }, 2000);
+                    return;
+                }
+
+                // Redirigir a Stripe Checkout
+                if (result.url) {
+                    window.location.href = result.url;
+                } else {
+                    showError('No se pudo generar el enlace de pago');
+                    showLoading(false);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Error conectando con el servidor de pagos');
+                showLoading(false);
+            }
         }
 
         // Funciones auxiliares

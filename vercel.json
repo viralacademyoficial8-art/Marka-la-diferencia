@@ -1,25 +1,10 @@
 {
-  "version": 2,
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/evento",
-      "dest": "/evento.html"
-    },
-    {
-      "src": "/confirmacion",
-      "dest": "/confirmacion.html"
-    },
-    {
-      "src": "/admin",
-      "dest": "/admin.html"
-    },
-    {
-      "src": "/terminos",
-      "dest": "/terminos.html"
+  "env": {
+    "STRIPE_SECRET_KEY": "@stripe_secret_key"
+  },
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x"
     }
-  ]
+  }
 }
