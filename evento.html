@@ -1977,14 +1977,15 @@
         .ecosystem-grid {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            gap: 0;
+            align-items: stretch;
+            gap: -100px;
             max-width: 1300px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
             perspective: 1000px;
-            min-height: 450px;
+            min-height: auto;
+            flex-wrap: wrap;
         }
         .ecosystem-card {
             background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
@@ -1993,7 +1994,7 @@
             text-align: center;
             border: 2px solid;
             transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: absolute;
+            position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -2002,24 +2003,24 @@
             group: 'eco-cards';
             animation: slideInUp 0.8s ease-out both;
             width: 420px;
-            max-width: 90vw;
+            max-width: 100%;
+            flex-shrink: 0;
         }
 
         /* Card positioning for asymmetric overlap */
         .ecosystem-card-1 {
             animation-delay: 0.2s;
-            left: 0;
-            top: 0;
             border-color: #00ffc8;
             z-index: 2;
+            margin-right: -80px;
+            transform: translateY(0);
         }
 
         .ecosystem-card-2 {
             animation-delay: 0.4s;
-            right: 0;
-            top: 80px;
             border-color: #ff6b9d;
             z-index: 1;
+            transform: translateY(60px);
         }
 
         .ecosystem-card::before {
@@ -2126,18 +2127,19 @@
             .ecosystem-grid {
                 flex-direction: column;
                 align-items: center;
-                min-height: auto;
+                gap: 0;
             }
             .ecosystem-card {
-                position: relative;
-                left: auto;
-                right: auto;
-                top: auto;
                 width: 100%;
                 max-width: 500px;
             }
             .ecosystem-card-1 {
+                margin-right: 0;
+                transform: translateY(0);
                 margin-bottom: 40px;
+            }
+            .ecosystem-card-2 {
+                transform: translateY(0);
             }
         }
         @media (max-width: 768px) {
