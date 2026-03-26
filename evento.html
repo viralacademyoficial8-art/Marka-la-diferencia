@@ -1954,7 +1954,7 @@
 
         /* ====== ECOSYSTEM ====== */
         .ecosystem-section {
-            background: #0d0d0d;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0d0d1f 100%);
             color: var(--white);
             position: relative;
             overflow: hidden;
@@ -1990,7 +1990,7 @@
             text-align: left;
             border: none;
             border-right: 1px solid rgba(255,255,255,0.08);
-            transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -1999,14 +1999,23 @@
             grid-template-columns: none;
             gap: 0;
             group: 'eco-cards';
+            animation: slideInUp 0.8s ease-out both;
         }
+        .ecosystem-card-1 { animation-delay: 0.2s; }
+        .ecosystem-card-2 { animation-delay: 0.4s; }
         .ecosystem-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(246,255,84,0.08) 0%, transparent 100%);
+            background: transparent;
             opacity: 0;
-            transition: opacity 0.45s;
+            transition: opacity 0.6s;
+        }
+        .ecosystem-card-1::before {
+            background: linear-gradient(135deg, rgba(0,255,200,0.15) 0%, rgba(100,200,255,0.08) 50%, transparent 100%);
+        }
+        .ecosystem-card-2::before {
+            background: linear-gradient(135deg, rgba(255,100,150,0.15) 0%, rgba(200,100,255,0.08) 50%, transparent 100%);
         }
         .ecosystem-card:last-child { border-right: none; }
         .ecosystem-card:hover {
@@ -2015,16 +2024,37 @@
         }
         .ecosystem-card:hover::before { opacity: 1; }
         .ecosystem-card-icon {
-            font-size: 5rem;
+            font-size: 4.5rem;
             margin-bottom: 36px;
             position: relative;
             z-index: 1;
-            transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            animation: float 3.5s ease-in-out infinite;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: float 4s ease-in-out infinite;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .ecosystem-card-1 .ecosystem-card-icon {
+            color: #00ffc8;
+        }
+        .ecosystem-card-2 .ecosystem-card-icon {
+            color: #ff6b9d;
         }
         .ecosystem-card:hover .ecosystem-card-icon {
-            transform: scale(1.2) rotate(6deg);
-            filter: drop-shadow(0 0 16px rgba(246,255,84,0.35));
+            transform: scale(1.15) translateY(-8px);
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+        }
+        .ecosystem-card-1:hover .ecosystem-card-icon {
+            filter: drop-shadow(0 0 20px rgba(0,255,200,0.5));
+        }
+        .ecosystem-card-2:hover .ecosystem-card-icon {
+            filter: drop-shadow(0 0 20px rgba(255,107,157,0.5));
         }
         .ecosystem-card h3 {
             font-family: 'Funnel Display', sans-serif;
@@ -3329,19 +3359,23 @@
     <section class="ecosystem-section" id="ecosistema">
         <h2 class="ecosystem-title">ECOSISTEMA</h2>
         <div class="ecosystem-grid">
-            <div class="ecosystem-card">
-                <div class="ecosystem-card-icon">📋</div>
+            <div class="ecosystem-card ecosystem-card-1">
+                <div class="ecosystem-card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
                 <p class="ecosystem-subtitle">EXPOSITOR</p>
                 <h3>ÚNETE AL EQUIPO</h3>
                 <p>Forma parte del equipo de expositores y muestra tu proyecto, empresa o emprendimiento a cientos de visitantes.</p>
-                <span class="eco-arrow">→</span>
+                <span class="eco-arrow"><i class="fas fa-arrow-right"></i></span>
             </div>
-            <div class="ecosystem-card">
-                <div class="ecosystem-card-icon">🤝</div>
+            <div class="ecosystem-card ecosystem-card-2">
+                <div class="ecosystem-card-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
                 <p class="ecosystem-subtitle">PATROCINADOR</p>
                 <h3>SÚMATE COMO PATROCINADOR</h3>
                 <p>Somos la oportunidad de generar experiencias y conectar tu marca con emprendedores y líderes.</p>
-                <span class="eco-arrow">→</span>
+                <span class="eco-arrow"><i class="fas fa-arrow-right"></i></span>
             </div>
         </div>
     </section>
