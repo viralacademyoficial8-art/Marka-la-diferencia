@@ -2140,67 +2140,138 @@
 
         /* ====== HOSPITALITY ====== */
         .hospitality-section {
-            background: linear-gradient(135deg, var(--violeta-intenso) 0%, #a189ff 100%);
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
             color: var(--white);
             position: relative;
             overflow: hidden;
-            clip-path: none;
+            padding: clamp(60px, 10vw, 100px) clamp(30px, 5vw, 100px);
         }
         .hospitality-container {
-            max-width: none;
-            margin: 0;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 0;
-            align-items: stretch;
-            border: none;
-            border-radius: 0;
-            padding: 0;
-            background: transparent;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
             position: relative;
             z-index: 1;
         }
+        .hospitality-header {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .hospitality-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.15) 0%, rgba(123, 83, 240, 0.15) 100%);
+            border: 1px solid rgba(246, 255, 84, 0.3);
+            color: var(--amarillo-limon);
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: fit-content;
+            margin: 0 auto;
+        }
         .hospitality-text {
-            padding: 100px 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
         .hospitality-text h3 {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
             font-weight: 900;
-            margin-bottom: 24px;
-            color: var(--white);
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-transform: uppercase;
-            letter-spacing: -2.5px;
-            line-height: 0.95;
+            letter-spacing: -2px;
+            line-height: 1;
         }
         .hospitality-text p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: rgba(255,255,255,0.75);
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 400;
-            line-height: 1.8;
+            line-height: 1.7;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .hospitality-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        .hospitality-card {
+            background: linear-gradient(135deg, rgba(123, 83, 240, 0.15) 0%, rgba(246, 255, 84, 0.08) 100%);
+            border: 1px solid rgba(246, 255, 84, 0.2);
+            border-radius: 16px;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s ease-out both;
+        }
+        .hospitality-card:nth-child(2) { animation-delay: 0.1s; }
+        .hospitality-card:nth-child(3) { animation-delay: 0.2s; }
+        .hospitality-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(246, 255, 84, 0.5);
+            background: linear-gradient(135deg, rgba(123, 83, 240, 0.25) 0%, rgba(246, 255, 84, 0.15) 100%);
+            box-shadow: 0 20px 50px rgba(246, 255, 84, 0.15);
+        }
+        .hospitality-card-icon {
+            font-size: 2.8rem;
+            line-height: 1;
+        }
+        .hospitality-card h4 {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hospitality-card p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.6;
         }
         .hospitality-btn {
             background: var(--amarillo-limon);
             color: var(--dark);
-            padding: 0 90px;
+            padding: 14px 32px;
             border: none;
-            border-radius: 0;
+            border-radius: 12px;
             font-family: 'Funnel Display', sans-serif;
             font-weight: 900;
-            font-size: clamp(1.15rem, 2vw, 1.4rem);
+            font-size: 1rem;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.35s;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-transform: uppercase;
-            letter-spacing: 4px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            display: flex;
+            letter-spacing: 2px;
+            display: inline-flex;
             align-items: center;
+            gap: 8px;
             justify-content: center;
-            min-width: 200px;
-            margin-top: 0;
+            align-self: flex-start;
+            margin-top: 8px;
+            box-shadow: 0 8px 24px rgba(246, 255, 84, 0.3);
         }
-        .hospitality-btn:hover { background: var(--white); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
+        .hospitality-btn:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(246, 255, 84, 0.4);
+        }
 
         /* ====== WHATSAPP FLOAT ====== */
         .whatsapp-float {
@@ -2615,12 +2686,15 @@
             .map-legend { gap: 20px; }
 
             /* HOSPITALITY MOBILE */
-            .hospitality-section { padding: 0; }
-            .hospitality-container { grid-template-columns: 1fr; }
-            .hospitality-text { padding: 80px 40px 50px; }
-            .hospitality-btn { padding: 40px 50px; min-width: auto; min-height: auto; }
-            .hospitality-text h3 { font-size: clamp(2rem, 7vw, 3rem); }
-            .hospitality-text p { font-size: clamp(0.95rem, 1.8vw, 1.1rem); }
+            .hospitality-section { padding: 60px 30px; }
+            .hospitality-badge { padding: 8px 16px; font-size: 0.8rem; }
+            .hospitality-text h3 { font-size: clamp(1.8rem, 6vw, 2.8rem); }
+            .hospitality-text p { font-size: clamp(0.9rem, 1.6vw, 1rem); }
+            .hospitality-cards { grid-template-columns: 1fr; gap: 20px; margin-top: 30px; }
+            .hospitality-card { padding: 28px 20px; }
+            .hospitality-card h4 { font-size: 1.2rem; }
+            .hospitality-card p { font-size: 0.9rem; }
+            .hospitality-btn { padding: 12px 24px; font-size: 0.9rem; }
 
             /* FOOTER MOBILE */
             .footer { padding: 40px 30px; }
@@ -2647,6 +2721,16 @@
             .modality-row .feature-name { font-size: 0.8rem; padding: 0 20px; }
             .cta-heading { font-size: clamp(2rem, 11vw, 3.2rem); }
             .zone-card { padding: 50px 30px; min-height: 340px; }
+
+            /* HOSPITALITY EXTRA SMALL */
+            .hospitality-section { padding: 50px 20px; }
+            .hospitality-text h3 { font-size: clamp(1.5rem, 5vw, 2.2rem); }
+            .hospitality-text p { font-size: 0.85rem; }
+            .hospitality-cards { grid-template-columns: 1fr; gap: 18px; margin-top: 28px; }
+            .hospitality-card { padding: 24px 18px; gap: 12px; }
+            .hospitality-card-icon { font-size: 2.2rem; }
+            .hospitality-card h4 { font-size: 1rem; }
+            .hospitality-card p { font-size: 0.8rem; }
         }
 
         /* ====== STRIPE CHECKOUT MODAL ====== */
@@ -3363,11 +3447,33 @@
     <!-- HOSPITALIDAD -->
     <section class="hospitality-section">
         <div class="hospitality-container">
-            <div class="hospitality-text">
-                <h3>Hospitalidad COSPIDE</h3>
-                <p>Conoce la Oferta Hotelera que EXPO COSPIDE trae para ti</p>
+            <div class="hospitality-header">
+                <span class="hospitality-badge">🏨 HOSPEDAJE</span>
+                <div class="hospitality-text">
+                    <h3>Hospitalidad COSPIDE</h3>
+                    <p>Descubre las mejores opciones hoteleras que EXPO COSPIDE ha seleccionado para garantizar tu comodidad durante EXPO MAKERS 2026</p>
+                </div>
             </div>
-            <a href="#" class="hospitality-btn">Aquí</a>
+            <div class="hospitality-cards">
+                <div class="hospitality-card">
+                    <div class="hospitality-card-icon">⭐</div>
+                    <h4>Premium Hotels</h4>
+                    <p>Experiencias de lujo con servicios 5 estrellas, ubicados a 2 km del evento con transporte incluido</p>
+                    <a href="#" class="hospitality-btn">Explorar</a>
+                </div>
+                <div class="hospitality-card">
+                    <div class="hospitality-card-icon">💼</div>
+                    <h4>Hotels Boutique</h4>
+                    <p>Hospedajes seleccionados con encanto local, perfectos para emprendedores que buscan experiencias únicas</p>
+                    <a href="#" class="hospitality-btn">Explorar</a>
+                </div>
+                <div class="hospitality-card">
+                    <div class="hospitality-card-icon">🎯</div>
+                    <h4>Opciones Económicas</h4>
+                    <p>Alojamientos accesibles sin comprometer calidad, a pocos minutos de la Plaza Principal</p>
+                    <a href="#" class="hospitality-btn">Explorar</a>
+                </div>
+            </div>
         </div>
     </section>
 
