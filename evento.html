@@ -2297,6 +2297,137 @@
         }
         .hospitality-btn:hover { background: var(--white); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
 
+        /* ====== UBICACIÓN ====== */
+        .location-section {
+            padding: clamp(80px, 12vw, 140px) clamp(30px, 6vw, 100px);
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .location-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(123, 83, 240, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .location-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(246, 255, 84, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .location-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        .location-title {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--dark);
+            margin: 0 0 24px;
+            letter-spacing: -1.5px;
+        }
+        .location-description {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(0,0,0,0.65);
+            line-height: 1.8;
+            margin: 0 0 48px;
+        }
+        .location-details {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+        .location-details .detail-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .location-details .detail-icon {
+            font-size: 2.2rem;
+            min-width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .location-details h4 {
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0 0 8px;
+        }
+        .location-details p {
+            font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+            color: rgba(0,0,0,0.6);
+            margin: 0;
+            line-height: 1.6;
+        }
+        .location-btn {
+            background: linear-gradient(135deg, var(--amarillo-limon) 0%, #ffff99 100%);
+            color: var(--dark);
+            padding: clamp(16px, 2vw, 20px) clamp(32px, 5vw, 50px);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Funnel Display', sans-serif;
+            font-weight: 900;
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 8px 24px rgba(246, 255, 84, 0.3);
+            display: inline-block;
+        }
+        .location-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(246, 255, 84, 0.5);
+            background: linear-gradient(135deg, #ffff99 0%, var(--amarillo-limon) 100%);
+        }
+        .location-map {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        }
+        .location-map iframe {
+            width: 100%;
+            height: 500px;
+        }
+
+        /* Location responsive */
+        @media (max-width: 1024px) {
+            .location-content { gap: 60px; }
+            .location-map iframe { height: 400px; }
+        }
+        @media (max-width: 768px) {
+            .location-section { padding: 60px 30px; }
+            .location-content { grid-template-columns: 1fr; gap: 48px; }
+            .location-map iframe { height: 350px; }
+        }
+        @media (max-width: 480px) {
+            .location-section { padding: 50px 20px; }
+            .location-details { gap: 24px; }
+            .location-map iframe { height: 280px; }
+        }
+
         /* ====== WHATSAPP FLOAT ====== */
         .whatsapp-float {
             position: fixed;
@@ -3695,6 +3826,48 @@
                 <p>Conoce la Oferta Hotelera que EXPO COSPIDE trae para ti</p>
             </div>
             <a href="#" class="hospitality-btn">Aquí</a>
+        </div>
+    </section>
+
+    <!-- UBICACIÓN -->
+    <section class="location-section" id="ubicacion">
+        <div class="location-container">
+            <div class="location-content">
+                <div class="location-info">
+                    <h2 class="location-title">¿Dónde nos encontramos?</h2>
+                    <p class="location-description">Te esperamos en el corazón de Ocotlán, Jalisco, en un lugar estratégico y accesible para todos nuestros asistentes.</p>
+
+                    <div class="location-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <div>
+                                <h4>Ubicación</h4>
+                                <p>Plaza Principal de Ocotlán, Jalisco, México</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📅</span>
+                            <div>
+                                <h4>Fecha y Hora</h4>
+                                <p>23 de Mayo 2026 | 9:00 AM</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">🚗</span>
+                            <div>
+                                <h4>Acceso</h4>
+                                <p>Fácil estacionamiento y transporte público disponible</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="https://www.google.com/maps/place/Plaza+Principal+de+Ocotl%C3%A1n/@20.3468727,-102.7738709,17z/data=!3m1!4b1!4m6!3m5!1s0x842ed9dbfb24b80b:0x45ba86dc4e43bb1!8m2!3d20.3468727!4d-102.7738709!16s%2Fg%2F11kc94j7v_!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D" target="_blank" class="location-btn">Ver en Google Maps</a>
+                </div>
+
+                <div class="location-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3732.2566739945766!2d-102.77387092390628!3d20.346872720000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842ed9dbfb24b80b%3A0x45ba86dc4e43bb1!2sPlaza%20Principal%20de%20Ocotl%C3%A1n!5e0!3m2!1ses!2smx!4v1711468200000" width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
         </div>
     </section>
 
