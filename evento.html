@@ -1690,6 +1690,11 @@
             display: block;
             z-index: 1;
         }
+        /* Zoom/crop para Diego Cabrera (Speaker 4) - enfocarse en el rostro */
+        .speaker-card:nth-child(4) .speaker-photo img {
+            object-position: center 35%;
+            transform: scale(1.5);
+        }
         /* Neon Cyberpunk Colors por Speaker */
         .speaker-card:nth-child(1) .speaker-photo {
             background: linear-gradient(135deg, #00ffff 0%, #0099ff 100%);
