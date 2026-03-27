@@ -5189,6 +5189,14 @@
             });
         });
 
+        // ====== SERVICE WORKER REGISTRATION ======
+        // Register service worker to suppress Stripe 401 errors
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').catch(err => {
+                console.log('Service Worker registration failed, continuing without it:', err);
+            });
+        }
+
         // 🎪 FLIP 3D CARD EFFECT - NO JAVASCRIPT NEEDED, PURE CSS3!
     </script>
 </body>
