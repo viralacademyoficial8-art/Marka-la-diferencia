@@ -4179,7 +4179,7 @@
             }
         }
     </style>
-    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://js.stripe.com/v3/" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -4884,40 +4884,55 @@
             trackPageView('evento-cospide');
         }
 
+        // ====== SUPPRESS NON-CRITICAL NETWORK ERRORS ======
+        window.addEventListener('error', function(e) {
+            // Suppress Stripe wallet config 401 errors (non-critical)
+            if (e.filename && (e.filename.includes('merchant-ui-api') || e.filename.includes('wallet-config'))) {
+                e.preventDefault();
+                return true;
+            }
+        }, true);
+
         // ====== STRIPE INTEGRATION ======
         const STRIPE_PUBLIC_KEY = 'pk_live_51QvEa6IIqFT6Vwj9iQvJ3S8iE7K9uL0mNoPqRsT9vW0xXyZaBcDeFgHiJkLmN'; // Reemplaza con tu clave pública
         let stripe, elements, cardElement;
 
         function initStripe() {
-            if (STRIPE_PUBLIC_KEY === 'pk_live_51QvEa6IIqFT6Vwj9iQvJ3S8iE7K9uL0mNoPqRsT9vW0xXyZaBcDeFgHiJkLmN') {
-                console.warn('⚠️ Stripe Public Key no configurada. Los pagos no funcionarán en producción.');
+            // Solo verificar si la clave es la clave de placeholder
+            if (!STRIPE_PUBLIC_KEY || STRIPE_PUBLIC_KEY.includes('pk_test_') || STRIPE_PUBLIC_KEY === 'YOUR_STRIPE_PUBLIC_KEY') {
+                console.warn('⚠️ Stripe Public Key no configurada correctamente. Los pagos no funcionarán.');
+                return;
             }
 
-            stripe = Stripe(STRIPE_PUBLIC_KEY);
-            elements = stripe.elements();
-            cardElement = elements.create('card', {
-                style: {
-                    base: {
-                        fontSize: '16px',
-                        color: '#424770',
-                        fontFamily: 'Outfit, sans-serif',
-                    },
-                    invalid: {
-                        color: '#fa755a',
+            try {
+                stripe = Stripe(STRIPE_PUBLIC_KEY);
+                elements = stripe.elements();
+                cardElement = elements.create('card', {
+                    style: {
+                        base: {
+                            fontSize: '16px',
+                            color: '#424770',
+                            fontFamily: 'Outfit, sans-serif',
+                        },
+                        invalid: {
+                            color: '#fa755a',
+                        }
                     }
-                }
-            });
-            cardElement.mount('#card-element');
+                });
+                cardElement.mount('#card-element');
 
-            cardElement.addEventListener('change', (e) => {
-                const displayError = document.getElementById('checkoutError');
-                if (e.error) {
-                    displayError.textContent = e.error.message;
-                    displayError.classList.add('show');
-                } else {
-                    displayError.classList.remove('show');
-                }
-            });
+                cardElement.addEventListener('change', (e) => {
+                    const displayError = document.getElementById('checkoutError');
+                    if (e.error) {
+                        displayError.textContent = e.error.message;
+                        displayError.classList.add('show');
+                    } else {
+                        displayError.classList.remove('show');
+                    }
+                });
+            } catch (error) {
+                console.error('Error initializing Stripe:', error);
+            }
         }
 
         let currentPlan = null;
