@@ -3142,6 +3142,8 @@
         .footer-socials {
             display: flex;
             gap: 16px;
+            align-items: center;
+            justify-content: flex-start;
         }
         .social-footer {
             width: 40px;
@@ -3155,12 +3157,63 @@
             text-decoration: none;
             transition: all 0.3s ease;
             border: 1px solid rgba(246, 255, 84, 0.3);
+            font-size: 1.1rem;
         }
         .social-footer:hover {
             background: var(--amarillo-limon);
             color: #0d0d0d;
             transform: translateY(-4px);
             box-shadow: 0 8px 20px rgba(246, 255, 84, 0.3);
+        }
+
+        /* Social Icons Responsive */
+        @media (max-width: 1024px) {
+            .footer-socials {
+                gap: 18px;
+            }
+            .social-footer {
+                width: 44px;
+                height: 44px;
+                font-size: 1.15rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-socials {
+                gap: 20px;
+                justify-content: flex-start;
+            }
+            .social-footer {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2rem;
+                border-width: 2px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .footer-socials {
+                gap: 18px;
+                margin-top: 12px;
+            }
+            .social-footer {
+                width: 46px;
+                height: 46px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-socials {
+                gap: 16px;
+                margin-top: 14px;
+            }
+            .social-footer {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+                border: 1.5px solid rgba(246, 255, 84, 0.4);
+            }
         }
         .footer-bottom {
             text-align: center;
@@ -3178,14 +3231,36 @@
         @media (max-width: 1024px) {
             .footer { padding: 60px 60px 40px; }
             .footer-content { grid-template-columns: 1fr 1fr; gap: 40px; }
+            .footer-section { gap: 14px; }
+            .footer-heading { font-size: clamp(0.9rem, 1.1vw, 1rem); }
         }
         @media (max-width: 768px) {
             .footer { padding: 50px 30px 40px; }
             .footer-content { grid-template-columns: 1fr; gap: 40px; }
+            .footer-section { gap: 12px; }
+            .footer-title { font-size: clamp(1.3rem, 2.8vw, 1.8rem); }
+            .footer-heading { font-size: 0.9rem; }
+            .footer-links { gap: 10px; }
+        }
+        @media (max-width: 600px) {
+            .footer { padding: 45px 24px 35px; }
+            .footer-content { grid-template-columns: 1fr; gap: 35px; }
+            .footer-section { gap: 11px; }
+            .footer-title { font-size: clamp(1.2rem, 2.5vw, 1.6rem); }
+            .footer-heading { font-size: 0.85rem; }
+            .footer-links { gap: 9px; }
+            .footer-description { font-size: 0.85rem; }
         }
         @media (max-width: 480px) {
             .footer { padding: 40px 20px 30px; }
             .footer-content { grid-template-columns: 1fr; gap: 30px; }
+            .footer-section { gap: 10px; }
+            .footer-title { font-size: clamp(1.1rem, 2.3vw, 1.4rem); }
+            .footer-heading { font-size: 0.8rem; letter-spacing: 1px; }
+            .footer-links { gap: 8px; }
+            .footer-description { font-size: 0.8rem; line-height: 1.5; }
+            .footer-date { font-size: 0.8rem; }
+            .footer-bottom p { font-size: 0.75rem; }
             .footer-socials { justify-content: center; }
         }
 
