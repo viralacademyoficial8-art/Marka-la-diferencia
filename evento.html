@@ -4877,7 +4877,7 @@
             } else {
                 btn.classList.remove('visible');
             }
-        });
+        }, { passive: true });
 
         // ====== PAGE VIEW TRACKING ======
         if (typeof initSupabase === 'function') {
@@ -4901,6 +4901,17 @@
                 }
                 throw error;
             });
+        };
+
+        // Filter console.error to suppress non-critical 401 errors
+        const originalError = console.error;
+        console.error = function(...args) {
+            const errorString = args.map(arg => String(arg)).join(' ');
+            // Suppress merchant-ui-api and wallet-config errors
+            if (errorString.includes('merchant-ui-api') || errorString.includes('wallet-config') || errorString.includes('401')) {
+                return;
+            }
+            originalError.apply(console, args);
         };
 
         window.addEventListener('error', function(e) {
