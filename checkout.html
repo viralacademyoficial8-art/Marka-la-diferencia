@@ -61,9 +61,44 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 30px 16px;
+            }
+            .checkout-container {
+                max-width: 100%;
+            }
+            .checkout-header {
+                margin-bottom: 40px;
+            }
+            .checkout-header h1 {
+                font-size: clamp(1.6rem, 4vw, 2.5rem);
+                margin-bottom: 12px;
+            }
+            .checkout-header p {
+                font-size: 0.95rem;
+            }
             .checkout-content {
                 grid-template-columns: 1fr;
                 gap: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 24px 14px;
+            }
+            .checkout-header {
+                margin-bottom: 32px;
+            }
+            .checkout-header h1 {
+                font-size: clamp(1.4rem, 3.5vw, 2rem);
+                margin-bottom: 10px;
+            }
+            .checkout-header p {
+                font-size: 0.9rem;
+            }
+            .checkout-content {
+                gap: 32px;
             }
         }
 
@@ -161,6 +196,97 @@
             flex-shrink: 0;
         }
 
+        /* Media queries para Order Summary */
+        @media (max-width: 768px) {
+            .order-summary {
+                padding: 32px;
+                position: relative;
+                top: auto;
+                margin-bottom: 40px;
+            }
+            .order-summary h2 {
+                font-size: 1.5rem;
+                margin-bottom: 24px;
+            }
+            .product-info {
+                margin-bottom: 24px;
+                padding-bottom: 24px;
+            }
+            .product-icon {
+                font-size: 2.2rem;
+            }
+            .product-details h3 {
+                font-size: 1.1rem;
+            }
+            .product-details p {
+                font-size: 0.85rem;
+            }
+            .price-display {
+                margin-bottom: 24px;
+                padding: 18px;
+            }
+            .price-display .amount {
+                font-size: 2.5rem;
+            }
+            .features-list {
+                margin-bottom: 24px;
+            }
+            .feature-item {
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .order-summary {
+                padding: 24px;
+                margin-bottom: 32px;
+                border-radius: 12px;
+            }
+            .order-summary h2 {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+                letter-spacing: 0.5px;
+            }
+            .product-info {
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                gap: 12px;
+            }
+            .product-icon {
+                font-size: 2rem;
+            }
+            .product-details h3 {
+                font-size: 1rem;
+                margin-bottom: 2px;
+            }
+            .product-details p {
+                font-size: 0.8rem;
+            }
+            .price-display {
+                margin-bottom: 20px;
+                padding: 16px;
+            }
+            .price-display .currency {
+                font-size: 1rem;
+            }
+            .price-display .amount {
+                font-size: 2rem;
+            }
+            .features-list {
+                margin-bottom: 20px;
+            }
+            .features-list h4 {
+                font-size: 0.8rem;
+                margin-bottom: 12px;
+            }
+            .feature-item {
+                margin-bottom: 8px;
+                font-size: 0.85rem;
+                gap: 10px;
+            }
+        }
+
         /* Formulario de pago */
         .checkout-form {
             animation: slideInUp 0.6s ease-out;
@@ -248,6 +374,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .qty-btn:hover {
@@ -262,6 +389,89 @@
 
         #quantity {
             font-weight: 700;
+        }
+
+        /* Media queries para Form Row */
+        @media (max-width: 768px) {
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-group label {
+                margin-bottom: 7px;
+                font-size: 0.9rem;
+            }
+            .form-group input,
+            .form-group select {
+                padding: 12px 14px;
+                font-size: 0.95rem;
+                border-radius: 10px;
+            }
+            .form-row {
+                gap: 14px;
+            }
+            .qty-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-group {
+                margin-bottom: 18px;
+            }
+            .form-group label {
+                margin-bottom: 6px;
+                font-size: 0.88rem;
+            }
+            .form-group input,
+            .form-group select {
+                padding: 11px 13px;
+                font-size: 0.94rem;
+            }
+            .form-row {
+                gap: 12px;
+            }
+            .qty-btn {
+                width: 46px;
+                height: 46px;
+                font-size: 1.2rem;
+                border-width: 2px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-group {
+                margin-bottom: 16px;
+            }
+            .form-group label {
+                margin-bottom: 5px;
+                font-size: 0.85rem;
+                letter-spacing: 0.3px;
+            }
+            .form-group input,
+            .form-group select {
+                padding: 10px 12px;
+                font-size: 16px;
+                border-radius: 8px;
+                width: 100%;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .qty-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
+                border-radius: 6px;
+            }
+            .qty-btn:active {
+                transform: scale(0.92);
+            }
+            #quantity {
+                font-size: 0.95rem;
+            }
         }
 
         /* Stripe Element */
