@@ -30,30 +30,46 @@
             display: block;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        a.image-link:hover img {
+            transform: scale(1.02);
+            box-shadow: 0 15px 60px rgba(246, 255, 84, 0.3);
         }
         .footer {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
             color: #F6FF54;
             font-size: 16px;
         }
         .footer a {
-            color: #F6FF54;
+            color: #0d0d0d;
+            background: linear-gradient(135deg, #F6FF54 0%, #ffff99 100%);
             text-decoration: none;
             transition: all 0.3s ease;
             font-weight: 700;
+            font-size: 18px;
+            padding: 18px 50px;
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: 0 8px 25px rgba(246, 255, 84, 0.3);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         .footer a:hover {
-            text-decoration: underline;
-            transform: scale(1.05);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(246, 255, 84, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="./images/flyer makers 2026.jpeg" alt="MAKERS 2026 - Expo Autores y Emprendedores" />
+        <a href="./evento.html" class="image-link">
+            <img src="./images/flyer makers 2026.jpeg" alt="MAKERS 2026 - Expo Autores y Emprendedores" />
+        </a>
         <div class="footer">
-            <p><a href="./evento.html">→ Ver evento completo</a></p>
+            <a href="./evento.html">Ver Evento Completo</a>
         </div>
     </div>
 </body>
