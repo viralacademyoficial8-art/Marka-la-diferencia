@@ -1362,7 +1362,7 @@
             border-radius: 20px;
             position: relative;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 48px 40px;
+            padding: 56px 48px;
             display: flex;
             flex-direction: column;
             gap: 0;
@@ -1383,7 +1383,7 @@
             border-radius: 20px;
             box-shadow: 0 15px 50px rgba(246, 255, 84, 0.2), inset 0 1px 0 rgba(255,255,255,0.08);
             position: relative;
-            padding: 48px 40px;
+            padding: 56px 48px;
             overflow: hidden;
             transform: scale(1.03);
             transition: all 0.3s ease;
@@ -1410,7 +1410,7 @@
             position: relative;
             border-radius: 20px;
             box-shadow: 0 20px 80px rgba(0, 255, 136, 0.35), inset 0 1px 0 rgba(0, 255, 136, 0.1), 0 0 30px rgba(0, 255, 136, 0.15);
-            padding: 48px 40px;
+            padding: 56px 48px;
             overflow: hidden;
             transform: scale(1.06);
             transition: all 0.3s ease;
@@ -1457,9 +1457,9 @@
         }
         .pricing-name {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(0.85rem, 1.3vw, 1rem);
+            font-size: clamp(1.1rem, 1.9vw, 1.5rem);
             letter-spacing: 1.5px;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
             color: rgba(255,255,255,0.95);
             font-weight: 800;
             text-transform: uppercase;
@@ -1472,14 +1472,14 @@
 
         .pricing-badge {
             display: inline-block;
-            padding: 11px 32px;
+            padding: 13px 36px;
             border-radius: 30px;
             font-family: 'Funnel Display', sans-serif;
-            font-size: 0.78rem;
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
             font-weight: 900;
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 0;
+            margin-bottom: 8px;
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
@@ -1537,14 +1537,14 @@
             background: linear-gradient(135deg, rgba(246, 255, 84, 0.2) 0%, rgba(123, 83, 240, 0.2) 100%);
             border: 1px solid rgba(246, 255, 84, 0.4);
             color: #F6FF54;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: clamp(0.9rem, 1.2vw, 1.05rem);
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 12px;
-            margin-bottom: 20px;
+            margin-top: 14px;
+            margin-bottom: 24px;
             animation: fadeInScale 0.4s ease-out;
         }
 
@@ -1558,14 +1558,14 @@
             display: inline-block;
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: #ffffff;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: clamp(0.9rem, 1.2vw, 1.05rem);
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 12px;
-            margin-bottom: 20px;
+            margin-top: 14px;
+            margin-bottom: 24px;
             animation: pulse 1.5s ease-in-out infinite;
         }
 
@@ -1592,9 +1592,9 @@
         }
 
         .progress-text {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 6px;
+            font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
             text-align: center;
         }
 
@@ -1631,17 +1631,17 @@
         }
 
         .pricing-price-section {
-            margin-bottom: 36px;
+            margin-bottom: 44px;
             position: relative;
             z-index: 1;
-            padding-bottom: 36px;
+            padding-bottom: 44px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .pricing-card-vip .pricing-price-section { border-bottom-color: rgba(255,255,255,0.1); }
 
         .pricing-price {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(2.4rem, 5.5vw, 4rem);
+            font-size: clamp(2.8rem, 6.5vw, 4.5rem);
             font-weight: 900;
             color: #0f0f1f;
             line-height: 1;
@@ -1654,11 +1654,11 @@
         .pricing-card-vip .pricing-price { color: #00ff88; text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
 
         .pricing-currency {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.6);
-            font-weight: 500;
+            font-size: clamp(1rem, 1.4vw, 1.2rem);
+            color: rgba(255,255,255,0.75);
+            font-weight: 600;
             display: block;
-            margin-top: 12px;
+            margin-top: 16px;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -1674,12 +1674,12 @@
             display: flex;
             align-items: flex-start;
             gap: 16px;
-            margin-bottom: 18px;
-            padding-bottom: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.95rem;
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
             color: rgba(255,255,255,0.8);
-            line-height: 1.6;
+            line-height: 1.7;
             font-weight: 500;
             transition: all 0.3s ease;
             word-break: break-word;
@@ -1696,11 +1696,11 @@
         .feature-item.highlight {
             color: var(--violeta-intenso);
             font-weight: 700;
-            margin-bottom: 22px;
-            padding-bottom: 22px;
+            margin-bottom: 26px;
+            padding-bottom: 26px;
             border-bottom-color: rgba(255,255,255,0.15);
             border-bottom-width: 2px;
-            font-size: 0.95rem;
+            font-size: clamp(1.05rem, 1.4vw, 1.25rem);
         }
         .pricing-card-standard .feature-item.highlight {
             color: var(--amarillo-limon);
@@ -1742,11 +1742,11 @@
         .pricing-btn {
             display: block;
             width: 100%;
-            padding: 16px 36px;
+            padding: 18px 40px;
             border: 2px solid transparent;
             border-radius: 14px;
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+            font-size: clamp(1rem, 1.6vw, 1.2rem);
             font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
