@@ -1788,6 +1788,7 @@
         }
 
         /* ====== SPEAKERS ====== */
+        /* ====== SPEAKERS ====== */
         .speakers-section {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             position: relative;
@@ -1819,259 +1820,280 @@
             font-weight: 600;
             max-width: 900px;
         }
+
+        /* Grid responsive: 2-3 por fila segun pantalla */
         .speakers-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 80px;
-            max-width: none;
-            margin: 0;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
             position: relative;
             z-index: 1;
-            perspective: 1200px;
         }
+
+        /* Speaker Card - Diseño limpio y minimalista */
         .speaker-card {
             text-align: center;
             padding: 0;
-            border-right: none;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: visible;
-            background: transparent;
             border: none;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            transform-style: preserve-3d;
+            background: transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
         }
-        .speaker-card::before {
-            content: '';
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.6s;
-            border-radius: 50%;
-            pointer-events: none;
-            filter: blur(30px);
-        }
-        .speaker-card:last-child { border-right: none; }
+
         .speaker-card:hover {
-            transform: translateY(-30px) scale(1.15) rotateX(10deg);
-            z-index: 10;
+            transform: translateY(-8px);
         }
-        .speaker-card:hover::before { opacity: 1; }
-        .speaker-card:nth-child(n+4) {
-            transform: none;
-            border-top: none;
-        }
+
+        /* Foto circular */
         .speaker-photo {
-            width: clamp(120px, 25vw, 160px);
-            height: clamp(120px, 25vw, 160px);
-            margin: 0 auto 24px;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 25px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(2.8rem, 6vw, 4rem);
             overflow: hidden;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.2s ease;
             position: relative;
-            z-index: 2;
             border: 3px solid;
-            box-shadow: 0 0 40px rgba(255,255,255,0.1), 0 0 80px rgba(255,255,255,0.05), inset 0 0 40px rgba(255,255,255,0.2);
-            animation: float 4s ease-in-out infinite, pulse-glow 2s ease-in-out infinite;
-            transform-style: preserve-3d;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotateZ(-5deg); }
-            50% { transform: translateY(-25px) rotateZ(5deg); }
-        }
-        @keyframes pulse-glow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
-        }
-        @keyframes particle-float {
-            0% { opacity: 1; transform: translateY(0px) translateX(0px); }
-            100% { opacity: 0; transform: translateY(-60px) translateX(var(--tx, 0px)); }
-        }
-        .speaker-card::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-        .speaker-card:hover::after {
-            animation: particle-burst 0.8s ease-out;
-        }
-        @keyframes particle-burst {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
+
         .speaker-card:hover .speaker-photo {
-            transform: scale(1.4) rotate(-20deg) rotateY(20deg) rotateX(-10deg);
-            filter: brightness(1.5) saturate(1.3);
+            transform: scale(1.08);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
         }
+
         .speaker-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            z-index: 1;
         }
-        /* Zoom/crop para Diego Cabrera (Speaker 4) - enfocarse en el rostro */
-        .speaker-card:nth-child(4) .speaker-photo img {
-            object-position: center -12%;
-            transform: scale(1.8);
-        }
-        /* Zoom/crop para Tatiana Rodas (Speaker 5) - enfocarse en el rostro */
-        .speaker-card:nth-child(5) .speaker-photo img {
-            object-position: center -4%;
-            transform: scale(1.6);
-        }
-        /* Zoom/crop para Nester Leao (Speaker 6) - enfocarse en el rostro */
-        .speaker-card:nth-child(6) .speaker-photo img {
-            object-position: 55% -2%;
-            transform: scale(1.4);
-        }
-        /* Neon Cyberpunk Colors por Speaker */
-        .speaker-card:nth-child(1) .speaker-photo {
-            background: linear-gradient(135deg, #00ffff 0%, #0099ff 100%);
-            border-color: #00ffff;
-            box-shadow: 0 0 40px #00ffff, 0 0 80px #00ffff, inset 0 0 40px rgba(255,255,255,0.2);
-        }
-        .speaker-card:nth-child(1):hover .speaker-photo {
-            box-shadow: 0 0 60px #00ffff, 0 0 120px #00ffff, 0 0 200px rgba(0,255,255,0.8);
-        }
-        .speaker-card:nth-child(1) .speaker-specialty { color: #00ffff; }
-        .speaker-card:nth-child(1):hover .speaker-specialty { color: #00ffff; text-shadow: 0 0 20px #00ffff; }
 
-        .speaker-card:nth-child(2) .speaker-photo {
-            background: linear-gradient(135deg, #ff006e 0%, #ff1493 100%);
-            border-color: #ff006e;
-            box-shadow: 0 0 40px #ff006e, 0 0 80px #ff006e, inset 0 0 40px rgba(255,255,255,0.2);
-        }
-        .speaker-card:nth-child(2):hover .speaker-photo {
-            box-shadow: 0 0 60px #ff006e, 0 0 120px #ff006e, 0 0 200px rgba(255,0,110,0.8);
-        }
-        .speaker-card:nth-child(2) .speaker-specialty { color: #ff006e; }
-        .speaker-card:nth-child(2):hover .speaker-specialty { color: #ff006e; text-shadow: 0 0 20px #ff006e; }
-
-        .speaker-card:nth-child(3) .speaker-photo {
-            background: linear-gradient(135deg, #39ff14 0%, #7fff00 100%);
-            border-color: #39ff14;
-            box-shadow: 0 0 40px #39ff14, 0 0 80px #39ff14, inset 0 0 40px rgba(255,255,255,0.2);
-        }
-        .speaker-card:nth-child(3):hover .speaker-photo {
-            box-shadow: 0 0 60px #39ff14, 0 0 120px #39ff14, 0 0 200px rgba(57,255,20,0.8);
-        }
-        .speaker-card:nth-child(3) .speaker-specialty { color: #39ff14; }
-        .speaker-card:nth-child(3):hover .speaker-specialty { color: #39ff14; text-shadow: 0 0 20px #39ff14; }
-
-        .speaker-card:nth-child(4) .speaker-photo {
-            background: linear-gradient(135deg, #ff8c00 0%, #ffaa00 100%);
-            border-color: #ff8c00;
-            box-shadow: 0 0 40px #ff8c00, 0 0 80px #ff8c00, inset 0 0 40px rgba(255,255,255,0.2);
-        }
-        .speaker-card:nth-child(4):hover .speaker-photo {
-            box-shadow: 0 0 60px #ff8c00, 0 0 120px #ff8c00, 0 0 200px rgba(255,140,0,0.8);
-        }
-        .speaker-card:nth-child(4) .speaker-specialty { color: #ff8c00; }
-        .speaker-card:nth-child(4):hover .speaker-specialty { color: #ff8c00; text-shadow: 0 0 20px #ff8c00; }
-
-        .speaker-card:nth-child(5) .speaker-photo {
-            background: linear-gradient(135deg, #b300ff 0%, #7b68ee 100%);
-            border-color: #b300ff;
-            box-shadow: 0 0 40px #b300ff, 0 0 80px #b300ff, inset 0 0 40px rgba(255,255,255,0.2);
-        }
-        .speaker-card:nth-child(5):hover .speaker-photo {
-            box-shadow: 0 0 60px #b300ff, 0 0 120px #b300ff, 0 0 200px rgba(179,0,255,0.8);
-        }
-        .speaker-card:nth-child(5) .speaker-specialty { color: #b300ff; }
-        .speaker-card:nth-child(5):hover .speaker-specialty { color: #b300ff; text-shadow: 0 0 20px #b300ff; }
-
-        .speaker-card:nth-child(6) .speaker-photo {
-            background: linear-gradient(135deg, #ff0080 0%, #ff4500 100%);
-            border-color: #ff0080;
-            box-shadow: 0 0 40px #ff0080, 0 0 80px #ff0080, inset 0 0 40px rgba(255,255,255,0.2);
-        }
-        .speaker-card:nth-child(6):hover .speaker-photo {
-            box-shadow: 0 0 60px #ff0080, 0 0 120px #ff0080, 0 0 200px rgba(255,0,128,0.8);
-        }
-        .speaker-card:nth-child(6) .speaker-specialty { color: #ff0080; }
-        .speaker-card:nth-child(6):hover .speaker-specialty { color: #ff0080; text-shadow: 0 0 20px #ff0080; }
+        /* Nombre del speaker */
         .speaker-name {
             font-family: 'Funnel Display', sans-serif;
-            font-weight: 900;
-            font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-            background: linear-gradient(135deg, var(--amarillo-limon) 0%, rgba(246, 255, 84, 0.8) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-            letter-spacing: -0.7px;
-            transition: all 0.4s ease;
-            z-index: 2;
-            position: relative;
+            font-weight: 700;
+            font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+            color: var(--white);
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            transition: color 0.2s ease;
         }
+
         .speaker-card:hover .speaker-name {
-            background: linear-gradient(135deg, rgba(246, 255, 84, 1) 0%, var(--amarillo-limon) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 20px rgba(246,255,84,0.5);
+            color: var(--amarillo-limon);
         }
+
+        /* Especialidad */
         .speaker-specialty {
             font-family: 'Funnel Display', sans-serif;
-            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
-            color: var(--violeta-intenso);
-            font-weight: 700;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.65);
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-            transition: all 0.4s ease;
-            z-index: 2;
-            position: relative;
+            letter-spacing: 1.2px;
+            margin-bottom: 18px;
+            transition: color 0.2s ease;
         }
+
         .speaker-card:hover .speaker-specialty {
             color: var(--amarillo-limon);
-            transform: scale(1.1);
         }
-        .speaker-description {
-            font-size: clamp(0.8rem, 1.4vw, 0.95rem);
-            color: rgba(255,255,255,0.7);
-            font-weight: 500;
-            margin-bottom: 16px;
-            transition: color 0.4s ease;
-            z-index: 2;
+
+        /* Boton Ver mas */
+        .speaker-btn-more {
+            background: #39FF14;
+            color: #000;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 12px rgba(57, 255, 20, 0.25);
             position: relative;
-            line-height: 1.4;
-            max-width: 200px;
+            overflow: hidden;
         }
-        .speaker-card:hover .speaker-description {
-            color: var(--amarillo-limon);
+
+        .speaker-btn-more:hover {
+            transform: scale(1.04);
+            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.5);
         }
-        .speaker-socials {
-            display: flex;
+
+        .speaker-btn-more:active {
+            transform: scale(0.96);
+        }
+
+        /* ====== SPEAKER MODALS ====== */
+        .speaker-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
             justify-content: center;
-            gap: 12px;
-            z-index: 2;
+            padding: 20px;
+            overflow-y: auto;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .speaker-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .speaker-modal-content {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 16px;
+            max-width: 650px;
+            width: 100%;
+            overflow: hidden;
             position: relative;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.4s ease 0.1s;
+            animation: slideUp 0.25s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
-        .speaker-card:hover .speaker-socials {
-            opacity: 1;
-            transform: translateY(0px);
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
+
+        /* Boton cerrar modal */
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2.2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.2s ease;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .modal-close:hover {
+            color: #39FF14;
+        }
+
+        /* Body del modal */
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+            padding: 35px;
+        }
+
+        @media (max-width: 700px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 25px;
+            }
+        }
+
+        /* Foto modal */
+        .modal-photo {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Info del modal */
+        .modal-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .modal-name {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: clamp(1.6rem, 3.5vw, 2rem);
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-specialty {
+            font-family: 'Funnel Display', sans-serif;
+            font-size: 0.9rem;
+            color: #39FF14;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-description {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Redes sociales en modal */
+        .modal-socials {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .modal-socials .social-icon {
+            width: 42px;
+            height: 42px;
+            font-size: 1.2rem;
+        }
+
+        /* Estilos genéricos para social icons */
         .social-icon {
             width: 40px;
             height: 40px;
@@ -2082,14 +2104,16 @@
             background: linear-gradient(135deg, var(--violeta-intenso) 0%, var(--amarillo-limon) 100%);
             color: white;
             font-size: 1.2rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-decoration: none;
-            box-shadow: 0 8px 20px rgba(123,83,240,0.4);
+            box-shadow: 0 3px 12px rgba(123,83,240,0.25);
         }
+
         .social-icon:hover {
-            transform: scale(1.2) rotate(10deg);
-            box-shadow: 0 12px 30px rgba(246,255,84,0.6);
+            transform: scale(1.12) rotate(8deg);
+            box-shadow: 0 5px 20px rgba(246,255,84,0.4);
         }
+
         /* Social Media Specific Colors */
         .social-icon.instagram {
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
@@ -3531,11 +3555,10 @@
 
         /* ====== RESPONSIVE ====== */
         @media (max-width: 1100px) {
-            .speakers-grid { grid-template-columns: repeat(2, 1fr); gap: 60px; }
-            .speaker-card:nth-child(n+3) { border-top: 1px solid rgba(255,255,255,0.07); }
+            .speakers-grid { grid-template-columns: repeat(2, 1fr); gap: 50px; }
         }
         @media (max-width: 900px) {
-            .speakers-grid { grid-template-columns: 1fr; gap: 50px; }
+            .speakers-grid { grid-template-columns: 1fr; gap: 45px; }
             .pricing-grid { grid-template-columns: 1fr; }
             .zones-grid { grid-template-columns: 1fr; }
             .zone-card:nth-child(3) { grid-column: 1; flex-direction: column; align-items: flex-start; min-height: 300px; }
@@ -3556,7 +3579,7 @@
 
             .speakers-section { padding: 80px 50px; }
             .speakers-section .section-title { margin-bottom: 40px; }
-            .speakers-grid { gap: 50px; }
+            .speakers-grid { gap: 45px; }
 
             .map-section { padding: 80px 50px; }
             .map-section .section-title { margin-bottom: 40px; }
@@ -4495,89 +4518,203 @@
         <h2 class="section-title">Nuestros Speakers</h2>
         <p class="section-description">6 visionarios transformando el futuro del marketing, ventas, IA y liderazgo digital</p>
         <div class="speakers-grid">
-            <div class="speaker-card">
-                <div class="speaker-photo">
+            <!-- Speaker 1 -->
+            <div class="speaker-card" data-speaker="elizabeth">
+                <div class="speaker-photo" style="background: linear-gradient(135deg, #00ffff 0%, #0099ff 100%); border-color: #00ffff;">
                     <img src="./Elizabeth foto makers.jpeg" alt="Elizabeth Casillas">
                 </div>
-                <p class="speaker-name">Elizabeth Casillas</p>
+                <h3 class="speaker-name">Elizabeth Casillas</h3>
                 <p class="speaker-specialty">Marketing & Ventas</p>
-                <p class="speaker-description">CEO de Marka la Diferencia. Conferencista internacional con 20+ años posicionando marcas globales. Autora, podcaster y fundadora del movimiento Makers.</p>
-                <div class="speaker-socials">
-                    <a href="https://www.instagram.com/elizabethcasillasoficial/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@elizabethcasillasoficial" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://www.facebook.com/elizabethcasillasoficial/" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.youtube.com/@elizabethcasillasoficial" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
-                </div>
+                <button class="speaker-btn-more" onclick="openSpeakerModal('elizabeth')">Ver más</button>
             </div>
-            <div class="speaker-card">
-                <div class="speaker-photo">
+
+            <!-- Speaker 2 -->
+            <div class="speaker-card" data-speaker="rui">
+                <div class="speaker-photo" style="background: linear-gradient(135deg, #ff006e 0%, #ff1493 100%); border-color: #ff006e;">
                     <img src="./rui.jpg" alt="Rui Machalele">
                 </div>
-                <p class="speaker-name">Rui Machalele</p>
+                <h3 class="speaker-name">Rui Machalele</h3>
                 <p class="speaker-specialty">Educación Emocional & Liderazgo</p>
-                <p class="speaker-description">Conferencista internacional, educador emocional y agente de cambio. Originario de Mozambique con múltiples posgrados en Europa. Doctor Honoris Causa en Humanismo y Excelencia Global. Premio Humanidad 2024 por UNACCC.</p>
-                <div class="speaker-socials">
-                    <a href="https://www.instagram.com/rui_machalele_official/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@RuiMachalele" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.tiktok.com/@rui_machalele" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                </div>
+                <button class="speaker-btn-more" onclick="openSpeakerModal('rui')">Ver más</button>
             </div>
-            <div class="speaker-card">
-                <div class="speaker-photo">
+
+            <!-- Speaker 3 -->
+            <div class="speaker-card" data-speaker="leonardo">
+                <div class="speaker-photo" style="background: linear-gradient(135deg, #39ff14 0%, #7fff00 100%); border-color: #39ff14;">
                     <img src="./63e79ff3-1e7e-4e78-913f-29953eaf2b83.jpg" alt="Leonardo Gómez Ortiz">
                 </div>
-                <p class="speaker-name">Leonardo Gómez Ortiz</p>
+                <h3 class="speaker-name">Leonardo Gómez Ortiz</h3>
                 <p class="speaker-specialty">Marketing Digital & IA</p>
-                <p class="speaker-description">Experto en marketing digital, inteligencia artificial y escalamiento de negocios. Fundador de Viral Academy, estratega digital con 200k+ suscriptores en YouTube. Conferencista en Google Cloud, UTEL, Startup México, Talent Land México y Tecnológico de Monterrey.</p>
-                <div class="speaker-socials">
-                    <a href="https://www.instagram.com/viralizateconleo/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@viralizateconleo" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://www.youtube.com/@viral-newsof" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.facebook.com/profile.php?id=61575823307305&locale=es_LA" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
-                </div>
+                <button class="speaker-btn-more" onclick="openSpeakerModal('leonardo')">Ver más</button>
             </div>
-            <div class="speaker-card">
-                <div class="speaker-photo">
+
+            <!-- Speaker 4 -->
+            <div class="speaker-card" data-speaker="diego">
+                <div class="speaker-photo" style="background: linear-gradient(135deg, #ff8c00 0%, #ffaa00 100%); border-color: #ff8c00;">
                     <img src="./images/IMG_8268.JPG" alt="Diego Cabrera 22">
                 </div>
-                <p class="speaker-name">Diego Cabrera 22</p>
+                <h3 class="speaker-name">Diego Cabrera 22</h3>
                 <p class="speaker-specialty">Monetización de Contenido</p>
-                <p class="speaker-description">Director de monetización y producción, cofundador de Sinergéticos. Especialista en monetización de redes sociales con 20k+ alumnos, 3M+ seguidores. Récords: $90k en Facebook y $150k en YouTube anuales. +50 conferencias en Latinoamérica.</p>
-                <div class="speaker-socials">
-                    <a href="https://www.instagram.com/diegocabrera22___/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@diegocabrera22" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.tiktok.com/@diegocabreramonetizacion" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://www.facebook.com/diegocabreraclips?locale=es_LA" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
-                </div>
+                <button class="speaker-btn-more" onclick="openSpeakerModal('diego')">Ver más</button>
             </div>
-            <div class="speaker-card">
-                <div class="speaker-photo">
+
+            <!-- Speaker 5 -->
+            <div class="speaker-card" data-speaker="tatiana">
+                <div class="speaker-photo" style="background: linear-gradient(135deg, #b300ff 0%, #7b68ee 100%); border-color: #b300ff;">
                     <img src="./Tatiana Rodas.png" alt="Tatiana Rodas">
                 </div>
-                <p class="speaker-name">Tatiana Rodas</p>
+                <h3 class="speaker-name">Tatiana Rodas</h3>
                 <p class="speaker-specialty">Transformación Personal</p>
-                <p class="speaker-description">Fundadora de VOX Academy, conferencista internacional y estratega de marcas personales. Defiende la autenticidad como camino a la libertad. Presencia en Ecuador, Colombia, México, El Salvador y Miami. Autora del libro "Del OFF al ON".</p>
-                <div class="speaker-socials">
-                    <a href="https://www.instagram.com/tatianarodasoficial/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@tatyrodas.ec" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://www.youtube.com/@tatianarodasoficial" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.facebook.com/tatianarodasoficial?locale=es_LA" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
-                </div>
+                <button class="speaker-btn-more" onclick="openSpeakerModal('tatiana')">Ver más</button>
             </div>
-            <div class="speaker-card">
-                <div class="speaker-photo">
+
+            <!-- Speaker 6 -->
+            <div class="speaker-card" data-speaker="nester">
+                <div class="speaker-photo" style="background: linear-gradient(135deg, #ff0080 0%, #ff4500 100%); border-color: #ff0080;">
                     <img src="./images/Nester.jpeg" alt="Dr. Nester Leao Contreras Piña">
                 </div>
-                <p class="speaker-name">Dr. Nester Leao Contreras Piña</p>
+                <h3 class="speaker-name">Dr. Nester Leao Contreras Piña</h3>
                 <p class="speaker-specialty">Transformación Digital & Ventas</p>
-                <p class="speaker-description">CEO de Universidad del Atlántico, egresado MIT CDO. 20+ años en educación y negocios. Fundador de Contreras Sales Solution. Integra tecnología, IA y datos para transformación empresarial. +40k profesionistas graduados. Speaker internacional en liderazgo digital.</p>
-                <div class="speaker-socials">
-                    <a href="https://www.instagram.com/contrerasnester/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/nesterleao.contreras/" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
-                </div>
+                <button class="speaker-btn-more" onclick="openSpeakerModal('nester')">Ver más</button>
             </div>
         </div>
     </section>
+
+    <!-- SPEAKER MODALS -->
+    <!-- Modal Elizabeth -->
+    <div id="modal-elizabeth" class="speaker-modal">
+        <div class="speaker-modal-content">
+            <button class="modal-close" onclick="closeSpeakerModal('elizabeth')">&times;</button>
+            <div class="modal-body">
+                <div class="modal-photo" style="background: linear-gradient(135deg, #00ffff 0%, #0099ff 100%); border-color: #00ffff;">
+                    <img src="./Elizabeth foto makers.jpeg" alt="Elizabeth Casillas">
+                </div>
+                <div class="modal-info">
+                    <h2 class="modal-name">Elizabeth Casillas</h2>
+                    <p class="modal-specialty">Marketing & Ventas</p>
+                    <p class="modal-description">CEO de Marka la Diferencia. Conferencista internacional con 20+ años posicionando marcas globales. Autora, podcaster y fundadora del movimiento Makers. Especialista en estrategia digital, branding y transformación empresarial.</p>
+                    <div class="modal-socials">
+                        <a href="https://www.instagram.com/elizabethcasillasoficial/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@elizabethcasillasoficial" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/elizabethcasillasoficial/" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.youtube.com/@elizabethcasillasoficial" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Rui -->
+    <div id="modal-rui" class="speaker-modal">
+        <div class="speaker-modal-content">
+            <button class="modal-close" onclick="closeSpeakerModal('rui')">&times;</button>
+            <div class="modal-body">
+                <div class="modal-photo" style="background: linear-gradient(135deg, #ff006e 0%, #ff1493 100%); border-color: #ff006e;">
+                    <img src="./rui.jpg" alt="Rui Machalele">
+                </div>
+                <div class="modal-info">
+                    <h2 class="modal-name">Rui Machalele</h2>
+                    <p class="modal-specialty">Educación Emocional & Liderazgo</p>
+                    <p class="modal-description">Conferencista internacional, educador emocional y agente de cambio. Originario de Mozambique con múltiples posgrados en Europa. Doctor Honoris Causa en Humanismo y Excelencia Global. Premio Humanidad 2024 por UNACCC. Experto en inteligencia emocional y desarrollo del liderazgo transformacional.</p>
+                    <div class="modal-socials">
+                        <a href="https://www.instagram.com/rui_machalele_official/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@RuiMachalele" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@rui_machalele" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Leonardo -->
+    <div id="modal-leonardo" class="speaker-modal">
+        <div class="speaker-modal-content">
+            <button class="modal-close" onclick="closeSpeakerModal('leonardo')">&times;</button>
+            <div class="modal-body">
+                <div class="modal-photo" style="background: linear-gradient(135deg, #39ff14 0%, #7fff00 100%); border-color: #39ff14;">
+                    <img src="./63e79ff3-1e7e-4e78-913f-29953eaf2b83.jpg" alt="Leonardo Gómez Ortiz">
+                </div>
+                <div class="modal-info">
+                    <h2 class="modal-name">Leonardo Gómez Ortiz</h2>
+                    <p class="modal-specialty">Marketing Digital & IA</p>
+                    <p class="modal-description">Experto en marketing digital, inteligencia artificial y escalamiento de negocios. Fundador de Viral Academy, estratega digital con 200k+ suscriptores en YouTube. Conferencista en Google Cloud, UTEL, Startup México, Talent Land México y Tecnológico de Monterrey. Pionero en aplicaciones de IA para negocios digitales.</p>
+                    <div class="modal-socials">
+                        <a href="https://www.instagram.com/viralizateconleo/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@viralizateconleo" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.youtube.com/@viral-newsof" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61575823307305&locale=es_LA" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Diego -->
+    <div id="modal-diego" class="speaker-modal">
+        <div class="speaker-modal-content">
+            <button class="modal-close" onclick="closeSpeakerModal('diego')">&times;</button>
+            <div class="modal-body">
+                <div class="modal-photo" style="background: linear-gradient(135deg, #ff8c00 0%, #ffaa00 100%); border-color: #ff8c00;">
+                    <img src="./images/IMG_8268.JPG" alt="Diego Cabrera 22">
+                </div>
+                <div class="modal-info">
+                    <h2 class="modal-name">Diego Cabrera 22</h2>
+                    <p class="modal-specialty">Monetización de Contenido</p>
+                    <p class="modal-description">Director de monetización y producción, cofundador de Sinergéticos. Especialista en monetización de redes sociales con 20k+ alumnos, 3M+ seguidores. Récords: $90k en Facebook y $150k en YouTube anuales. +50 conferencias en Latinoamérica. Experto en estrategias de creación de contenido rentable y escalamiento de ingresos digitales.</p>
+                    <div class="modal-socials">
+                        <a href="https://www.instagram.com/diegocabrera22___/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@diegocabrera22" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@diegocabreramonetizacion" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/diegocabreraclips?locale=es_LA" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tatiana -->
+    <div id="modal-tatiana" class="speaker-modal">
+        <div class="speaker-modal-content">
+            <button class="modal-close" onclick="closeSpeakerModal('tatiana')">&times;</button>
+            <div class="modal-body">
+                <div class="modal-photo" style="background: linear-gradient(135deg, #b300ff 0%, #7b68ee 100%); border-color: #b300ff;">
+                    <img src="./Tatiana Rodas.png" alt="Tatiana Rodas">
+                </div>
+                <div class="modal-info">
+                    <h2 class="modal-name">Tatiana Rodas</h2>
+                    <p class="modal-specialty">Transformación Personal</p>
+                    <p class="modal-description">Fundadora de VOX Academy, conferencista internacional y estratega de marcas personales. Defiende la autenticidad como camino a la libertad. Presencia en Ecuador, Colombia, México, El Salvador y Miami. Autora del libro "Del OFF al ON". Especialista en desarrollo personal, empoderamiento femenino y construcci de marca personal auténtica.</p>
+                    <div class="modal-socials">
+                        <a href="https://www.instagram.com/tatianarodasoficial/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@tatyrodas.ec" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.youtube.com/@tatianarodasoficial" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/tatianarodasoficial?locale=es_LA" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nester -->
+    <div id="modal-nester" class="speaker-modal">
+        <div class="speaker-modal-content">
+            <button class="modal-close" onclick="closeSpeakerModal('nester')">&times;</button>
+            <div class="modal-body">
+                <div class="modal-photo" style="background: linear-gradient(135deg, #ff0080 0%, #ff4500 100%); border-color: #ff0080;">
+                    <img src="./images/Nester.jpeg" alt="Dr. Nester Leao Contreras Piña">
+                </div>
+                <div class="modal-info">
+                    <h2 class="modal-name">Dr. Nester Leao Contreras Piña</h2>
+                    <p class="modal-specialty">Transformación Digital & Ventas</p>
+                    <p class="modal-description">CEO de Universidad del Atlántico, egresado MIT CDO. 20+ años en educación y negocios. Fundador de Contreras Sales Solution. Integra tecnología, IA y datos para transformación empresarial. +40k profesionistas graduados. Speaker internacional en liderazgo digital. Experto en transformación digital estratégica y ventas de alto impacto.</p>
+                    <div class="modal-socials">
+                        <a href="https://www.instagram.com/contrerasnester/" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/nesterleao.contreras/" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- PODCAST EN VIVO -->
     <section class="podcast-section" id="podcast">
@@ -5166,6 +5303,43 @@
         }
 
         // 🎪 FLIP 3D CARD EFFECT - NO JAVASCRIPT NEEDED, PURE CSS3!
+
+        // ====== SPEAKER MODALS ======
+        function openSpeakerModal(speakerId) {
+            const modal = document.getElementById(`modal-${speakerId}`);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeSpeakerModal(speakerId) {
+            const modal = document.getElementById(`modal-${speakerId}`);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Cerrar modal al clickear afuera
+        document.querySelectorAll('.speaker-modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    const speakerId = modal.id.replace('modal-', '');
+                    closeSpeakerModal(speakerId);
+                }
+            });
+        });
+
+        // Cerrar modal al presionar Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.speaker-modal.active').forEach(modal => {
+                    const speakerId = modal.id.replace('modal-', '');
+                    closeSpeakerModal(speakerId);
+                });
+            }
+        });
     </script>
 </body>
 </html>
