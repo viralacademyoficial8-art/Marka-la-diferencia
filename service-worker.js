@@ -28,8 +28,8 @@ self.addEventListener('fetch', (event) => {
     // Dejar pasar todas las demás solicitudes
     event.respondWith(
         fetch(event.request).catch(() => {
-            // Si una solicitud falla, devolver una respuesta vacía
-            return new Response('', { status: 200 });
+            // Si una solicitud falla, devolver una respuesta vacía sin body
+            return new Response(null, { status: 204 });
         })
     );
 });
