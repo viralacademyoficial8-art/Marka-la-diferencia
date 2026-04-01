@@ -645,7 +645,7 @@
             }
         }
 
-        /* Success Modal Styles - Modern & Cool Design */
+        /* Success Modal Styles - Ultra Modern Design */
         .success-modal {
             position: fixed;
             top: 0;
@@ -658,7 +658,10 @@
             justify-content: center;
             z-index: 9999;
             animation: fadeInOverlay 0.4s ease-out;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
         }
 
         @keyframes fadeInOverlay {
@@ -667,20 +670,21 @@
         }
 
         .success-modal-content {
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 35%, #16213e 70%, #0f3460 100%);
-            border: 2px solid rgba(246, 255, 84, 0.4);
-            border-radius: 28px;
-            max-width: 560px;
-            width: 95%;
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95) 0%, rgba(26, 26, 46, 0.95) 35%, rgba(22, 33, 62, 0.95) 70%, rgba(15, 52, 96, 0.95) 100%);
+            border: 2px solid rgba(246, 255, 84, 0.5);
+            border-radius: 32px;
+            max-width: 580px;
+            width: 100%;
             padding: 0;
             box-shadow:
-                0 30px 60px rgba(0, 0, 0, 0.6),
-                0 0 80px rgba(246, 255, 84, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                inset 0 -1px 0 rgba(246, 255, 84, 0.1);
+                0 30px 60px rgba(0, 0, 0, 0.7),
+                0 0 100px rgba(246, 255, 84, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(246, 255, 84, 0.15);
             animation: modalPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
             overflow: hidden;
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
         @keyframes modalPop {
@@ -718,63 +722,68 @@
         }
 
         .success-modal-header {
-            background: linear-gradient(135deg, #7B53F0 0%, #9d7fff 30%, #a67dff 60%, #6b45d9 100%);
-            padding: 60px 30px 45px;
+            background: linear-gradient(135deg, #7B53F0 0%, #9d7fff 25%, #a67dff 50%, #8b6dd9 75%, #6b45d9 100%);
+            padding: 65px 35px 50px;
             text-align: center;
             position: relative;
             overflow: hidden;
+            border-bottom: 2px solid rgba(246, 255, 84, 0.2);
         }
 
         .success-modal-header::before {
             content: '';
             position: absolute;
-            top: -40%;
-            right: -20%;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(246, 255, 84, 0.3) 0%, transparent 70%);
+            top: -50%;
+            right: -25%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(246, 255, 84, 0.35) 0%, transparent 70%);
             border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
+            animation: float 7s ease-in-out infinite;
+            filter: blur(40px);
         }
 
         .success-modal-header::after {
             content: '';
             position: absolute;
-            bottom: -30%;
-            left: -15%;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            bottom: -40%;
+            left: -20%;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
             border-radius: 50%;
             animation: float 8s ease-in-out infinite reverse;
+            filter: blur(40px);
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(20px); }
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(25px) translateX(-10px); }
+            66% { transform: translateY(-15px) translateX(10px); }
         }
 
         .success-checkmark {
-            font-size: 85px;
-            margin-bottom: 25px;
-            animation: checkmarkBounce 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            font-size: 95px;
+            margin-bottom: 20px;
+            animation: checkmarkBounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
             display: inline-block;
-            filter: drop-shadow(0 12px 24px rgba(246, 255, 84, 0.5));
+            filter: drop-shadow(0 15px 35px rgba(246, 255, 84, 0.6));
             position: relative;
-            z-index: 1;
-            text-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            line-height: 1;
         }
 
         @keyframes checkmarkBounce {
             0% {
-                transform: scale(0) rotate(-90deg);
+                transform: scale(0) rotate(-120deg);
                 opacity: 0;
             }
-            50% {
-                transform: scale(1.25);
+            40% {
+                transform: scale(1.35);
             }
-            75% {
-                transform: scale(0.95);
+            70% {
+                transform: scale(0.9);
             }
             100% {
                 transform: scale(1) rotate(0deg);
@@ -785,44 +794,45 @@
         .success-modal-header h2 {
             color: #ffffff;
             margin: 0;
-            font-size: 38px;
+            font-size: clamp(28px, 8vw, 44px);
             font-weight: 900;
             letter-spacing: 2px;
             text-transform: uppercase;
             position: relative;
-            z-index: 1;
-            text-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            line-height: 1.2;
+            z-index: 2;
+            text-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            line-height: 1.1;
         }
 
         .success-modal-header h2 .highlight {
             color: #F6FF54;
             display: block;
-            margin-top: 5px;
-            font-size: 42px;
-            text-shadow: 0 8px 25px rgba(246, 255, 84, 0.4);
+            margin-top: 8px;
+            font-size: clamp(32px, 9vw, 50px);
+            text-shadow: 0 10px 35px rgba(246, 255, 84, 0.5);
+            font-weight: 950;
         }
 
         .success-modal-body {
-            padding: 45px 40px;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+            padding: 50px 40px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
         }
 
         .success-message {
             color: #F6FF54;
-            font-size: 20px;
-            margin-bottom: 35px;
+            font-size: clamp(16px, 4.5vw, 22px);
+            margin-bottom: 40px;
             text-align: center;
             font-weight: 700;
-            letter-spacing: 0.8px;
-            line-height: 1.5;
+            letter-spacing: 1px;
+            line-height: 1.6;
             animation: slideInDown 0.6s ease-out 0.3s both;
         }
 
         @keyframes slideInDown {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-25px);
             }
             to {
                 opacity: 1;
@@ -831,19 +841,20 @@
         }
 
         .confirmation-details {
-            background: linear-gradient(135deg, rgba(246, 255, 84, 0.08) 0%, rgba(123, 83, 240, 0.06) 100%);
-            border: 2px solid rgba(246, 255, 84, 0.25);
-            border-radius: 18px;
-            padding: 28px;
-            margin-bottom: 28px;
-            backdrop-filter: blur(15px);
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.12) 0%, rgba(123, 83, 240, 0.08) 100%);
+            border: 2px solid rgba(246, 255, 84, 0.3);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
             animation: slideInUp 0.6s ease-out 0.4s both;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(25px);
             }
             to {
                 opacity: 1;
@@ -852,17 +863,17 @@
         }
 
         .detail-item {
-            margin-bottom: 22px;
-            padding-bottom: 22px;
-            border-bottom: 1px solid rgba(246, 255, 84, 0.15);
-            animation: detailItemSlide 0.5s ease-out forwards;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(246, 255, 84, 0.2);
+            animation: detailItemSlide 0.6s ease-out forwards;
             opacity: 0;
         }
 
         @keyframes detailItemSlide {
             from {
                 opacity: 0;
-                transform: translateX(-15px);
+                transform: translateX(-20px);
             }
             to {
                 opacity: 1;
@@ -871,8 +882,8 @@
         }
 
         .detail-item:nth-child(1) { animation-delay: 0.5s; }
-        .detail-item:nth-child(2) { animation-delay: 0.6s; }
-        .detail-item:nth-child(3) { animation-delay: 0.7s; }
+        .detail-item:nth-child(2) { animation-delay: 0.65s; }
+        .detail-item:nth-child(3) { animation-delay: 0.8s; }
 
         .detail-item:last-child {
             margin-bottom: 0;
@@ -884,34 +895,35 @@
             display: block;
             color: #F6FF54;
             font-weight: 800;
-            font-size: 12px;
-            margin-bottom: 10px;
+            font-size: clamp(11px, 2.5vw, 13px);
+            margin-bottom: 12px;
             text-transform: uppercase;
-            letter-spacing: 1.4px;
+            letter-spacing: 1.5px;
         }
 
         .detail-value {
-            color: rgba(255, 255, 255, 0.98);
+            color: rgba(255, 255, 255, 0.99);
             margin: 0;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: clamp(15px, 3.5vw, 18px);
+            font-weight: 700;
         }
 
         .email-info {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(74, 222, 128, 0.08) 100%);
-            border: 2px solid rgba(34, 197, 94, 0.4);
-            border-left: 5px solid #22c55e;
-            border-radius: 14px;
-            padding: 22px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(15px);
-            animation: slideInLeft 0.6s ease-out 0.5s both;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.18) 0%, rgba(74, 222, 128, 0.1) 100%);
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            border-left: 6px solid #22c55e;
+            border-radius: 18px;
+            padding: 26px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(20px);
+            animation: slideInLeft 0.6s ease-out 0.55s both;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateX(-25px);
+                transform: translateX(-30px);
             }
             to {
                 opacity: 1;
@@ -920,41 +932,42 @@
         }
 
         .email-info p {
-            color: rgba(255, 255, 255, 0.98);
-            margin: 0 0 14px 0;
-            font-size: 14px;
-            font-weight: 700;
+            color: rgba(255, 255, 255, 0.99);
+            margin: 0 0 16px 0;
+            font-size: clamp(13px, 3vw, 15px);
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.7px;
         }
 
         .email-info ul {
             margin: 0;
-            padding-left: 25px;
-            color: rgba(255, 255, 255, 0.9);
+            padding-left: 28px;
+            color: rgba(255, 255, 255, 0.95);
         }
 
         .email-info li {
-            margin-bottom: 8px;
-            font-size: 13px;
-            line-height: 1.7;
+            margin-bottom: 10px;
+            font-size: clamp(12px, 2.5vw, 14px);
+            line-height: 1.8;
             font-weight: 500;
         }
 
         .info-box {
-            background: linear-gradient(135deg, rgba(246, 255, 84, 0.12) 0%, rgba(246, 255, 84, 0.05) 100%);
-            border: 2px dashed rgba(246, 255, 84, 0.4);
-            padding: 20px;
-            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.15) 0%, rgba(246, 255, 84, 0.08) 100%);
+            border: 2px dashed rgba(246, 255, 84, 0.5);
+            padding: 24px;
+            border-radius: 18px;
             margin-bottom: 0;
-            backdrop-filter: blur(15px);
-            animation: slideInRight 0.6s ease-out 0.6s both;
+            backdrop-filter: blur(20px);
+            animation: slideInRight 0.6s ease-out 0.7s both;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         @keyframes slideInRight {
             from {
                 opacity: 0;
-                transform: translateX(25px);
+                transform: translateX(30px);
             }
             to {
                 opacity: 1;
@@ -963,51 +976,52 @@
         }
 
         .info-box p {
-            color: rgba(255, 255, 255, 0.95);
+            color: rgba(255, 255, 255, 0.98);
             margin: 0;
-            font-size: 13px;
-            line-height: 1.8;
-            font-weight: 500;
+            font-size: clamp(12px, 2.8vw, 14px);
+            line-height: 1.9;
+            font-weight: 600;
         }
 
         .success-modal-footer {
-            padding: 0 40px 45px 40px;
+            padding: 0 40px 50px 40px;
         }
 
         .success-modal .btn-primary {
             background: linear-gradient(135deg, #F6FF54 0%, #ffff99 40%, #F6FF54 100%);
             color: #0a0f1a;
             border: none;
-            padding: 18px 45px;
-            font-weight: 900;
-            border-radius: 14px;
+            padding: clamp(16px, 3.5vw, 20px) clamp(35px, 8vw, 50px);
+            font-weight: 950;
+            border-radius: 16px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: clamp(14px, 3.5vw, 18px);
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             position: relative;
             overflow: hidden;
             box-shadow:
-                0 12px 30px rgba(246, 255, 84, 0.35),
-                0 0 20px rgba(246, 255, 84, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            animation: buttonPulse 2s ease-in-out infinite;
+                0 15px 40px rgba(246, 255, 84, 0.4),
+                0 0 25px rgba(246, 255, 84, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+            animation: buttonPulse 2.5s ease-in-out infinite;
         }
 
         @keyframes buttonPulse {
             0%, 100% {
                 box-shadow:
-                    0 12px 30px rgba(246, 255, 84, 0.35),
-                    0 0 20px rgba(246, 255, 84, 0.15),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+                    0 15px 40px rgba(246, 255, 84, 0.4),
+                    0 0 25px rgba(246, 255, 84, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
             }
             50% {
                 box-shadow:
-                    0 12px 35px rgba(246, 255, 84, 0.5),
-                    0 0 30px rgba(246, 255, 84, 0.25),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+                    0 15px 45px rgba(246, 255, 84, 0.55),
+                    0 0 40px rgba(246, 255, 84, 0.35),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
             }
         }
 
@@ -1018,17 +1032,17 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.6s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.7s ease;
         }
 
         .success-modal .btn-primary:hover {
-            transform: translateY(-4px) scale(1.02);
+            transform: translateY(-5px) scale(1.03);
             box-shadow:
-                0 18px 45px rgba(246, 255, 84, 0.45),
-                0 0 35px rgba(246, 255, 84, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            letter-spacing: 2.5px;
+                0 20px 50px rgba(246, 255, 84, 0.5),
+                0 0 45px rgba(246, 255, 84, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            letter-spacing: 3px;
         }
 
         .success-modal .btn-primary:hover::before {
@@ -1036,7 +1050,147 @@
         }
 
         .success-modal .btn-primary:active {
-            transform: translateY(-2px) scale(0.99);
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .success-modal {
+                padding: 16px;
+            }
+
+            .success-modal-content {
+                border-radius: 28px;
+            }
+
+            .success-modal-header {
+                padding: 55px 30px 40px;
+            }
+
+            .success-modal-body {
+                padding: 40px 30px;
+            }
+
+            .confirmation-details {
+                padding: 28px;
+                margin-bottom: 24px;
+            }
+
+            .success-modal-footer {
+                padding: 0 30px 40px 30px;
+            }
+
+            .detail-item {
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+            }
+
+            .email-info {
+                padding: 22px;
+                margin-bottom: 20px;
+            }
+
+            .info-box {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .success-modal {
+                padding: 12px;
+                align-items: flex-start;
+                padding-top: 60px;
+            }
+
+            .success-modal-content {
+                border-radius: 24px;
+                max-width: 100%;
+            }
+
+            .success-modal-header {
+                padding: 50px 25px 35px;
+            }
+
+            .success-checkmark {
+                font-size: 80px;
+                margin-bottom: 15px;
+            }
+
+            .success-modal-header h2 {
+                font-size: 32px;
+                letter-spacing: 1px;
+            }
+
+            .success-modal-header h2 .highlight {
+                font-size: 38px;
+                margin-top: 5px;
+            }
+
+            .success-modal-body {
+                padding: 35px 25px;
+            }
+
+            .success-message {
+                font-size: 16px;
+                margin-bottom: 30px;
+            }
+
+            .confirmation-details {
+                padding: 22px;
+                margin-bottom: 20px;
+                border-radius: 16px;
+            }
+
+            .detail-label {
+                font-size: 11px;
+                margin-bottom: 8px;
+            }
+
+            .detail-value {
+                font-size: 14px;
+            }
+
+            .detail-item {
+                margin-bottom: 18px;
+                padding-bottom: 18px;
+            }
+
+            .email-info {
+                padding: 20px;
+                margin-bottom: 18px;
+                border-radius: 16px;
+            }
+
+            .email-info p {
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+
+            .email-info li {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+
+            .info-box {
+                padding: 18px;
+                border-radius: 16px;
+                margin-bottom: 0;
+            }
+
+            .info-box p {
+                font-size: 12px;
+            }
+
+            .success-modal-footer {
+                padding: 0 25px 35px 25px;
+            }
+
+            .success-modal .btn-primary {
+                padding: 15px 30px;
+                font-size: 14px;
+                border-radius: 14px;
+                letter-spacing: 1.5px;
+            }
         }
     </style>
 </head>
