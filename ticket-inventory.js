@@ -1,21 +1,43 @@
-// Sistema de Inventario de Boletos
-// Usa localStorage como almacenamiento local
-// Integrable con Supabase para sincronización en tiempo real
+/**
+ * SISTEMA DE INVENTARIO DE BOLETOS - EXPO MAKERS 2026
+ *
+ * Este sistema gestiona la disponibilidad de boletos en tiempo real.
+ *
+ * FUNCIONAMIENTO:
+ * - Usa localStorage como almacenamiento principal
+ * - Puede integrarse con Supabase para sincronización en tiempo real
+ * - Dispara eventos personalizados cuando el inventario se actualiza
+ * - Mantiene conteo de: límite total, boletos vendidos, boletos disponibles
+ *
+ * LÍMITES DE BOLETOS DISPONIBLES:
+ * - GENERAL (Gratis): 999 boletos disponibles
+ * - PLATA ($497): 170 boletos disponibles
+ * - GOLD ($897): 50 boletos disponibles
+ *
+ * ESTRUCTURA DE DATOS (localStorage):
+ * {
+ *   "ticketInventory": {
+ *     "free": { limit: 999, sold: X, available: 999-X, lastUpdated: ISO-date },
+ *     "conference": { limit: 170, sold: X, available: 170-X, lastUpdated: ISO-date },
+ *     "vip": { limit: 50, sold: X, available: 50-X, lastUpdated: ISO-date }
+ *   }
+ * }
+ */
 
 const TICKET_LIMITS = {
     free: {
-        name: 'EXPO MAKERS PASS',
+        name: 'GENERAL',
         limit: 999,  // Sin límite prácticamente
         price: 0
     },
     conference: {
-        name: 'CONFERENCE PASS',
-        limit: 170,
+        name: 'PLATA',
+        limit: 170,  // Límite principal
         price: 497
     },
     vip: {
-        name: 'VIP PASS',
-        limit: 50,
+        name: 'GOLD',
+        limit: 50,   // Más exclusivo
         price: 897
     }
 };
@@ -61,14 +83,21 @@ function isAvailable(ticketType) {
     return getAvailable(ticketType) > 0;
 }
 
-// Obtener estado del boleto (disponible/agotado)
+/**
+ * Obtener estado actual del boleto (disponible/agotado)
+ * @param {string} ticketType - Tipo de boleto: 'free', 'conference', 'vip'
+ * @returns {object} Estado con: available (cantidad disponible), isSoldOut (boolean), limit (total), sold (cantidad vendida)
+ *
+ * EJEMPLO DE RETORNO:
+ * { available: 170, isSoldOut: false, limit: 170, sold: 0 }
+ */
 function getTicketStatus(ticketType) {
     const available = getAvailable(ticketType);
     return {
-        available: available,
-        isSoldOut: available <= 0,
-        limit: TICKET_LIMITS[ticketType]?.limit || 0,
-        sold: TICKET_LIMITS[ticketType]?.limit - available || 0
+        available: available,                                    // Boletos restantes disponibles para compra
+        isSoldOut: available <= 0,                              // True si no hay boletos disponibles
+        limit: TICKET_LIMITS[ticketType]?.limit || 0,         // Total de boletos disponibles para este tipo
+        sold: TICKET_LIMITS[ticketType]?.limit - available || 0 // Boletos ya vendidos
     };
 }
 
