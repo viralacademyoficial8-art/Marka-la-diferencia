@@ -938,7 +938,7 @@
             handlePaidCheckout();
         });
 
-        function handleFreeCheckout() {
+        async function handleFreeCheckout() {
             const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
@@ -951,16 +951,16 @@
 
             showLoading(true);
 
-            // Validar disponibilidad para la cantidad
-            const validation = validateAvailability(selectedProductKey, selectedQuantity);
-            if (!validation.valid) {
-                showError(validation.message);
-                showLoading(false);
-                return;
-            }
-
-            // Decrementar boletos del inventario
             try {
+                // Validar disponibilidad para la cantidad
+                const validation = await validateAvailability(selectedProductKey, selectedQuantity);
+                if (!validation.valid) {
+                    showError(validation.message);
+                    showLoading(false);
+                    return;
+                }
+
+                // Decrementar boletos del inventario
                 const decrementResult = decrementInventoryBatch(selectedProductKey, selectedQuantity);
                 decrementResult.then(result => {
                     if (!result.success) {
