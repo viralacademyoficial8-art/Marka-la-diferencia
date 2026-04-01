@@ -2832,6 +2832,57 @@
             font-weight: 600;
         }
 
+        .whatsapp-allies-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #25D366 0%, #20BA58 100%);
+            color: white;
+            padding: 16px 48px;
+            border-radius: 50px;
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .whatsapp-allies-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .whatsapp-allies-btn:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 18px 60px rgba(37, 211, 102, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .whatsapp-allies-btn:hover::before {
+            left: 100%;
+        }
+
+        .whatsapp-allies-btn i {
+            font-size: 1.3em;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-allies-btn:hover i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
         .allies-cta .cta-button {
             display: inline-block;
             background: linear-gradient(135deg, #F6FF54 0%, #ffff99 100%);
@@ -4675,8 +4726,9 @@
 
             <div class="allies-cta">
                 <p>¿Tu empresa quiere ser aliado de EXPO MAKERS?</p>
-                <a href="https://wa.me/5213343202969?text=Hola,%20me%20interesa%20ser%20aliado%20de%20EXPO%20MAKERS%202026" class="cta-button" target="_blank">
-                    Contactar
+                <a href="https://wa.me/5213343202969?text=Hola,%20me%20interesa%20ser%20aliado%20de%20EXPO%20MAKERS%202026" class="whatsapp-allies-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    Contactar por WhatsApp
                 </a>
             </div>
         </div>
