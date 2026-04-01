@@ -1531,9 +1531,9 @@
             animation: none;
         }
 
-        /* Disponibilidad de boletos */
+        /* Disponibilidad de boletos - OCULTO VISUALMENTE (lógica sigue activa en segundo plano) */
         .availability-badge {
-            display: inline-block;
+            display: none; /* Sistema de conteo sigue funcionando, solo que oculto */
             background: linear-gradient(135deg, rgba(246, 255, 84, 0.2) 0%, rgba(123, 83, 240, 0.2) 100%);
             border: 1px solid rgba(246, 255, 84, 0.4);
             color: #F6FF54;
@@ -1592,6 +1592,7 @@
         }
 
         .progress-text {
+            display: none; /* Oculto visualmente - Sistema de seguimiento sigue activo */
             font-size: clamp(0.8rem, 1.1vw, 0.95rem);
             color: rgba(255, 255, 255, 0.7);
             margin-top: 8px;
@@ -4603,12 +4604,25 @@
         // Los botones ahora enlazan directamente a checkout.html?plan=...
         // Sistema de pago completamente migrado a checkout.html
 
-        // ====== TICKET INVENTORY SYSTEM ======
+        /**
+         * TICKET INVENTORY SYSTEM
+         *
+         * Sistema de control de disponibilidad de boletos.
+         * El contador de disponibles está OCULTO VISUALMENTE pero sigue funcionando en segundo plano.
+         *
+         * LÍMITES DE BOLETOS:
+         * - GENERAL (free): 999 boletos
+         * - PLATA (conference): 170 boletos
+         * - GOLD (vip): 50 boletos
+         *
+         * La lógica de inventario se ejecuta completamente aunque no sea visible.
+         * Esto permite futuro control de disponibilidad sin afectar el diseño actual.
+         */
         function updateTicketAvailability(ticketType) {
             const status = getTicketStatus(ticketType);
-            const availDiv = document.getElementById(`availability-${ticketType}`);
+            const availDiv = document.getElementById(`availability-${ticketType}`); // Oculto visualmente, activo en bg
             const progressFill = document.getElementById(`progress-${ticketType}`);
-            const progressText = document.getElementById(`progress-text-${ticketType}`);
+            const progressText = document.getElementById(`progress-text-${ticketType}`); // Oculto visualmente, activo en bg
             const btn = document.getElementById(`btn-${ticketType}`);
             const percent = getProgressPercent(ticketType);
 
