@@ -644,6 +644,179 @@
                 transform: translateY(0);
             }
         }
+
+        /* Success Modal Styles */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease-out;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-modal-content {
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+            border: 2px solid #F6FF54;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(246, 255, 84, 0.2), 0 0 40px rgba(123, 83, 240, 0.3);
+            animation: slideInUp 0.4s ease-out;
+            overflow: hidden;
+        }
+
+        .success-modal-header {
+            background: linear-gradient(135deg, #7B53F0 0%, #a67dff 100%);
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 2px solid rgba(246, 255, 84, 0.2);
+        }
+
+        .success-checkmark {
+            font-size: 60px;
+            margin-bottom: 15px;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: inline-block;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .success-modal-header h2 {
+            color: #F6FF54;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .success-modal-body {
+            padding: 30px;
+        }
+
+        .success-message {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .confirmation-details {
+            background: rgba(123, 83, 240, 0.1);
+            border: 1px solid rgba(123, 83, 240, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(246, 255, 84, 0.1);
+        }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .detail-label {
+            display: block;
+            color: #F6FF54;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .detail-value {
+            color: #ffffff;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .email-info {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .email-info p {
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            font-size: 15px;
+        }
+
+        .email-info ul {
+            margin: 0;
+            padding-left: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .email-info li {
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .info-box {
+            background: rgba(246, 255, 84, 0.1);
+            border: 1px solid rgba(246, 255, 84, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box p {
+            color: rgba(255, 255, 255, 0.95);
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .success-modal-footer {
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 1px solid rgba(246, 255, 84, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .success-modal .btn-primary {
+            background: linear-gradient(135deg, #F6FF54 0%, #ffff88 100%);
+            color: #000;
+            border: none;
+            padding: 12px 40px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .success-modal .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(246, 255, 84, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -687,6 +860,55 @@
             <div class="checkout-form">
                 <div id="errorMessage" class="message error"></div>
                 <div id="successMessage" class="message success"></div>
+
+                <!-- Modal de Confirmación de Éxito -->
+                <div id="successModal" class="success-modal" style="display: none;">
+                    <div class="success-modal-content">
+                        <div class="success-modal-header">
+                            <div class="success-checkmark">✓</div>
+                            <h2>¡Registro Exitoso!</h2>
+                        </div>
+
+                        <div class="success-modal-body">
+                            <p class="success-message">Tu acceso a EXPO MAKERS 2026 ha sido confirmado.</p>
+
+                            <div class="confirmation-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">📧 Email de Confirmación</span>
+                                    <p id="confirmEmail" class="detail-value">confirming@email.com</p>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">🎫 Número de Accesos</span>
+                                    <p id="confirmQuantity" class="detail-value">1</p>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">📅 Evento</span>
+                                    <p class="detail-value">23 de mayo 2026, Ocotlán, Jalisco</p>
+                                </div>
+                            </div>
+
+                            <div class="email-info">
+                                <p><strong>📬 Revisa tu email</strong> para:</p>
+                                <ul>
+                                    <li>Confirmación de tu registro</li>
+                                    <li>Instrucciones de acceso</li>
+                                    <li>Detalles del evento</li>
+                                    <li>Tu código QR (si aplica)</li>
+                                </ul>
+                            </div>
+
+                            <div class="info-box">
+                                <p>💡 <strong>Tip:</strong> Si no ves el email en los próximos 5 minutos, revisa tu carpeta de Spam.</p>
+                            </div>
+                        </div>
+
+                        <div class="success-modal-footer">
+                            <button class="btn-primary" onclick="closeSuccessModal()">Volver al Evento</button>
+                        </div>
+                    </div>
+                </div>
 
                 <form id="checkoutForm">
                     <div class="form-group">
@@ -1004,14 +1226,10 @@
 
                         localStorage.setItem('lastOrder', JSON.stringify(orderData));
 
-                        // Mostrar mensaje de éxito
-                        showSuccess(`¡${selectedQuantity} acceso${selectedQuantity > 1 ? 's' : ''} confirmado! Revisa tu email para más detalles.`);
+                        // Mostrar modal de éxito
+                        showLoading(false);
+                        showSuccessModal(email, selectedQuantity);
                         console.log('✅ Orden completada:', orderData);
-
-                        // Redirigir después de 2 segundos
-                        setTimeout(() => {
-                            window.location.href = 'evento.html?success=true';
-                        }, 2000);
                     }).catch(error => {
                         const errorMsg = error?.message || 'Error procesando la orden';
                         showError(errorMsg);
@@ -1126,6 +1344,17 @@
         function showLoading(show) {
             document.getElementById('loadingOverlay').classList.toggle('show', show);
             document.getElementById('submitBtn').disabled = show;
+        }
+
+        function showSuccessModal(email, quantity) {
+            const modal = document.getElementById('successModal');
+            document.getElementById('confirmEmail').textContent = email;
+            document.getElementById('confirmQuantity').textContent = quantity + (quantity > 1 ? ' accesos' : ' acceso');
+            modal.style.display = 'flex';
+        }
+
+        function closeSuccessModal() {
+            window.location.href = 'evento.html?success=true';
         }
 
         // Inicializar cuando carga la página
