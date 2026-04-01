@@ -10,9 +10,20 @@ export default async function handler(req, res) {
   try {
     const { ticketType, quantity, email, fullName } = req.body;
 
+    console.log('💳 CREATE-CHECKOUT-SESSION Request:', {
+      ticketType,
+      quantity,
+      email,
+      fullName
+    });
+
     // Validar entrada
     if (!ticketType || !quantity || !email || !fullName) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      console.error('🔴 Missing required fields:', { ticketType, quantity, email, fullName });
+      return res.status(400).json({
+        success: false,
+        error: 'Faltan campos requeridos: ticketType, quantity, email, fullName'
+      });
     }
 
     // Configuración de precios (consistente con stripe-config.js)
@@ -24,28 +35,51 @@ export default async function handler(req, res) {
 
     const ticketConfig = priceConfig[ticketType];
     if (!ticketConfig) {
-      return res.status(400).json({ error: 'Invalid ticket type' });
+      console.error('🔴 Invalid ticket type:', ticketType);
+      return res.status(400).json({
+        success: false,
+        error: `Tipo de boleto inválido: ${ticketType}`
+      });
     }
 
     // Validar cantidad
     const parsedQuantity = parseInt(quantity);
     if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
-      return res.status(400).json({ error: 'Quantity must be a positive number' });
+      console.error('🔴 Invalid quantity:', quantity);
+      return res.status(400).json({
+        success: false,
+        error: 'La cantidad debe ser un número positivo'
+      });
     }
     if (parsedQuantity > 100) {
-      return res.status(400).json({ error: 'Maximum 100 tickets per order' });
+      console.error('🔴 Quantity exceeds maximum:', parsedQuantity);
+      return res.status(400).json({
+        success: false,
+        error: 'Máximo 100 boletos por orden'
+      });
     }
     if (parsedQuantity > ticketConfig.limit) {
+      console.error('🔴 Quantity exceeds available:', { requested: parsedQuantity, available: ticketConfig.limit });
       return res.status(400).json({
-        error: `Only ${ticketConfig.limit} tickets available for this type`
+        success: false,
+        error: `Solo hay ${ticketConfig.limit} boletos disponibles para este tipo`
       });
     }
 
     const unitPrice = ticketConfig.price;
     const totalPrice = unitPrice * parsedQuantity;
 
+    console.log('✅ Validation passed:', {
+      ticketType,
+      ticketName: ticketConfig.name,
+      quantity: parsedQuantity,
+      unitPrice,
+      totalPrice
+    });
+
     // Si es gratis, no crear sesión de Stripe
     if (totalPrice === 0) {
+      console.log('ℹ️ Free ticket - no Stripe session needed');
       return res.status(200).json({
         success: true,
         isFree: true,
@@ -54,6 +88,7 @@ export default async function handler(req, res) {
     }
 
     // Crear sesión de Stripe Checkout
+    console.log('🔗 Creating Stripe checkout session...');
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -62,7 +97,7 @@ export default async function handler(req, res) {
             currency: 'mxn',
             product_data: {
               name: `${ticketConfig.name} - EXPO MAKERS 2026`,
-              description: `${parsedQuantity} boleto(s) para EXPO MAKERS 2026 - Emprendimiento y Marketing`
+              description: `${parsedQuantity} ${parsedQuantity === 1 ? 'boleto' : 'boletos'} para EXPO MAKERS 2026 - Emprendimiento y Marketing`
             },
             unit_amount: unitPrice * 100 // Stripe usa centavos
           },
@@ -81,18 +116,33 @@ export default async function handler(req, res) {
       }
     });
 
+    console.log('✅ Stripe session created:', {
+      sessionId: session.id,
+      amount: totalPrice,
+      currency: 'mxn',
+      url: session.url
+    });
+
     return res.status(200).json({
       success: true,
       sessionId: session.id,
       url: session.url,
       amount: totalPrice,
-      quantity: parsedQuantity
+      quantity: parsedQuantity,
+      ticketType: ticketConfig.name
     });
   } catch (error) {
-    console.error('Error creating checkout session:', error);
+    console.error('🔴 Error creating checkout session:', {
+      message: error.message,
+      code: error.code,
+      statusCode: error.statusCode,
+      type: error.type
+    });
     return res.status(500).json({
-      error: 'Error creating checkout session',
-      details: error.message
+      success: false,
+      error: 'Error al crear sesión de pago',
+      details: error.message,
+      code: error.code
     });
   }
 }

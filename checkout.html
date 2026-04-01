@@ -1664,6 +1664,13 @@
             }
 
             showLoading(true);
+            console.log('💳 Iniciando checkout pagado para:', {
+                fullName,
+                email,
+                ticketType: selectedProductKey,
+                quantity: selectedQuantity,
+                totalPrice: selectedProduct.price * selectedQuantity
+            });
 
             // Crear orden pendiente en Supabase
             createOrder({
@@ -1682,6 +1689,8 @@
                     return;
                 }
 
+                console.log('✅ Orden creada:', orderResult.orderId);
+
                 // Guardar información en sessionStorage
                 sessionStorage.setItem('checkoutData', JSON.stringify({
                     fullName,
@@ -1694,18 +1703,50 @@
                     orderId: orderResult.orderId
                 }));
 
-                // Construir URL de Stripe con cantidad
-                const stripeUrl = selectedProduct.link +
-                    '?client_reference_id=' + encodeURIComponent(email) +
-                    '&prefilled_email=' + encodeURIComponent(email) +
-                    '&prefilled_name=' + encodeURIComponent(fullName) +
-                    (selectedQuantity > 1 ? '&quantity=' + selectedQuantity : '');
+                // Crear sesión de Stripe dinámicamente
+                fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ticketType: selectedProductKey,
+                        quantity: selectedQuantity,
+                        email: email,
+                        fullName: fullName
+                    })
+                })
+                .then(response => {
+                    console.log('📡 Respuesta de create-checkout-session:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('📊 Datos recibidos:', data);
 
-                // Redirigir al link de pago de Stripe
-                setTimeout(() => {
-                    window.location.href = stripeUrl;
-                }, 500);
+                    if (!data.success) {
+                        showError(data.error || 'Error creando sesión de pago');
+                        showLoading(false);
+                        return;
+                    }
+
+                    if (data.sessionId && data.url) {
+                        console.log('🔗 URL de Stripe:', data.url);
+                        // Redirigir a Stripe Checkout
+                        setTimeout(() => {
+                            window.location.href = data.url;
+                        }, 500);
+                    } else {
+                        showError('No se recibió URL de pago válida');
+                        showLoading(false);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error en checkout:', error);
+                    showError('Error iniciando pago: ' + error.message);
+                    showLoading(false);
+                });
             }).catch(error => {
+                console.error('❌ Error creando orden:', error);
                 showError('Error procesando la orden');
                 showLoading(false);
             });
