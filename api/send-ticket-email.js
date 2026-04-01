@@ -359,7 +359,7 @@ export default async function handler(req, res) {
     `;
 
     const response = await resend.emails.send({
-      from: 'EXPO MAKERS <noreply@resend.dev>',
+      from: 'EXPO MAKERS <noreply@topmakers.org>',
       to: email,
       subject: `¡Confirmación de compra! - EXPO MAKERS 2026 - ${ticket.name}`,
       html: emailHtml
