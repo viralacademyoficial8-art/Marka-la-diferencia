@@ -293,6 +293,10 @@
             0%, 100% { box-shadow: 0 30px 80px rgba(246,255,84,0.2), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 40px rgba(246,255,84,0.15); }
             50% { box-shadow: 0 30px 80px rgba(246,255,84,0.35), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 70px rgba(246,255,84,0.3); }
         }
+        @keyframes vipPulse {
+            0%, 100% { box-shadow: 0 30px 120px rgba(0, 255, 136, 0.5), inset 0 1px 0 rgba(0, 255, 136, 0.15), 0 0 60px rgba(0, 255, 136, 0.3); }
+            50% { box-shadow: 0 40px 150px rgba(0, 255, 136, 0.7), inset 0 1px 0 rgba(0, 255, 136, 0.2), 0 0 80px rgba(0, 255, 136, 0.5); }
+        }
         @keyframes shine {
             0% { background-position: -1000px 0; }
             100% { background-position: 1000px 0; }
@@ -1496,34 +1500,37 @@
             border: 3px solid #00ff88;
             position: relative;
             border-radius: 20px;
-            box-shadow: 0 20px 80px rgba(0, 255, 136, 0.35), inset 0 1px 0 rgba(0, 255, 136, 0.1), 0 0 30px rgba(0, 255, 136, 0.15);
+            box-shadow: 0 30px 120px rgba(0, 255, 136, 0.5), inset 0 1px 0 rgba(0, 255, 136, 0.15), 0 0 60px rgba(0, 255, 136, 0.3);
             padding: 56px 48px;
             overflow: hidden;
-            transform: scale(1.06);
+            transform: scale(1.10);
             transition: all 0.3s ease;
+            animation: vipPulse 3s ease-in-out infinite;
         }
         .pricing-card-vip::before {
-            content: 'RECOMENDADO';
+            content: '✨ RECOMENDADO';
             position: absolute;
-            top: 5px;
-            right: 10px;
+            top: 8px;
+            right: 15px;
             background: linear-gradient(135deg, #00ff88 0%, #00ffaa 100%);
             color: #0a2e1a;
-            padding: 12px 26px;
-            border-radius: 20px;
-            font-size: 0.65rem;
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-size: 0.7rem;
             font-weight: 900;
-            letter-spacing: 1.2px;
+            letter-spacing: 1.3px;
             z-index: 10;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5);
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.7), inset 0 -2px 0 rgba(0, 0, 0, 0.2);
             text-transform: uppercase;
             white-space: nowrap;
+            animation: badgePulse 2s ease-in-out infinite;
         }
         .pricing-card-vip::after { display: none; }
         .pricing-card-vip:hover {
-            box-shadow: 0 30px 100px rgba(0, 255, 136, 0.5), inset 0 1px 0 rgba(0, 255, 136, 0.15), 0 0 50px rgba(0, 255, 136, 0.25);
-            transform: translateY(-10px) scale(1.08);
+            box-shadow: 0 50px 180px rgba(0, 255, 136, 0.8), inset 0 1px 0 rgba(0, 255, 136, 0.2), 0 0 100px rgba(0, 255, 136, 0.6);
+            transform: translateY(-15px) scale(1.14);
             border-color: #00ffaa;
+            animation: none;
         }
 
         .pricing-card-crown { display: none; }
@@ -1555,7 +1562,11 @@
         }
         .pricing-card-free .pricing-name { color: rgba(255,255,255,0.95); }
         .pricing-card-standard .pricing-name { color: rgba(255,255,255,0.95); }
-        .pricing-card-vip .pricing-name { color: rgba(255,255,255,0.95); }
+        .pricing-card-vip .pricing-name {
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.6), 0 0 40px rgba(0, 255, 136, 0.3);
+            font-weight: 900;
+        }
 
         .pricing-badge {
             display: inline-block;
