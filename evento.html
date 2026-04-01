@@ -2718,6 +2718,169 @@
         .map-zone.z-empresas { background: #3b82f6; top: 10%; right: 5%; width: 25%; height: 35%; color: var(--white); }
         .map-zone.z-conferencias { background: #f59e0b; bottom: 10%; left: 25%; width: 50%; height: 35%; }
 
+        /* ====== ALIADOS ESTRATÉGICOS ====== */
+        .allies-section {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%);
+            padding: 80px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .allies-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #F6FF54, transparent);
+        }
+
+        .allies-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .allies-section .section-title {
+            color: var(--white);
+            margin-bottom: 15px;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+        }
+
+        .allies-subtitle {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 50px;
+            max-width: 600px;
+        }
+
+        .allies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .ally-card {
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.1) 0%, rgba(123, 83, 240, 0.1) 100%);
+            border: 2px solid rgba(246, 255, 84, 0.3);
+            border-radius: 16px;
+            padding: 40px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ally-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ally-card:hover {
+            border-color: rgba(246, 255, 84, 0.6);
+            box-shadow: 0 10px 30px rgba(246, 255, 84, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .ally-card:hover::before {
+            opacity: 1;
+        }
+
+        .ally-logo-placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            font-size: 0.95rem;
+        }
+
+        .allies-cta {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(123, 83, 240, 0.15) 0%, rgba(246, 255, 84, 0.08) 100%);
+            border: 2px solid rgba(246, 255, 84, 0.2);
+            border-radius: 20px;
+        }
+
+        .allies-cta p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .allies-cta .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #F6FF54 0%, #ffff99 100%);
+            color: #0a0f1a;
+            padding: 14px 40px;
+            border-radius: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 20px rgba(246, 255, 84, 0.3);
+        }
+
+        .allies-cta .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(246, 255, 84, 0.4);
+        }
+
+        /* Responsive Allies */
+        @media (max-width: 768px) {
+            .allies-section {
+                padding: 60px 30px;
+            }
+
+            .allies-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+            }
+
+            .ally-card {
+                min-height: 150px;
+                padding: 30px 15px;
+            }
+
+            .allies-cta {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .allies-section {
+                padding: 40px 20px;
+            }
+
+            .allies-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .ally-card {
+                min-height: 120px;
+                padding: 20px 10px;
+            }
+
+            .allies-cta p {
+                font-size: 1rem;
+            }
+        }
+
         /* ====== HOSPITALITY ====== */
         .hospitality-section {
             background: linear-gradient(135deg, var(--violeta-intenso) 0%, #a189ff 100%);
@@ -4477,6 +4640,36 @@
         <h2 class="section-title">Croquis zonas del evento</h2>
         <div class="map-container">
             <img src="./IMG_8203.PNG" alt="Croquis zonas del evento" style="width: 100%; max-width: 100%; height: auto; display: block; border-radius: 12px;">
+        </div>
+    </section>
+
+    <!-- ALIADOS ESTRATÉGICOS -->
+    <section class="allies-section" id="aliados">
+        <div class="allies-container">
+            <h2 class="section-title">Aliados Estratégicos</h2>
+            <p class="allies-subtitle">Empresas y organizaciones que hacen posible EXPO MAKERS 2026</p>
+
+            <div class="allies-grid">
+                <div class="ally-card">
+                    <div class="ally-logo-placeholder">Logo Aliado 1</div>
+                </div>
+                <div class="ally-card">
+                    <div class="ally-logo-placeholder">Logo Aliado 2</div>
+                </div>
+                <div class="ally-card">
+                    <div class="ally-logo-placeholder">Logo Aliado 3</div>
+                </div>
+                <div class="ally-card">
+                    <div class="ally-logo-placeholder">Logo Aliado 4</div>
+                </div>
+            </div>
+
+            <div class="allies-cta">
+                <p>¿Tu empresa quiere ser aliado de EXPO MAKERS?</p>
+                <a href="https://wa.me/5213343202969?text=Hola,%20me%20interesa%20ser%20aliado%20de%20EXPO%20MAKERS%202026" class="cta-button" target="_blank">
+                    Contactar
+                </a>
+            </div>
         </div>
     </section>
 
