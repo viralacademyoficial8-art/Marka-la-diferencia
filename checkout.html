@@ -652,34 +652,49 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(13, 13, 13, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(10, 15, 26, 0.95) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            animation: fadeIn 0.3s ease-out;
-            backdrop-filter: blur(10px);
+            animation: fadeInOverlay 0.4s ease-out;
+            backdrop-filter: blur(15px);
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeInOverlay {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
         .success-modal-content {
-            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0a0f1a 100%);
-            border: 1px solid rgba(246, 255, 84, 0.3);
-            border-radius: 24px;
-            max-width: 520px;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 35%, #16213e 70%, #0f3460 100%);
+            border: 2px solid rgba(246, 255, 84, 0.4);
+            border-radius: 28px;
+            max-width: 560px;
             width: 95%;
             padding: 0;
             box-shadow:
-                0 25px 50px rgba(0, 0, 0, 0.5),
-                0 0 60px rgba(246, 255, 84, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                0 0 80px rgba(246, 255, 84, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(246, 255, 84, 0.1);
+            animation: modalPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
             overflow: hidden;
             position: relative;
+        }
+
+        @keyframes modalPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.85) translateY(30px);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         .success-modal-content::before {
@@ -688,13 +703,23 @@
             top: 0;
             left: 0;
             right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(246, 255, 84, 0.6), transparent);
+        }
+
+        .success-modal-content::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(246, 255, 84, 0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(123, 83, 240, 0.4), transparent);
         }
 
         .success-modal-header {
-            background: linear-gradient(135deg, #7B53F0 0%, #a67dff 50%, #9d7fff 100%);
-            padding: 50px 30px 40px;
+            background: linear-gradient(135deg, #7B53F0 0%, #9d7fff 30%, #a67dff 60%, #6b45d9 100%);
+            padding: 60px 30px 45px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -703,42 +728,53 @@
         .success-modal-header::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(246, 255, 84, 0.25) 0%, transparent 70%);
+            top: -40%;
+            right: -20%;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(246, 255, 84, 0.3) 0%, transparent 70%);
             border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
         }
 
         .success-modal-header::after {
             content: '';
             position: absolute;
             bottom: -30%;
-            left: -5%;
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            left: -15%;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
             border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(20px); }
         }
 
         .success-checkmark {
-            font-size: 70px;
-            margin-bottom: 20px;
-            animation: checkmarkBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 85px;
+            margin-bottom: 25px;
+            animation: checkmarkBounce 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
             display: inline-block;
-            filter: drop-shadow(0 8px 16px rgba(246, 255, 84, 0.4));
+            filter: drop-shadow(0 12px 24px rgba(246, 255, 84, 0.5));
             position: relative;
             z-index: 1;
+            text-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes checkmarkBounce {
             0% {
-                transform: scale(0) rotate(-45deg);
+                transform: scale(0) rotate(-90deg);
                 opacity: 0;
             }
             50% {
-                transform: scale(1.2);
+                transform: scale(1.25);
+            }
+            75% {
+                transform: scale(0.95);
             }
             100% {
                 transform: scale(1) rotate(0deg);
@@ -747,51 +783,86 @@
         }
 
         .success-modal-header h2 {
-            color: #F6FF54;
+            color: #ffffff;
             margin: 0;
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: 2px;
             text-transform: uppercase;
             position: relative;
             z-index: 1;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            line-height: 1.2;
+        }
+
+        .success-modal-header h2 .highlight {
+            color: #F6FF54;
+            display: block;
+            margin-top: 5px;
+            font-size: 42px;
+            text-shadow: 0 8px 25px rgba(246, 255, 84, 0.4);
         }
 
         .success-modal-body {
-            padding: 40px;
+            padding: 45px 40px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
         }
 
         .success-message {
             color: #F6FF54;
-            font-size: 18px;
-            margin-bottom: 30px;
+            font-size: 20px;
+            margin-bottom: 35px;
             text-align: center;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            line-height: 1.5;
+            animation: slideInDown 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .confirmation-details {
-            background: linear-gradient(135deg, rgba(123, 83, 240, 0.15) 0%, rgba(123, 83, 240, 0.08) 100%);
-            border: 1px solid rgba(123, 83, 240, 0.4);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.08) 0%, rgba(123, 83, 240, 0.06) 100%);
+            border: 2px solid rgba(246, 255, 84, 0.25);
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 28px;
+            backdrop-filter: blur(15px);
+            animation: slideInUp 0.6s ease-out 0.4s both;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .detail-item {
-            margin-bottom: 18px;
-            padding-bottom: 18px;
-            border-bottom: 1px solid rgba(246, 255, 84, 0.1);
-            animation: slideInLeft 0.5s ease-out forwards;
+            margin-bottom: 22px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid rgba(246, 255, 84, 0.15);
+            animation: detailItemSlide 0.5s ease-out forwards;
             opacity: 0;
         }
 
-        @keyframes slideInLeft {
+        @keyframes detailItemSlide {
             from {
                 opacity: 0;
-                transform: translateX(-20px);
+                transform: translateX(-15px);
             }
             to {
                 opacity: 1;
@@ -799,9 +870,9 @@
             }
         }
 
-        .detail-item:nth-child(1) { animation-delay: 0.1s; }
-        .detail-item:nth-child(2) { animation-delay: 0.2s; }
-        .detail-item:nth-child(3) { animation-delay: 0.3s; }
+        .detail-item:nth-child(1) { animation-delay: 0.5s; }
+        .detail-item:nth-child(2) { animation-delay: 0.6s; }
+        .detail-item:nth-child(3) { animation-delay: 0.7s; }
 
         .detail-item:last-child {
             margin-bottom: 0;
@@ -812,34 +883,35 @@
         .detail-label {
             display: block;
             color: #F6FF54;
-            font-weight: 700;
-            font-size: 13px;
-            margin-bottom: 8px;
+            font-weight: 800;
+            font-size: 12px;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            letter-spacing: 1.4px;
         }
 
         .detail-value {
-            color: rgba(255, 255, 255, 0.95);
+            color: rgba(255, 255, 255, 0.98);
             margin: 0;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         .email-info {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.12) 0%, rgba(34, 197, 94, 0.06) 100%);
-            border-left: 4px solid #22c55e;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 18px;
-            backdrop-filter: blur(10px);
-            animation: slideInRight 0.5s ease-out 0.4s both;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(74, 222, 128, 0.08) 100%);
+            border: 2px solid rgba(34, 197, 94, 0.4);
+            border-left: 5px solid #22c55e;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(15px);
+            animation: slideInLeft 0.6s ease-out 0.5s both;
         }
 
-        @keyframes slideInRight {
+        @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateX(20px);
+                transform: translateX(-25px);
             }
             to {
                 opacity: 1;
@@ -848,61 +920,95 @@
         }
 
         .email-info p {
-            color: rgba(255, 255, 255, 0.95);
-            margin: 0 0 12px 0;
+            color: rgba(255, 255, 255, 0.98);
+            margin: 0 0 14px 0;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .email-info ul {
             margin: 0;
-            padding-left: 20px;
-            color: rgba(255, 255, 255, 0.85);
+            padding-left: 25px;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .email-info li {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-size: 13px;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-weight: 500;
         }
 
         .info-box {
-            background: linear-gradient(135deg, rgba(246, 255, 84, 0.12) 0%, rgba(246, 255, 84, 0.06) 100%);
-            border: 1px solid rgba(246, 255, 84, 0.3);
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            backdrop-filter: blur(10px);
-            animation: slideInRight 0.5s ease-out 0.5s both;
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.12) 0%, rgba(246, 255, 84, 0.05) 100%);
+            border: 2px dashed rgba(246, 255, 84, 0.4);
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 0;
+            backdrop-filter: blur(15px);
+            animation: slideInRight 0.6s ease-out 0.6s both;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .info-box p {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.95);
             margin: 0;
             font-size: 13px;
             line-height: 1.8;
+            font-weight: 500;
         }
 
         .success-modal-footer {
-            padding: 24px 40px 40px;
+            padding: 0 40px 45px 40px;
         }
 
         .success-modal .btn-primary {
-            background: linear-gradient(135deg, #F6FF54 0%, #ffff99 50%, #F6FF54 100%);
+            background: linear-gradient(135deg, #F6FF54 0%, #ffff99 40%, #F6FF54 100%);
             color: #0a0f1a;
             border: none;
-            padding: 16px 40px;
-            font-weight: 800;
-            border-radius: 12px;
+            padding: 18px 45px;
+            font-weight: 900;
+            border-radius: 14px;
             cursor: pointer;
-            font-size: 15px;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 16px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(246, 255, 84, 0.3);
+            box-shadow:
+                0 12px 30px rgba(246, 255, 84, 0.35),
+                0 0 20px rgba(246, 255, 84, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow:
+                    0 12px 30px rgba(246, 255, 84, 0.35),
+                    0 0 20px rgba(246, 255, 84, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                box-shadow:
+                    0 12px 35px rgba(246, 255, 84, 0.5),
+                    0 0 30px rgba(246, 255, 84, 0.25),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
         }
 
         .success-modal .btn-primary::before {
@@ -912,13 +1018,17 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
         }
 
         .success-modal .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(246, 255, 84, 0.5);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow:
+                0 18px 45px rgba(246, 255, 84, 0.45),
+                0 0 35px rgba(246, 255, 84, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            letter-spacing: 2.5px;
         }
 
         .success-modal .btn-primary:hover::before {
@@ -926,7 +1036,7 @@
         }
 
         .success-modal .btn-primary:active {
-            transform: translateY(-1px);
+            transform: translateY(-2px) scale(0.99);
         }
     </style>
 </head>
@@ -972,12 +1082,12 @@
                 <div id="errorMessage" class="message error"></div>
                 <div id="successMessage" class="message success"></div>
 
-                <!-- Modal de Confirmación de Éxito -->
+                <!-- Modal de Confirmación de Éxito - Modernizado -->
                 <div id="successModal" class="success-modal" style="display: none;">
                     <div class="success-modal-content">
                         <div class="success-modal-header">
                             <div class="success-checkmark">✓</div>
-                            <h2>¡Registro Exitoso!</h2>
+                            <h2>¡Registro<span class="highlight">Exitoso!</span></h2>
                         </div>
 
                         <div class="success-modal-body">
@@ -1001,12 +1111,12 @@
                             </div>
 
                             <div class="email-info">
-                                <p><strong>📬 Revisa tu email</strong> para:</p>
+                                <p>📬 Revisa tu email para:</p>
                                 <ul>
-                                    <li>Confirmación de tu registro</li>
-                                    <li>Instrucciones de acceso</li>
-                                    <li>Detalles del evento</li>
-                                    <li>Tu código QR (si aplica)</li>
+                                    <li>✓ Confirmación de tu registro</li>
+                                    <li>✓ Instrucciones de acceso</li>
+                                    <li>✓ Detalles del evento</li>
+                                    <li>✓ Tu código QR (si aplica)</li>
                                 </ul>
                             </div>
 

@@ -28,23 +28,24 @@ export default async function handler(req, res) {
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
-              font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-              background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+              background: linear-gradient(135deg, #f5f5f5 0%, #efefef 100%);
               padding: 20px;
-              color: #333;
+              color: #222;
             }
-            .wrapper { max-width: 650px; margin: 0 auto; }
+            .wrapper { max-width: 680px; margin: 0 auto; }
             .container {
-              background: white;
-              border-radius: 16px;
+              background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+              border-radius: 20px;
               overflow: hidden;
-              box-shadow: 0 20px 60px rgba(37, 211, 102, 0.15), 0 0 40px rgba(123, 83, 240, 0.1);
+              box-shadow: 0 25px 60px rgba(123, 83, 240, 0.2), 0 0 50px rgba(246, 255, 84, 0.1);
+              border: 2px solid rgba(123, 83, 240, 0.15);
             }
 
-            /* Header con gradient */
+            /* Header con gradient moderno */
             .header {
-              background: linear-gradient(135deg, #7B53F0 0%, #a67dff 50%, #7B53F0 100%);
-              padding: 40px 30px;
+              background: linear-gradient(135deg, #7B53F0 0%, #9d7fff 30%, #a67dff 60%, #6b45d9 100%);
+              padding: 50px 30px 45px;
               text-align: center;
               position: relative;
               overflow: hidden;
@@ -52,218 +53,257 @@ export default async function handler(req, res) {
             .header::before {
               content: '';
               position: absolute;
-              top: -50%;
-              right: -10%;
-              width: 300px;
-              height: 300px;
-              background: radial-gradient(circle, rgba(246, 255, 84, 0.2) 0%, transparent 70%);
+              top: -40%;
+              right: -20%;
+              width: 350px;
+              height: 350px;
+              background: radial-gradient(circle, rgba(246, 255, 84, 0.3) 0%, transparent 70%);
               border-radius: 50%;
             }
             .header::after {
               content: '';
               position: absolute;
               bottom: -30%;
-              left: -5%;
-              width: 250px;
-              height: 250px;
-              background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+              left: -15%;
+              width: 280px;
+              height: 280px;
+              background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
               border-radius: 50%;
             }
 
             .logo {
-              font-size: 48px;
+              font-size: 52px;
               font-weight: 900;
               color: #F6FF54;
-              margin-bottom: 15px;
+              margin-bottom: 12px;
               position: relative;
               z-index: 1;
               letter-spacing: -1px;
+              text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             }
             .tagline {
-              color: rgba(255, 255, 255, 0.95);
-              font-size: 16px;
-              font-weight: 500;
+              color: rgba(255, 255, 255, 0.98);
+              font-size: 18px;
+              font-weight: 600;
               position: relative;
               z-index: 1;
+              letter-spacing: 0.5px;
             }
 
             /* Contenido principal */
             .content {
-              padding: 40px 30px;
+              padding: 45px 35px;
+              background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, transparent 100%);
             }
             .greeting {
-              font-size: 22px;
-              color: #333;
-              margin-bottom: 10px;
-              font-weight: 700;
+              font-size: 26px;
+              color: #0a0f1a;
+              margin-bottom: 12px;
+              font-weight: 800;
+              letter-spacing: -0.5px;
             }
             .subtext {
-              color: #666;
+              color: #555;
               font-size: 15px;
-              margin-bottom: 30px;
-              line-height: 1.6;
+              margin-bottom: 35px;
+              line-height: 1.7;
+              font-weight: 500;
             }
 
-            /* Tarjeta de boleto */
+            /* Tarjeta de boleto - Premium */
             .ticket-card {
-              background: linear-gradient(135deg, #F6FF54 0%, #ffff99 100%);
-              border-radius: 12px;
-              padding: 30px;
-              margin: 30px 0;
-              border-left: 5px solid #7B53F0;
+              background: linear-gradient(135deg, #F6FF54 0%, #ffff99 40%, #F6FF54 100%);
+              border-radius: 18px;
+              padding: 35px;
+              margin: 35px 0;
+              border: 3px solid rgba(123, 83, 240, 0.3);
+              box-shadow: 0 15px 40px rgba(246, 255, 84, 0.2);
+              position: relative;
+              overflow: hidden;
+            }
+            .ticket-card::before {
+              content: '';
+              position: absolute;
+              top: -50%;
+              right: -20%;
+              width: 300px;
+              height: 300px;
+              background: radial-gradient(circle, rgba(123, 83, 240, 0.15) 0%, transparent 70%);
+              border-radius: 50%;
             }
             .ticket-type {
-              font-size: 28px;
+              font-size: 32px;
               font-weight: 900;
-              color: #333;
-              margin-bottom: 5px;
+              color: #0a0f1a;
+              margin-bottom: 8px;
               text-transform: uppercase;
-              letter-spacing: 1px;
+              letter-spacing: 1.5px;
+              position: relative;
+              z-index: 1;
             }
             .ticket-badge {
               display: inline-block;
-              background: #7B53F0;
+              background: linear-gradient(135deg, #7B53F0, #9d7fff);
               color: white;
-              padding: 6px 12px;
-              border-radius: 20px;
-              font-size: 12px;
-              font-weight: 600;
-              margin-bottom: 20px;
+              padding: 8px 18px;
+              border-radius: 25px;
+              font-size: 11px;
+              font-weight: 700;
+              margin-bottom: 22px;
               text-transform: uppercase;
+              letter-spacing: 1px;
+              position: relative;
+              z-index: 1;
+              box-shadow: 0 4px 12px rgba(123, 83, 240, 0.3);
             }
 
             /* Detalles del boleto */
             .ticket-details {
-              background: rgba(255, 255, 255, 0.8);
-              border-radius: 8px;
-              padding: 20px;
-              margin-top: 20px;
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 250, 250, 0.9));
+              border-radius: 12px;
+              padding: 24px;
+              margin-top: 22px;
+              border: 1px solid rgba(123, 83, 240, 0.2);
+              position: relative;
+              z-index: 1;
             }
             .detail-row {
               display: flex;
               justify-content: space-between;
               align-items: center;
-              padding: 12px 0;
-              border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+              padding: 14px 0;
+              border-bottom: 1px solid rgba(123, 83, 240, 0.1);
             }
             .detail-row:last-child {
               border-bottom: none;
             }
             .detail-label {
-              color: #666;
-              font-weight: 600;
-              font-size: 14px;
+              color: #555;
+              font-weight: 700;
+              font-size: 13px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
             }
             .detail-value {
-              color: #333;
-              font-weight: 700;
-              font-size: 15px;
+              color: #0a0f1a;
+              font-weight: 800;
+              font-size: 16px;
             }
             .total-row {
               font-size: 18px !important;
               color: #7B53F0 !important;
-              margin-top: 10px;
-              padding-top: 15px;
-              border-top: 2px solid #7B53F0 !important;
+              margin-top: 12px;
+              padding-top: 16px;
+              border-top: 3px solid #7B53F0 !important;
+              font-weight: 900 !important;
             }
 
             /* Detalles del evento */
             .event-box {
-              background: linear-gradient(135deg, rgba(123, 83, 240, 0.08) 0%, rgba(246, 255, 84, 0.05) 100%);
+              background: linear-gradient(135deg, rgba(123, 83, 240, 0.12) 0%, rgba(246, 255, 84, 0.08) 100%);
               border: 2px solid #F6FF54;
-              border-radius: 12px;
-              padding: 25px;
-              margin: 30px 0;
+              border-radius: 16px;
+              padding: 28px;
+              margin: 35px 0;
+              box-shadow: 0 8px 20px rgba(246, 255, 84, 0.1);
             }
             .event-title {
-              font-size: 18px;
-              font-weight: 700;
+              font-size: 16px;
+              font-weight: 800;
               color: #7B53F0;
-              margin-bottom: 15px;
+              margin-bottom: 18px;
               display: flex;
               align-items: center;
-              gap: 8px;
+              gap: 10px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
             }
             .event-detail {
               display: flex;
               align-items: flex-start;
-              gap: 12px;
-              margin: 12px 0;
+              gap: 14px;
+              margin: 14px 0;
               font-size: 14px;
-              color: #555;
+              color: #444;
             }
             .event-detail strong {
-              color: #333;
+              color: #0a0f1a;
               min-width: 100px;
+              font-weight: 700;
             }
 
             /* CTA Buttons */
             .button-group {
               display: flex;
-              gap: 15px;
-              margin: 30px 0;
+              gap: 16px;
+              margin: 35px 0;
               flex-wrap: wrap;
             }
             .button {
               flex: 1;
-              min-width: 200px;
-              padding: 14px 24px;
-              border-radius: 8px;
+              min-width: 180px;
+              padding: 16px 28px;
+              border-radius: 12px;
               text-decoration: none;
-              font-weight: 700;
+              font-weight: 800;
               text-align: center;
-              font-size: 15px;
-              transition: all 0.3s ease;
+              font-size: 14px;
+              transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
               display: inline-block;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              border: none;
+              box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             }
             .button-primary {
-              background: #25D366;
+              background: linear-gradient(135deg, #25D366, #20ba5d);
               color: white;
-              border: 2px solid #25D366;
             }
             .button-primary:hover {
-              background: #20ba5d;
-              transform: translateY(-2px);
-              box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+              transform: translateY(-3px);
+              box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4);
             }
             .button-secondary {
-              background: white;
-              color: #7B53F0;
-              border: 2px solid #7B53F0;
+              background: linear-gradient(135deg, #7B53F0, #9d7fff);
+              color: white;
             }
             .button-secondary:hover {
-              background: #7B53F0;
-              color: white;
-              transform: translateY(-2px);
+              transform: translateY(-3px);
+              box-shadow: 0 12px 30px rgba(123, 83, 240, 0.4);
             }
 
             /* Footer */
             .footer {
-              background: linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, rgba(123, 83, 240, 0.05) 100%);
-              padding: 30px;
+              background: linear-gradient(135deg, rgba(123, 83, 240, 0.08) 0%, rgba(246, 255, 84, 0.04) 100%);
+              padding: 35px 30px;
               text-align: center;
               border-top: 2px solid #F6FF54;
             }
             .footer-text {
-              color: #666;
-              font-size: 13px;
-              line-height: 1.6;
-              margin: 8px 0;
+              color: #555;
+              font-size: 12px;
+              line-height: 1.7;
+              margin: 10px 0;
+              font-weight: 500;
             }
             .footer-logo {
-              font-size: 24px;
+              font-size: 28px;
               font-weight: 900;
-              color: #F6FF54;
-              margin-bottom: 10px;
+              color: #7B53F0;
+              margin-bottom: 12px;
+              letter-spacing: -1px;
             }
 
             /* Responsive */
             @media (max-width: 600px) {
-              .content { padding: 25px 20px; }
-              .ticket-card { padding: 20px; }
+              .content { padding: 30px 20px; }
+              .ticket-card { padding: 25px; }
               .event-box { padding: 20px; }
               .button { min-width: 100%; }
-              .button-group { flex-direction: column; }
+              .button-group { flex-direction: column; gap: 12px; }
+              .greeting { font-size: 22px; }
+              .ticket-type { font-size: 26px; }
+              .logo { font-size: 42px; }
             }
           </style>
         </head>
@@ -273,19 +313,19 @@ export default async function handler(req, res) {
               <!-- Header -->
               <div class="header">
                 <div class="logo">MAKERS</div>
-                <div class="tagline">Tu boleto está confirmado ✓</div>
+                <div class="tagline">✓ Tu boleto está confirmado</div>
               </div>
 
               <!-- Content -->
               <div class="content">
                 <div class="greeting">¡Hola ${fullName}! 🎉</div>
                 <p class="subtext">
-                  Tu compra ha sido procesada exitosamente. A continuación encontrarás los detalles de tu boleto para EXPO MAKERS 2026.
+                  Tu acceso a EXPO MAKERS 2026 ha sido procesado exitosamente. Guarda este email como tu comprobante de entrada.
                 </p>
 
                 <!-- Ticket Card -->
                 <div class="ticket-card">
-                  <div class="ticket-badge">BOLETO CONFIRMADO</div>
+                  <div class="ticket-badge">✓ BOLETO CONFIRMADO</div>
                   <div class="ticket-type">${ticket.name}</div>
 
                   <div class="ticket-details">
@@ -325,17 +365,17 @@ export default async function handler(req, res) {
                   </div>
                 </div>
 
-                <p class="subtext">
-                  <strong>Importante:</strong> Guarda este email como tu comprobante. Tu boleto será validado al momento de tu llegada al evento.
+                <p class="subtext" style="background: linear-gradient(135deg, rgba(246, 255, 84, 0.08), rgba(123, 83, 240, 0.05)); padding: 16px 20px; border-radius: 12px; border-left: 4px solid #F6FF54; margin: 30px 0;">
+                  <strong>🎫 Importante:</strong> Presenta este email en la entrada. Tu código de confirmación será validado al momento de tu llegada.
                 </p>
 
                 <!-- Action Buttons -->
                 <div class="button-group">
                   <a href="https://wa.me/5213343202969?text=Hola,%20tengo%20una%20pregunta%20sobre%20mi%20boleto%20de%20EXPO%20MAKERS%202026" class="button button-primary">
-                    💬 Contáctanos
+                    💬 Contáctanos por WhatsApp
                   </a>
                   <a href="https://www.topmakers.org/evento" class="button button-secondary">
-                    📌 Ver Evento
+                    📌 Ver Más Detalles
                   </a>
                 </div>
               </div>
@@ -347,9 +387,9 @@ export default async function handler(req, res) {
                   <strong>EXPO MAKERS 2026</strong><br>
                   Transformando el futuro del Emprendimiento y Marketing
                 </p>
-                <p class="footer-text" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(123, 83, 240, 0.2);">
+                <p class="footer-text" style="margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(123, 83, 240, 0.2);">
                   © 2026 EXPO MAKERS. Todos los derechos reservados.<br>
-                  Este es un email automático. No respondas a este mensaje.
+                  <em>Este es un email automático, por favor no respondas a este mensaje.</em>
                 </p>
               </div>
             </div>
