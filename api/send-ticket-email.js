@@ -10,10 +10,10 @@ export default async function handler(req, res) {
   try {
     const { email, fullName, ticketType, quantity, total } = req.body;
 
-    // Configuración de tickets
+    // Configuración de tickets (consistente con stripe-config.js y create-checkout-session.js)
     const ticketConfig = {
       free: { name: 'Boleto Gratis', price: 0 },
-      conference: { name: 'Conference Pass', price: 97 },
+      conference: { name: 'Conference Pass', price: 497 },
       vip: { name: 'VIP Pass', price: 897 }
     };
 

@@ -3,19 +3,26 @@
 
 let supabaseClient = null;
 
-// Inicializar Supabase si está disponible
+// Inicializar Supabase si está disponible (use variables de entorno en producción)
 async function initOrdersManager() {
     try {
         if (typeof window.supabase !== 'undefined') {
-            const supabaseUrl = 'https://jjbsgvgvmfkjxaxqhvqx.supabase.co';
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqYnNndmd2bWZranhheHFodnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE1Mjc0NjUsImV4cCI6MjA0NzEwMzQ2NX0.rZQHNVCYJwTI6u9KLVZBqjuL6lP9qZABcDeFgHiJkLm';
+            // SEGURIDAD: En producción, cargar credenciales desde variables de entorno
+            // NUNCA hardcodear credenciales en código frontend
+            const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+            const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
-            supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-            console.log('✓ Supabase inicializado para órdenes');
+            if (supabaseUrl && supabaseKey) {
+                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                console.log('✓ Supabase inicializado para órdenes');
 
-            // Crear tabla de órdenes si no existe
-            await ensureOrdersTable();
-            return true;
+                // Crear tabla de órdenes si no existe
+                await ensureOrdersTable();
+                return true;
+            } else {
+                console.log('ℹ Credenciales de Supabase no configuradas, usando localStorage');
+                return false;
+            }
         } else {
             console.log('ℹ Supabase no disponible, usando localStorage');
             return false;

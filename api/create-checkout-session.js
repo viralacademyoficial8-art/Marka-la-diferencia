@@ -15,11 +15,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Configuración de precios
+    // Configuración de precios (consistente con stripe-config.js)
     const priceConfig = {
-      free: { price: 0, name: 'Boleto Gratis' },
-      conference: { price: 97, name: 'Conference Pass' },
-      vip: { price: 897, name: 'VIP Pass' }
+      free: { price: 0, name: 'Boleto Gratis', limit: 999 },
+      conference: { price: 497, name: 'Conference Pass', limit: 170 },
+      vip: { price: 897, name: 'VIP Pass', limit: 50 }
     };
 
     const ticketConfig = priceConfig[ticketType];
@@ -27,8 +27,22 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid ticket type' });
     }
 
+    // Validar cantidad
+    const parsedQuantity = parseInt(quantity);
+    if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
+      return res.status(400).json({ error: 'Quantity must be a positive number' });
+    }
+    if (parsedQuantity > 100) {
+      return res.status(400).json({ error: 'Maximum 100 tickets per order' });
+    }
+    if (parsedQuantity > ticketConfig.limit) {
+      return res.status(400).json({
+        error: `Only ${ticketConfig.limit} tickets available for this type`
+      });
+    }
+
     const unitPrice = ticketConfig.price;
-    const totalPrice = unitPrice * quantity;
+    const totalPrice = unitPrice * parsedQuantity;
 
     // Si es gratis, no crear sesión de Stripe
     if (totalPrice === 0) {
@@ -48,11 +62,11 @@ export default async function handler(req, res) {
             currency: 'mxn',
             product_data: {
               name: `${ticketConfig.name} - EXPO MAKERS 2026`,
-              description: `${quantity} boleto(s) para EXPO MAKERS 2026 - Emprendimiento y Marketing`
+              description: `${parsedQuantity} boleto(s) para EXPO MAKERS 2026 - Emprendimiento y Marketing`
             },
             unit_amount: unitPrice * 100 // Stripe usa centavos
           },
-          quantity: quantity
+          quantity: parsedQuantity
         }
       ],
       mode: 'payment',
@@ -62,7 +76,7 @@ export default async function handler(req, res) {
       metadata: {
         fullName,
         ticketType,
-        quantity: quantity.toString(),
+        quantity: parsedQuantity.toString(),
         total: totalPrice.toString()
       }
     });
@@ -72,7 +86,7 @@ export default async function handler(req, res) {
       sessionId: session.id,
       url: session.url,
       amount: totalPrice,
-      quantity
+      quantity: parsedQuantity
     });
   } catch (error) {
     console.error('Error creating checkout session:', error);
