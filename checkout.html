@@ -561,17 +561,21 @@
 
         /* Mensajes de error/éxito */
         .message {
-            padding: 16px;
+            padding: 16px 20px;
             border-radius: 12px;
             margin-bottom: 24px;
             display: none;
             animation: slideInDown 0.4s ease-out;
+            font-weight: 600;
+            font-size: 15px;
+            text-align: center;
         }
 
         .message.error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.5);
-            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.25);
+            border: 2px solid #ef4444;
+            color: #fef2f2;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
         }
 
         .message.success {
@@ -1078,8 +1082,16 @@
         // Funciones auxiliares
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
+            // Asegurar que el mensaje no esté vacío
+            const displayMessage = message && message.trim() ? message : '❌ Ocurrió un error. Por favor intenta de nuevo.';
+            errorDiv.textContent = displayMessage;
             errorDiv.classList.add('show');
+            // Log para debugging
+            console.error('❌ ERROR MOSTRADO:', displayMessage);
+            // Auto-hide después de 8 segundos
+            setTimeout(() => {
+                hideError();
+            }, 8000);
         }
 
         function hideError() {
