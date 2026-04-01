@@ -960,58 +960,76 @@
             }
 
             // Decrementar boletos del inventario
-            const decrementResult = decrementInventoryBatch(selectedProductKey, selectedQuantity);
-            decrementResult.then(result => {
-                if (!result.success) {
-                    showError(result.error);
-                    showLoading(false);
-                    return;
-                }
-
-                // Crear orden
-                createOrder({
-                    fullName,
-                    email,
-                    phone,
-                    company,
-                    ticketType: selectedProductKey,
-                    quantity: selectedQuantity,
-                    unitPrice: selectedProduct.price,
-                    totalPrice: selectedProduct.price * selectedQuantity
-                }).then(orderResult => {
-                    if (!orderResult.success) {
-                        showError('Error creando la orden');
+            try {
+                const decrementResult = decrementInventoryBatch(selectedProductKey, selectedQuantity);
+                decrementResult.then(result => {
+                    if (!result.success) {
+                        showError(result.error || 'Error al decrementar inventario');
                         showLoading(false);
+                        console.error('❌ Error decrementando inventario:', result.error);
                         return;
                     }
 
-                    // Guardar información local
-                    const orderData = {
-                        product: selectedProduct.name,
-                        quantity: selectedQuantity,
+                    // Crear orden
+                    createOrder({
                         fullName,
                         email,
                         phone,
                         company,
-                        totalPrice: selectedProduct.price * selectedQuantity,
-                        timestamp: new Date().toISOString(),
-                        orderId: orderResult.orderId
-                    };
+                        ticketType: selectedProductKey,
+                        quantity: selectedQuantity,
+                        unitPrice: selectedProduct.price,
+                        totalPrice: selectedProduct.price * selectedQuantity
+                    }).then(orderResult => {
+                        if (!orderResult.success) {
+                            const errorMsg = orderResult.error || 'Error creando la orden';
+                            showError(errorMsg);
+                            showLoading(false);
+                            console.error('❌ Error creando orden:', errorMsg);
+                            return;
+                        }
 
-                    localStorage.setItem('lastOrder', JSON.stringify(orderData));
+                        // Guardar información local
+                        const orderData = {
+                            product: selectedProduct.name,
+                            quantity: selectedQuantity,
+                            fullName,
+                            email,
+                            phone,
+                            company,
+                            totalPrice: selectedProduct.price * selectedQuantity,
+                            timestamp: new Date().toISOString(),
+                            orderId: orderResult.orderId
+                        };
 
-                    // Mostrar mensaje de éxito
-                    showSuccess(`¡${selectedQuantity} acceso${selectedQuantity > 1 ? 's' : ''} confirmado! Revisa tu email para más detalles.`);
+                        localStorage.setItem('lastOrder', JSON.stringify(orderData));
 
-                    // Redirigir después de 2 segundos
-                    setTimeout(() => {
-                        window.location.href = 'evento.html?success=true';
-                    }, 2000);
+                        // Mostrar mensaje de éxito
+                        showSuccess(`¡${selectedQuantity} acceso${selectedQuantity > 1 ? 's' : ''} confirmado! Revisa tu email para más detalles.`);
+                        console.log('✅ Orden completada:', orderData);
+
+                        // Redirigir después de 2 segundos
+                        setTimeout(() => {
+                            window.location.href = 'evento.html?success=true';
+                        }, 2000);
+                    }).catch(error => {
+                        const errorMsg = error?.message || 'Error procesando la orden';
+                        showError(errorMsg);
+                        showLoading(false);
+                        console.error('❌ Error en createOrder:', error);
+                    });
+                }).catch(error => {
+                    const errorMsg = error?.message || 'Error al decrementar inventario';
+                    showError(errorMsg);
+                    showLoading(false);
+                    console.error('❌ Error en decrementInventoryBatch:', error);
                 });
-            }).catch(error => {
-                showError('Error procesando la orden');
+            } catch (error) {
+                const errorMsg = error?.message || 'Error inesperado procesando la compra';
+                showError(errorMsg);
                 showLoading(false);
-            });
+                console.error('❌ Error inesperado:', error);
+            }
         }
 
         function handlePaidCheckout() {
