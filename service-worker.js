@@ -17,7 +17,7 @@ self.addEventListener('fetch', (event) => {
     // Bloquear favicon.ico 404
     if (url.includes('favicon.ico')) {
         event.respondWith(
-            new Response('', {
+            new Response(null, {
                 status: 204,
                 statusText: 'No Content'
             })

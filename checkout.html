@@ -757,8 +757,27 @@
         let selectedProductKey = null;
         let selectedQuantity = 1;
 
-        // Configuración de Stripe Elements
+        // Configuración de Stripe Elements - Solo para boletos pagados
         function initStripe() {
+            // No inicializar Stripe si es boleto gratis
+            if (selectedProduct && selectedProduct.price === 0) {
+                // Esconder el card element para boletos gratis
+                const cardElementDiv = document.getElementById('cardElement');
+                if (cardElementDiv) {
+                    cardElementDiv.style.display = 'none';
+                }
+                return;
+            }
+
+            // Mostrar el card element para boletos pagados
+            const cardElementDiv = document.getElementById('cardElement');
+            if (cardElementDiv) {
+                cardElementDiv.style.display = 'block';
+            }
+
+            // Solo crear elementos si no existen ya
+            if (cardElement) return;
+
             elements = stripe.elements();
             cardElement = elements.create('card', {
                 style: {
@@ -795,6 +814,8 @@
                 selectedQuantity = 1;
                 document.getElementById('quantity').value = 1;
                 updateOrderSummary();
+                // Inicializar Stripe solo si se selecciona un boleto pagado
+                initStripe();
             }
         });
 
@@ -1079,8 +1100,6 @@
 
         // Inicializar cuando carga la página
         document.addEventListener('DOMContentLoaded', () => {
-            initStripe();
-
             // Verificar parámetros de URL
             const urlParams = new URLSearchParams(window.location.search);
             const plan = urlParams.get('plan');
