@@ -429,6 +429,29 @@
             pointer-events: none;
             background: #0d0d0d;
         }
+
+        /* Mobile video adjustment - fill screen without gaps */
+        @media (max-width: 768px) {
+            .hero-video {
+                object-fit: cover;
+            }
+            .hero-video-only {
+                height: 70vh;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-video-only {
+                height: 60vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-video-only {
+                height: 50vh;
+            }
+        }
+
         .hero::after {
             content: 'MAKERS';
             position: absolute;
