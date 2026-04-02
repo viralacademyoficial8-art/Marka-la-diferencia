@@ -1,7 +1,4 @@
 {
-  "env": {
-    "STRIPE_SECRET_KEY": "@stripe_secret_key"
-  },
   "functions": {
     "api/*.js": {
       "runtime": "nodejs18.x"
