@@ -1646,7 +1646,7 @@
             }
         }
 
-        function handlePaidCheckout() {
+        async function handlePaidCheckout() {
             const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
@@ -1657,7 +1657,7 @@
             }
 
             // Validar disponibilidad
-            const validation = validateAvailability(selectedProductKey, selectedQuantity);
+            const validation = await validateAvailability(selectedProductKey, selectedQuantity);
             if (!validation.valid) {
                 showError(validation.message);
                 return;
