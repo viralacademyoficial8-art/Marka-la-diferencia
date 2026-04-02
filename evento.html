@@ -2731,8 +2731,8 @@
 
         /* ====== ALIADOS ESTRATÉGICOS ====== */
         .allies-section {
-            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%);
-            padding: 80px 40px;
+            background: linear-gradient(180deg, #090914 0%, #0d0d1f 60%, #090914 100%);
+            padding: 100px 40px;
             position: relative;
             overflow: hidden;
         }
@@ -2740,95 +2740,167 @@
         .allies-section::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #F6FF54, transparent);
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #F6FF54 50%, transparent 100%);
+        }
+
+        .allies-section::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(246,255,84,0.04) 0%, transparent 65%);
+            pointer-events: none;
         }
 
         .allies-container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .allies-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(246,255,84,0.08);
+            border: 1px solid rgba(246,255,84,0.25);
+            border-radius: 50px;
+            padding: 6px 18px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #F6FF54;
+            margin-bottom: 20px;
+        }
+
+        .allies-badge::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #F6FF54;
+            box-shadow: 0 0 8px #F6FF54;
         }
 
         .allies-section .section-title {
             color: var(--white);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-size: clamp(2rem, 5vw, 3.5rem);
         }
 
         .allies-subtitle {
-            color: rgba(255, 255, 255, 0.75);
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
-            margin-bottom: 50px;
-            max-width: 600px;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            margin-bottom: 60px;
+            max-width: 500px;
         }
 
         .allies-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
             margin-bottom: 60px;
         }
 
+        /* Wrapper con borde gradiente animado */
+        .ally-card-wrapper {
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(246,255,84,0.4), rgba(123,83,240,0.4), rgba(246,255,84,0.4));
+            background-size: 200% 200%;
+            animation: gradientShift 4s ease infinite;
+            transition: all 0.4s ease;
+        }
+
+        .ally-card-wrapper:hover {
+            background: linear-gradient(135deg, #F6FF54, #7B53F0, #F6FF54);
+            background-size: 200% 200%;
+            box-shadow: 0 0 30px rgba(246,255,84,0.2), 0 0 60px rgba(123,83,240,0.15);
+        }
+
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .ally-card {
-            background: linear-gradient(135deg, rgba(246, 255, 84, 0.1) 0%, rgba(123, 83, 240, 0.1) 100%);
-            border: 2px solid rgba(246, 255, 84, 0.3);
-            border-radius: 16px;
-            padding: 40px 20px;
+            background: #0c0c1e;
+            border-radius: 18px;
+            padding: 40px 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 200px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-height: 180px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .ally-card::before {
+        .ally-card::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(246, 255, 84, 0.1) 0%, transparent 100%);
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(246,255,84,0.3), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .ally-card:hover {
-            border-color: rgba(246, 255, 84, 0.6);
-            box-shadow: 0 10px 30px rgba(246, 255, 84, 0.15);
-            transform: translateY(-5px);
+        .ally-card-wrapper:hover .ally-card {
+            background: #0f0f24;
+            transform: translateY(-4px);
         }
 
-        .ally-card:hover::before {
+        .ally-card-wrapper:hover .ally-card::after {
             opacity: 1;
         }
 
+        .ally-card img {
+            filter: brightness(1) drop-shadow(0 0 12px rgba(255,255,255,0.15));
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        .ally-card-wrapper:hover .ally-card img {
+            filter: brightness(1.15) drop-shadow(0 0 20px rgba(246,255,84,0.3));
+            transform: scale(1.05);
+        }
+
         .ally-logo-placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.3);
             font-weight: 600;
             text-align: center;
-            position: relative;
-            z-index: 1;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .allies-cta {
             text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, rgba(123, 83, 240, 0.15) 0%, rgba(246, 255, 84, 0.08) 100%);
-            border: 2px solid rgba(246, 255, 84, 0.2);
-            border-radius: 20px;
+            padding: 48px 40px;
+            background: linear-gradient(135deg, rgba(246,255,84,0.05) 0%, rgba(123,83,240,0.08) 100%);
+            border: 1px solid rgba(246,255,84,0.15);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .allies-cta::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(246,255,84,0.4), transparent);
         }
 
         .allies-cta p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
-            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            margin-bottom: 24px;
             font-weight: 600;
         }
 
@@ -2905,37 +2977,37 @@
         /* Responsive Allies */
         @media (max-width: 768px) {
             .allies-section {
-                padding: 60px 30px;
+                padding: 60px 24px;
             }
 
             .allies-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 20px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
             }
 
             .ally-card {
-                min-height: 150px;
-                padding: 30px 15px;
+                min-height: 140px;
+                padding: 28px 16px;
             }
 
             .allies-cta {
-                padding: 30px 20px;
+                padding: 32px 20px;
             }
         }
 
         @media (max-width: 480px) {
             .allies-section {
-                padding: 40px 20px;
+                padding: 40px 16px;
             }
 
             .allies-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+                gap: 12px;
             }
 
             .ally-card {
-                min-height: 120px;
-                padding: 20px 10px;
+                min-height: 110px;
+                padding: 20px 12px;
             }
 
             .allies-cta p {
@@ -4706,21 +4778,30 @@
     <!-- ALIADOS ESTRATÉGICOS -->
     <section class="allies-section" id="aliados">
         <div class="allies-container">
-            <h2 class="section-title">Aliados Estratégicos</h2>
-            <p class="allies-subtitle">Empresas y organizaciones que hacen posible EXPO MAKERS 2026</p>
+            <div class="allies-badge">Aliados Estratégicos</div>
+            <h2 class="section-title">Quienes hacen posible<br>EXPO MAKERS 2026</h2>
+            <p class="allies-subtitle">Empresas y organizaciones que impulsan el ecosistema maker en México</p>
 
             <div class="allies-grid">
-                <div class="ally-card">
-                    <img src="./Logo-propuestas-Makers_03-02 (2).png" alt="Marka la Diferencia" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                <div class="ally-card-wrapper">
+                    <div class="ally-card">
+                        <img src="./Logo-propuestas-Makers_03-02 (2).png" alt="Marka la Diferencia" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
                 </div>
-                <div class="ally-card">
-                    <img src="./Itanmi ac blanco.png" alt="Itanmi A.C." style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                <div class="ally-card-wrapper">
+                    <div class="ally-card">
+                        <img src="./Itanmi ac blanco.png" alt="Itanmi A.C." style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
                 </div>
-                <div class="ally-card">
-                    <div class="ally-logo-placeholder">Logo Aliado 3</div>
+                <div class="ally-card-wrapper">
+                    <div class="ally-card">
+                        <div class="ally-logo-placeholder">Tu logo aquí</div>
+                    </div>
                 </div>
-                <div class="ally-card">
-                    <div class="ally-logo-placeholder">Logo Aliado 4</div>
+                <div class="ally-card-wrapper">
+                    <div class="ally-card">
+                        <div class="ally-logo-placeholder">Tu logo aquí</div>
+                    </div>
                 </div>
             </div>
 
