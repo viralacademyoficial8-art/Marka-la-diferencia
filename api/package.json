@@ -1,4 +1,7 @@
 {
+  "name": "expo-makers-api",
+  "version": "1.0.0",
+  "description": "API serverless para EXPO MAKERS 2026",
   "type": "module",
   "dependencies": {
     "stripe": "^13.5.0",
