@@ -123,6 +123,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...
 - Server-side: CAPI via Edge Functions con datos hasheados
 - Deduplicacion: event_id unico compartido entre Pixel y CAPI
 - Configuracion desde el panel admin (Integraciones > Meta Pixel)
+- Updates MAKERS
 
 ---
 Desarrollado con Supabase + Vercel
