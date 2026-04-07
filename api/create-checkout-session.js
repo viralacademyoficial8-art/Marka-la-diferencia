@@ -105,8 +105,8 @@ export default async function handler(req, res) {
         }
       ],
       mode: 'payment',
-      success_url: `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:3000'}/checkout?status=success`,
-      cancel_url: `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:3000'}/checkout?status=cancel`,
+      success_url: `https://www.topmakers.org/checkout?status=success`,
+      cancel_url: `https://www.topmakers.org/checkout?status=cancel`,
       customer_email: email,
       metadata: {
         fullName,
