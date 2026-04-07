@@ -14,7 +14,7 @@ Frontend (HTML + JS)          Backend (Supabase)
                             Auth (login admin)
                             Realtime (suscripciones)
 ```
-
+---
 ## Archivos
 
 | Archivo | Descripcion |
