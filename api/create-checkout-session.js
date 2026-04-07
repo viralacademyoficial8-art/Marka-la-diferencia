@@ -105,8 +105,8 @@ export default async function handler(req, res) {
         }
       ],
       mode: 'payment',
-      success_url: `https://www.topmakers.org/checkout?status=success`,
-      cancel_url: `https://www.topmakers.org/checkout?status=cancel`,
+      success_url: `https://www.topmakers.org/checkout?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://www.topmakers.org/checkout?canceled=true`,
       customer_email: email,
       metadata: {
         fullName,

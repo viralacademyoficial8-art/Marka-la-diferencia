@@ -10,6 +10,10 @@
       "dest": "/evento.html"
     },
     {
+      "src": "/checkout",
+      "dest": "/checkout.html"
+    },
+    {
       "src": "/confirmacion",
       "dest": "/confirmacion.html"
     },
