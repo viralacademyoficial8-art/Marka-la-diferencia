@@ -118,7 +118,7 @@ export default async function handler(req, res) {
       // Enviar email de confirmación
       console.log('📧 Enviando email de confirmación...');
       const emailResponse = await fetch(
-        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:3000'}/api/send-ticket-email`,
+        `https://www.topmakers.org/api/send-ticket-email`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
