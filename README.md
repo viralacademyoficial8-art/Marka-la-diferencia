@@ -127,3 +127,4 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...
 
 ---
 Desarrollado con Supabase + Vercel
+---
