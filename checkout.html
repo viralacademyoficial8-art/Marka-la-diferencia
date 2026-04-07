@@ -1241,46 +1241,61 @@
                     <div class="success-modal-content">
                         <div class="success-modal-header">
                             <div class="success-checkmark">✓</div>
-                            <h2>¡Registro<span class="highlight">Exitoso!</span></h2>
+                            <h2>¡Pago <span class="highlight">Exitoso!</span></h2>
                         </div>
 
                         <div class="success-modal-body">
-                            <p class="success-message">Tu acceso a EXPO MAKERS 2026 ha sido confirmado.</p>
+                            <p class="success-message">Tu boleto para EXPO MAKERS 2026 ha sido confirmado. ¡Nos vemos el 23 de mayo!</p>
 
                             <div class="confirmation-details">
                                 <div class="detail-item">
-                                    <span class="detail-label">📧 Email de Confirmación</span>
-                                    <p id="confirmEmail" class="detail-value">confirming@email.com</p>
+                                    <span class="detail-label">👤 Nombre</span>
+                                    <p id="confirmName" class="detail-value">—</p>
                                 </div>
 
                                 <div class="detail-item">
-                                    <span class="detail-label">🎫 Número de Accesos</span>
-                                    <p id="confirmQuantity" class="detail-value">1</p>
+                                    <span class="detail-label">🎟️ Tipo de Boleto</span>
+                                    <p id="confirmProduct" class="detail-value">—</p>
                                 </div>
 
                                 <div class="detail-item">
-                                    <span class="detail-label">📅 Evento</span>
-                                    <p class="detail-value">23 de mayo 2026, Ocotlán, Jalisco</p>
+                                    <span class="detail-label">🎫 Cantidad</span>
+                                    <p id="confirmQuantity" class="detail-value">—</p>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">💰 Total Pagado</span>
+                                    <p id="confirmTotal" class="detail-value">—</p>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">📧 Confirmación enviada a</span>
+                                    <p id="confirmEmail" class="detail-value">—</p>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">📅 Fecha y Lugar</span>
+                                    <p class="detail-value">23 de Mayo 2026 · Plaza Principal de Ocotlán, Jalisco</p>
                                 </div>
                             </div>
 
                             <div class="email-info">
-                                <p>📬 Revisa tu email para:</p>
+                                <p>📬 Revisa tu email — te enviamos:</p>
                                 <ul>
-                                    <li>✓ Confirmación de tu registro</li>
-                                    <li>✓ Instrucciones de acceso</li>
-                                    <li>✓ Detalles del evento</li>
-                                    <li>✓ Tu código QR (si aplica)</li>
+                                    <li>✓ Comprobante de compra</li>
+                                    <li>✓ Detalles completos de tu boleto</li>
+                                    <li>✓ Instrucciones de acceso al evento</li>
+                                    <li>✓ Información de llegada y estacionamiento</li>
                                 </ul>
                             </div>
 
                             <div class="info-box">
-                                <p>💡 <strong>Tip:</strong> Si no ves el email en los próximos 5 minutos, revisa tu carpeta de Spam.</p>
+                                <p>💡 <strong>Importante:</strong> Presenta este email en la entrada del evento como comprobante. Si no ves el email en 5 minutos, revisa Spam.</p>
                             </div>
                         </div>
 
                         <div class="success-modal-footer">
-                            <button class="btn-primary" onclick="closeSuccessModal()">Volver al Evento</button>
+                            <button class="btn-primary" onclick="closeSuccessModal()">🎉 Ver Detalles del Evento</button>
                         </div>
                     </div>
                 </div>
@@ -1783,15 +1798,19 @@
             document.getElementById('submitBtn').disabled = show;
         }
 
-        function showSuccessModal(email, quantity) {
+        function showSuccessModal(data) {
             const modal = document.getElementById('successModal');
-            document.getElementById('confirmEmail').textContent = email;
-            document.getElementById('confirmQuantity').textContent = quantity + (quantity > 1 ? ' accesos' : ' acceso');
+            const qty = parseInt(data.quantity) || 1;
+            document.getElementById('confirmName').textContent = data.fullName || '—';
+            document.getElementById('confirmEmail').textContent = data.email || '—';
+            document.getElementById('confirmProduct').textContent = data.product || '—';
+            document.getElementById('confirmQuantity').textContent = qty + (qty > 1 ? ' boletos' : ' boleto');
+            document.getElementById('confirmTotal').textContent = data.totalPrice ? '$' + data.totalPrice + ' MXN' : '—';
             modal.style.display = 'flex';
         }
 
         function closeSuccessModal() {
-            window.location.href = 'evento.html?success=true';
+            window.location.href = 'evento.html';
         }
 
         // Inicializar cuando carga la página
@@ -1799,47 +1818,31 @@
             // Verificar parámetros de URL
             const urlParams = new URLSearchParams(window.location.search);
             const plan = urlParams.get('plan');
-            const statusParam = urlParams.get('status');
-
-            console.log('🔍 Parámetros de URL:', { plan, status: statusParam });
+            const successParam = urlParams.get('success');
+            const canceledParam = urlParams.get('canceled');
 
             if (plan && STRIPE_CONFIG.products[plan]) {
-                // Preseleccionar el plan
                 document.getElementById('productSelect').value = plan;
                 const event = new Event('change', { bubbles: true });
                 document.getElementById('productSelect').dispatchEvent(event);
             }
 
-            // Verificar si viene de un pago exitoso desde Stripe
-            if (statusParam === 'success') {
-                console.log('✅ Pago exitoso detectado - mostrando modal de confirmación');
-
-                // Recuperar datos de sessionStorage
+            // Viene de pago exitoso de Stripe
+            if (successParam === 'true') {
                 const checkoutData = sessionStorage.getItem('checkoutData');
-                console.log('📦 Datos guardados:', checkoutData);
 
                 if (checkoutData) {
                     try {
                         const data = JSON.parse(checkoutData);
-                        console.log('✅ Datos parseados:', data);
-
-                        // Mostrar el modal con los datos
-                        showSuccessModal(data.email, data.quantity);
-
-                        // Limpiar sessionStorage después de mostrar
-                        setTimeout(() => {
-                            sessionStorage.removeItem('checkoutData');
-                        }, 1000);
-                    } catch (error) {
-                        console.error('❌ Error parseando datos:', error);
-                        showSuccess('¡Compra completada! Revisa tu email para el recibo.');
+                        showSuccessModal(data);
+                        setTimeout(() => sessionStorage.removeItem('checkoutData'), 1000);
+                    } catch (e) {
+                        showSuccessModal({});
                     }
                 } else {
-                    console.warn('⚠️ No hay datos en sessionStorage');
-                    showSuccess('¡Compra completada! Revisa tu email para el recibo.');
+                    showSuccessModal({});
                 }
-            } else if (statusParam === 'cancel') {
-                console.log('❌ Pago cancelado');
+            } else if (canceledParam === 'true') {
                 showError('El pago fue cancelado. Por favor intenta de nuevo.');
             }
         });
