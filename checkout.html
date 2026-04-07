@@ -61,9 +61,44 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 30px 16px;
+            }
+            .checkout-container {
+                max-width: 100%;
+            }
+            .checkout-header {
+                margin-bottom: 40px;
+            }
+            .checkout-header h1 {
+                font-size: clamp(1.6rem, 4vw, 2.5rem);
+                margin-bottom: 12px;
+            }
+            .checkout-header p {
+                font-size: 0.95rem;
+            }
             .checkout-content {
                 grid-template-columns: 1fr;
                 gap: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 24px 14px;
+            }
+            .checkout-header {
+                margin-bottom: 32px;
+            }
+            .checkout-header h1 {
+                font-size: clamp(1.4rem, 3.5vw, 2rem);
+                margin-bottom: 10px;
+            }
+            .checkout-header p {
+                font-size: 0.9rem;
+            }
+            .checkout-content {
+                gap: 32px;
             }
         }
 
@@ -161,6 +196,97 @@
             flex-shrink: 0;
         }
 
+        /* Media queries para Order Summary */
+        @media (max-width: 768px) {
+            .order-summary {
+                padding: 32px;
+                position: relative;
+                top: auto;
+                margin-bottom: 40px;
+            }
+            .order-summary h2 {
+                font-size: 1.5rem;
+                margin-bottom: 24px;
+            }
+            .product-info {
+                margin-bottom: 24px;
+                padding-bottom: 24px;
+            }
+            .product-icon {
+                font-size: 2.2rem;
+            }
+            .product-details h3 {
+                font-size: 1.1rem;
+            }
+            .product-details p {
+                font-size: 0.85rem;
+            }
+            .price-display {
+                margin-bottom: 24px;
+                padding: 18px;
+            }
+            .price-display .amount {
+                font-size: 2.5rem;
+            }
+            .features-list {
+                margin-bottom: 24px;
+            }
+            .feature-item {
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .order-summary {
+                padding: 24px;
+                margin-bottom: 32px;
+                border-radius: 12px;
+            }
+            .order-summary h2 {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+                letter-spacing: 0.5px;
+            }
+            .product-info {
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                gap: 12px;
+            }
+            .product-icon {
+                font-size: 2rem;
+            }
+            .product-details h3 {
+                font-size: 1rem;
+                margin-bottom: 2px;
+            }
+            .product-details p {
+                font-size: 0.8rem;
+            }
+            .price-display {
+                margin-bottom: 20px;
+                padding: 16px;
+            }
+            .price-display .currency {
+                font-size: 1rem;
+            }
+            .price-display .amount {
+                font-size: 2rem;
+            }
+            .features-list {
+                margin-bottom: 20px;
+            }
+            .features-list h4 {
+                font-size: 0.8rem;
+                margin-bottom: 12px;
+            }
+            .feature-item {
+                margin-bottom: 8px;
+                font-size: 0.85rem;
+                gap: 10px;
+            }
+        }
+
         /* Formulario de pago */
         .checkout-form {
             animation: slideInUp 0.6s ease-out;
@@ -248,6 +374,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .qty-btn:hover {
@@ -262,6 +389,89 @@
 
         #quantity {
             font-weight: 700;
+        }
+
+        /* Media queries para Form Row */
+        @media (max-width: 768px) {
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-group label {
+                margin-bottom: 7px;
+                font-size: 0.9rem;
+            }
+            .form-group input,
+            .form-group select {
+                padding: 12px 14px;
+                font-size: 0.95rem;
+                border-radius: 10px;
+            }
+            .form-row {
+                gap: 14px;
+            }
+            .qty-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-group {
+                margin-bottom: 18px;
+            }
+            .form-group label {
+                margin-bottom: 6px;
+                font-size: 0.88rem;
+            }
+            .form-group input,
+            .form-group select {
+                padding: 11px 13px;
+                font-size: 0.94rem;
+            }
+            .form-row {
+                gap: 12px;
+            }
+            .qty-btn {
+                width: 46px;
+                height: 46px;
+                font-size: 1.2rem;
+                border-width: 2px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-group {
+                margin-bottom: 16px;
+            }
+            .form-group label {
+                margin-bottom: 5px;
+                font-size: 0.85rem;
+                letter-spacing: 0.3px;
+            }
+            .form-group input,
+            .form-group select {
+                padding: 10px 12px;
+                font-size: 16px;
+                border-radius: 8px;
+                width: 100%;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .qty-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
+                border-radius: 6px;
+            }
+            .qty-btn:active {
+                transform: scale(0.92);
+            }
+            #quantity {
+                font-size: 0.95rem;
+            }
         }
 
         /* Stripe Element */
@@ -351,17 +561,21 @@
 
         /* Mensajes de error/éxito */
         .message {
-            padding: 16px;
+            padding: 16px 20px;
             border-radius: 12px;
             margin-bottom: 24px;
             display: none;
             animation: slideInDown 0.4s ease-out;
+            font-weight: 600;
+            font-size: 15px;
+            text-align: center;
         }
 
         .message.error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.5);
-            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.25);
+            border: 2px solid #ef4444;
+            color: #fef2f2;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
         }
 
         .message.success {
@@ -430,6 +644,554 @@
                 transform: translateY(0);
             }
         }
+
+        /* Success Modal Styles - Ultra Modern Design */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(10, 15, 26, 0.95) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeInOverlay 0.4s ease-out;
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-modal-content {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95) 0%, rgba(26, 26, 46, 0.95) 35%, rgba(22, 33, 62, 0.95) 70%, rgba(15, 52, 96, 0.95) 100%);
+            border: 2px solid rgba(246, 255, 84, 0.5);
+            border-radius: 32px;
+            max-width: 580px;
+            width: 100%;
+            padding: 0;
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.7),
+                0 0 100px rgba(246, 255, 84, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(246, 255, 84, 0.15);
+            animation: modalPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes modalPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.85) translateY(30px);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .success-modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(246, 255, 84, 0.6), transparent);
+        }
+
+        .success-modal-content::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(123, 83, 240, 0.4), transparent);
+        }
+
+        .success-modal-header {
+            background: linear-gradient(135deg, #7B53F0 0%, #9d7fff 25%, #a67dff 50%, #8b6dd9 75%, #6b45d9 100%);
+            padding: 65px 35px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid rgba(246, 255, 84, 0.2);
+        }
+
+        .success-modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -25%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(246, 255, 84, 0.35) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 7s ease-in-out infinite;
+            filter: blur(40px);
+        }
+
+        .success-modal-header::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -20%;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+            filter: blur(40px);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(25px) translateX(-10px); }
+            66% { transform: translateY(-15px) translateX(10px); }
+        }
+
+        .success-checkmark {
+            font-size: 95px;
+            margin-bottom: 20px;
+            animation: checkmarkBounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            display: inline-block;
+            filter: drop-shadow(0 15px 35px rgba(246, 255, 84, 0.6));
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            line-height: 1;
+        }
+
+        @keyframes checkmarkBounce {
+            0% {
+                transform: scale(0) rotate(-120deg);
+                opacity: 0;
+            }
+            40% {
+                transform: scale(1.35);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .success-modal-header h2 {
+            color: #ffffff;
+            margin: 0;
+            font-size: clamp(28px, 8vw, 44px);
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            line-height: 1.1;
+        }
+
+        .success-modal-header h2 .highlight {
+            color: #F6FF54;
+            display: block;
+            margin-top: 8px;
+            font-size: clamp(32px, 9vw, 50px);
+            text-shadow: 0 10px 35px rgba(246, 255, 84, 0.5);
+            font-weight: 950;
+        }
+
+        .success-modal-body {
+            padding: 50px 40px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+        }
+
+        .success-message {
+            color: #F6FF54;
+            font-size: clamp(16px, 4.5vw, 22px);
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+            line-height: 1.6;
+            animation: slideInDown 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .confirmation-details {
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.12) 0%, rgba(123, 83, 240, 0.08) 100%);
+            border: 2px solid rgba(246, 255, 84, 0.3);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
+            animation: slideInUp 0.6s ease-out 0.4s both;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .detail-item {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(246, 255, 84, 0.2);
+            animation: detailItemSlide 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes detailItemSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .detail-item:nth-child(1) { animation-delay: 0.5s; }
+        .detail-item:nth-child(2) { animation-delay: 0.65s; }
+        .detail-item:nth-child(3) { animation-delay: 0.8s; }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .detail-label {
+            display: block;
+            color: #F6FF54;
+            font-weight: 800;
+            font-size: clamp(11px, 2.5vw, 13px);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .detail-value {
+            color: rgba(255, 255, 255, 0.99);
+            margin: 0;
+            font-size: clamp(15px, 3.5vw, 18px);
+            font-weight: 700;
+        }
+
+        .email-info {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.18) 0%, rgba(74, 222, 128, 0.1) 100%);
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            border-left: 6px solid #22c55e;
+            border-radius: 18px;
+            padding: 26px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(20px);
+            animation: slideInLeft 0.6s ease-out 0.55s both;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .email-info p {
+            color: rgba(255, 255, 255, 0.99);
+            margin: 0 0 16px 0;
+            font-size: clamp(13px, 3vw, 15px);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .email-info ul {
+            margin: 0;
+            padding-left: 28px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .email-info li {
+            margin-bottom: 10px;
+            font-size: clamp(12px, 2.5vw, 14px);
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(246, 255, 84, 0.15) 0%, rgba(246, 255, 84, 0.08) 100%);
+            border: 2px dashed rgba(246, 255, 84, 0.5);
+            padding: 24px;
+            border-radius: 18px;
+            margin-bottom: 0;
+            backdrop-filter: blur(20px);
+            animation: slideInRight 0.6s ease-out 0.7s both;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .info-box p {
+            color: rgba(255, 255, 255, 0.98);
+            margin: 0;
+            font-size: clamp(12px, 2.8vw, 14px);
+            line-height: 1.9;
+            font-weight: 600;
+        }
+
+        .success-modal-footer {
+            padding: 0 40px 50px 40px;
+        }
+
+        .success-modal .btn-primary {
+            background: linear-gradient(135deg, #F6FF54 0%, #ffff99 40%, #F6FF54 100%);
+            color: #0a0f1a;
+            border: none;
+            padding: clamp(16px, 3.5vw, 20px) clamp(35px, 8vw, 50px);
+            font-weight: 950;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: clamp(14px, 3.5vw, 18px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 15px 40px rgba(246, 255, 84, 0.4),
+                0 0 25px rgba(246, 255, 84, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+            animation: buttonPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow:
+                    0 15px 40px rgba(246, 255, 84, 0.4),
+                    0 0 25px rgba(246, 255, 84, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow:
+                    0 15px 45px rgba(246, 255, 84, 0.55),
+                    0 0 40px rgba(246, 255, 84, 0.35),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .success-modal .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .success-modal .btn-primary:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow:
+                0 20px 50px rgba(246, 255, 84, 0.5),
+                0 0 45px rgba(246, 255, 84, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            letter-spacing: 3px;
+        }
+
+        .success-modal .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .success-modal .btn-primary:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .success-modal {
+                padding: 16px;
+            }
+
+            .success-modal-content {
+                border-radius: 28px;
+            }
+
+            .success-modal-header {
+                padding: 55px 30px 40px;
+            }
+
+            .success-modal-body {
+                padding: 40px 30px;
+            }
+
+            .confirmation-details {
+                padding: 28px;
+                margin-bottom: 24px;
+            }
+
+            .success-modal-footer {
+                padding: 0 30px 40px 30px;
+            }
+
+            .detail-item {
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+            }
+
+            .email-info {
+                padding: 22px;
+                margin-bottom: 20px;
+            }
+
+            .info-box {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .success-modal {
+                padding: 12px;
+                align-items: flex-start;
+                padding-top: 60px;
+            }
+
+            .success-modal-content {
+                border-radius: 24px;
+                max-width: 100%;
+            }
+
+            .success-modal-header {
+                padding: 50px 25px 35px;
+            }
+
+            .success-checkmark {
+                font-size: 80px;
+                margin-bottom: 15px;
+            }
+
+            .success-modal-header h2 {
+                font-size: 32px;
+                letter-spacing: 1px;
+            }
+
+            .success-modal-header h2 .highlight {
+                font-size: 38px;
+                margin-top: 5px;
+            }
+
+            .success-modal-body {
+                padding: 35px 25px;
+            }
+
+            .success-message {
+                font-size: 16px;
+                margin-bottom: 30px;
+            }
+
+            .confirmation-details {
+                padding: 22px;
+                margin-bottom: 20px;
+                border-radius: 16px;
+            }
+
+            .detail-label {
+                font-size: 11px;
+                margin-bottom: 8px;
+            }
+
+            .detail-value {
+                font-size: 14px;
+            }
+
+            .detail-item {
+                margin-bottom: 18px;
+                padding-bottom: 18px;
+            }
+
+            .email-info {
+                padding: 20px;
+                margin-bottom: 18px;
+                border-radius: 16px;
+            }
+
+            .email-info p {
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+
+            .email-info li {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+
+            .info-box {
+                padding: 18px;
+                border-radius: 16px;
+                margin-bottom: 0;
+            }
+
+            .info-box p {
+                font-size: 12px;
+            }
+
+            .success-modal-footer {
+                padding: 0 25px 35px 25px;
+            }
+
+            .success-modal .btn-primary {
+                padding: 15px 30px;
+                font-size: 14px;
+                border-radius: 14px;
+                letter-spacing: 1.5px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -473,6 +1235,55 @@
             <div class="checkout-form">
                 <div id="errorMessage" class="message error"></div>
                 <div id="successMessage" class="message success"></div>
+
+                <!-- Modal de Confirmación de Éxito - Modernizado -->
+                <div id="successModal" class="success-modal" style="display: none;">
+                    <div class="success-modal-content">
+                        <div class="success-modal-header">
+                            <div class="success-checkmark">✓</div>
+                            <h2>¡Registro<span class="highlight">Exitoso!</span></h2>
+                        </div>
+
+                        <div class="success-modal-body">
+                            <p class="success-message">Tu acceso a EXPO MAKERS 2026 ha sido confirmado.</p>
+
+                            <div class="confirmation-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">📧 Email de Confirmación</span>
+                                    <p id="confirmEmail" class="detail-value">confirming@email.com</p>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">🎫 Número de Accesos</span>
+                                    <p id="confirmQuantity" class="detail-value">1</p>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">📅 Evento</span>
+                                    <p class="detail-value">23 de mayo 2026, Ocotlán, Jalisco</p>
+                                </div>
+                            </div>
+
+                            <div class="email-info">
+                                <p>📬 Revisa tu email para:</p>
+                                <ul>
+                                    <li>✓ Confirmación de tu registro</li>
+                                    <li>✓ Instrucciones de acceso</li>
+                                    <li>✓ Detalles del evento</li>
+                                    <li>✓ Tu código QR (si aplica)</li>
+                                </ul>
+                            </div>
+
+                            <div class="info-box">
+                                <p>💡 <strong>Tip:</strong> Si no ves el email en los próximos 5 minutos, revisa tu carpeta de Spam.</p>
+                            </div>
+                        </div>
+
+                        <div class="success-modal-footer">
+                            <button class="btn-primary" onclick="closeSuccessModal()">Volver al Evento</button>
+                        </div>
+                    </div>
+                </div>
 
                 <form id="checkoutForm">
                     <div class="form-group">
@@ -547,10 +1358,52 @@
         let selectedProductKey = null;
         let selectedQuantity = 1;
 
-        // Configuración de Stripe (para futuros usos)
+        // Configuración de Stripe Elements - Solo para boletos pagados
         function initStripe() {
-            // Stripe.js ya está inicializado en stripe-config.js
-            // cardElement no es necesario ya que usamos Stripe Checkout
+            // No inicializar Stripe si es boleto gratis
+            if (selectedProduct && selectedProduct.price === 0) {
+                // Esconder el card element para boletos gratis
+                const cardElementDiv = document.getElementById('cardElement');
+                if (cardElementDiv) {
+                    cardElementDiv.style.display = 'none';
+                }
+                return;
+            }
+
+            // Mostrar el card element para boletos pagados
+            const cardElementDiv = document.getElementById('cardElement');
+            if (cardElementDiv) {
+                cardElementDiv.style.display = 'block';
+            }
+
+            // Solo crear elementos si no existen ya
+            if (cardElement) return;
+
+            elements = stripe.elements();
+            cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#ffffff',
+                        '::placeholder': {
+                            color: 'rgba(255, 255, 255, 0.4)'
+                        }
+                    },
+                    invalid: {
+                        color: '#ff6b6b'
+                    }
+                }
+            });
+            cardElement.mount('#cardElement');
+
+            // Manejo de errores del card element
+            cardElement.addEventListener('change', (e) => {
+                if (e.error) {
+                    showError(e.error.message);
+                } else {
+                    hideError();
+                }
+            });
         }
 
         // Actualizar resumen cuando cambia el producto
@@ -562,6 +1415,8 @@
                 selectedQuantity = 1;
                 document.getElementById('quantity').value = 1;
                 updateOrderSummary();
+                // Inicializar Stripe solo si se selecciona un boleto pagado
+                initStripe();
             }
         });
 
@@ -638,22 +1493,22 @@
             if (available <= 0) {
                 showError('Lo siento, este paquete ya está agotado');
                 document.getElementById('submitBtn').disabled = true;
-                availabilityMsg.textContent = '❌ Agotado - No hay más disponibles';
+                availabilityMsg.textContent = '❌ Agotado';
                 availabilityMsg.style.color = '#ff6b6b';
             } else if (selectedQuantity > available) {
-                const msg = `⚠️ Bajo stock - Solo ${available} restantes`;
+                const msg = `⚠️ Solo hay ${available} disponibles (pediste ${selectedQuantity})`;
                 showError(msg);
                 document.getElementById('submitBtn').disabled = true;
                 availabilityMsg.textContent = msg;
                 availabilityMsg.style.color = '#fca5a5';
             } else if (available <= 10) {
-                const msg = `⚠️ Bajo stock - Solo ${available} restantes`;
+                const msg = `⚠️ Solo quedan ${available} boletos`;
                 showSuccess(msg);
                 document.getElementById('submitBtn').disabled = false;
                 availabilityMsg.textContent = msg;
                 availabilityMsg.style.color = '#fca5a5';
             } else {
-                const msg = `✓ En stock - ${available} disponibles`;
+                const msg = `✓ ${available} disponibles`;
                 hideError();
                 document.getElementById('submitBtn').disabled = false;
                 availabilityMsg.textContent = msg;
@@ -693,67 +1548,102 @@
 
             showLoading(true);
 
-            // Validar disponibilidad para la cantidad
-            const validation = await validateAvailability(selectedProductKey, selectedQuantity);
-            if (!validation.valid) {
-                showError(validation.message);
-                showLoading(false);
-                return;
-            }
-
-            // Decrementar boletos del inventario
-            const decrementResult = decrementInventoryBatch(selectedProductKey, selectedQuantity);
-            decrementResult.then(result => {
-                if (!result.success) {
-                    showError(result.error);
+            try {
+                // Validar disponibilidad para la cantidad
+                const validation = await validateAvailability(selectedProductKey, selectedQuantity);
+                if (!validation.valid) {
+                    showError(validation.message);
                     showLoading(false);
                     return;
                 }
 
-                // Crear orden
-                createOrder({
-                    fullName,
-                    email,
-                    phone,
-                    company,
-                    ticketType: selectedProductKey,
-                    quantity: selectedQuantity,
-                    unitPrice: selectedProduct.price,
-                    totalPrice: selectedProduct.price * selectedQuantity
-                }).then(orderResult => {
-                    if (!orderResult.success) {
-                        showError('Error creando la orden');
+                // Decrementar boletos del inventario
+                const decrementResult = decrementInventoryBatch(selectedProductKey, selectedQuantity);
+                decrementResult.then(result => {
+                    if (!result.success) {
+                        showError(result.error || 'Error al decrementar inventario');
                         showLoading(false);
+                        console.error('❌ Error decrementando inventario:', result.error);
                         return;
                     }
 
-                    // Guardar información local
-                    const orderData = {
-                        product: selectedProduct.name,
-                        quantity: selectedQuantity,
+                    // Crear orden
+                    createOrder({
                         fullName,
                         email,
                         phone,
                         company,
-                        totalPrice: selectedProduct.price * selectedQuantity,
-                        timestamp: new Date().toISOString(),
-                        orderId: orderResult.orderId
-                    };
+                        ticketType: selectedProductKey,
+                        quantity: selectedQuantity,
+                        unitPrice: selectedProduct.price,
+                        totalPrice: selectedProduct.price * selectedQuantity
+                    }).then(orderResult => {
+                        if (!orderResult.success) {
+                            const errorMsg = orderResult.error || 'Error creando la orden';
+                            showError(errorMsg);
+                            showLoading(false);
+                            console.error('❌ Error creando orden:', errorMsg);
+                            return;
+                        }
 
-                    localStorage.setItem('lastOrder', JSON.stringify(orderData));
+                        // Guardar información local
+                        const orderData = {
+                            product: selectedProduct.name,
+                            quantity: selectedQuantity,
+                            fullName,
+                            email,
+                            phone,
+                            company,
+                            totalPrice: selectedProduct.price * selectedQuantity,
+                            timestamp: new Date().toISOString(),
+                            orderId: orderResult.orderId
+                        };
 
-                    // Mostrar mensaje de éxito
-                    showSuccess(`¡${selectedQuantity} acceso${selectedQuantity > 1 ? 's' : ''} confirmado! Revisa tu email para más detalles.`);
+                        localStorage.setItem('lastOrder', JSON.stringify(orderData));
 
-                    // Redirigir después de 2 segundos
-                    setTimeout(() => {
-                        window.location.href = 'evento.html?success=true';
-                    }, 2000);
+                        // Enviar email de confirmación
+                        fetch('/api/send-ticket-email', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                email,
+                                fullName,
+                                ticketType: selectedProductKey,
+                                quantity: selectedQuantity,
+                                total: selectedProduct.price * selectedQuantity
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                console.error('❌ Error enviando email:', response.statusText);
+                            } else {
+                                console.log('✅ Email de confirmación enviado a:', email);
+                            }
+                        }).catch(error => {
+                            console.error('❌ Error en llamada a send-ticket-email:', error);
+                        });
+
+                        // Mostrar modal de éxito
+                        showLoading(false);
+                        showSuccessModal(email, selectedQuantity);
+                        console.log('✅ Orden completada:', orderData);
+                    }).catch(error => {
+                        const errorMsg = error?.message || 'Error procesando la orden';
+                        showError(errorMsg);
+                        showLoading(false);
+                        console.error('❌ Error en createOrder:', error);
+                    });
+                }).catch(error => {
+                    const errorMsg = error?.message || 'Error al decrementar inventario';
+                    showError(errorMsg);
+                    showLoading(false);
+                    console.error('❌ Error en decrementInventoryBatch:', error);
                 });
-            }).catch(error => {
-                showError('Error procesando la orden');
+            } catch (error) {
+                const errorMsg = error?.message || 'Error inesperado procesando la compra';
+                showError(errorMsg);
                 showLoading(false);
-            });
+                console.error('❌ Error inesperado:', error);
+            }
         }
 
         async function handlePaidCheckout() {
@@ -774,6 +1664,13 @@
             }
 
             showLoading(true);
+            console.log('💳 Iniciando checkout pagado para:', {
+                fullName,
+                email,
+                ticketType: selectedProductKey,
+                quantity: selectedQuantity,
+                totalPrice: selectedProduct.price * selectedQuantity
+            });
 
             // Crear orden pendiente en Supabase
             createOrder({
@@ -792,6 +1689,8 @@
                     return;
                 }
 
+                console.log('✅ Orden creada:', orderResult.orderId);
+
                 // Guardar información en sessionStorage
                 sessionStorage.setItem('checkoutData', JSON.stringify({
                     fullName,
@@ -804,64 +1703,68 @@
                     orderId: orderResult.orderId
                 }));
 
-                // Crear sesión de checkout con Stripe
-                createCheckoutSession({
-                    ticketType: selectedProductKey,
-                    quantity: selectedQuantity,
-                    email,
-                    fullName
+                // Crear sesión de Stripe dinámicamente
+                fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ticketType: selectedProductKey,
+                        quantity: selectedQuantity,
+                        email: email,
+                        fullName: fullName
+                    })
+                })
+                .then(response => {
+                    console.log('📡 Respuesta de create-checkout-session:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('📊 Datos recibidos:', data);
+
+                    if (!data.success) {
+                        showError(data.error || 'Error creando sesión de pago');
+                        showLoading(false);
+                        return;
+                    }
+
+                    if (data.sessionId && data.url) {
+                        console.log('🔗 URL de Stripe:', data.url);
+                        // Redirigir a Stripe Checkout
+                        setTimeout(() => {
+                            window.location.href = data.url;
+                        }, 500);
+                    } else {
+                        showError('No se recibió URL de pago válida');
+                        showLoading(false);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error en checkout:', error);
+                    showError('Error iniciando pago: ' + error.message);
+                    showLoading(false);
                 });
             }).catch(error => {
+                console.error('❌ Error creando orden:', error);
                 showError('Error procesando la orden');
                 showLoading(false);
             });
         }
 
-        async function createCheckoutSession(data) {
-            try {
-                const response = await fetch('/api/create-checkout-session', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    showError(result.error || 'Error creando sesión de pago');
-                    showLoading(false);
-                    return;
-                }
-
-                if (result.isFree) {
-                    showSuccess('¡Acceso gratuito confirmado!');
-                    setTimeout(() => {
-                        window.location.href = 'evento.html?success=true';
-                    }, 2000);
-                    return;
-                }
-
-                // Redirigir a Stripe Checkout
-                if (result.url) {
-                    window.location.href = result.url;
-                } else {
-                    showError('No se pudo generar el enlace de pago');
-                    showLoading(false);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Error conectando con el servidor de pagos');
-                showLoading(false);
-            }
-        }
-
         // Funciones auxiliares
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
+            // Asegurar que el mensaje no esté vacío
+            const displayMessage = message && message.trim() ? message : '❌ Ocurrió un error. Por favor intenta de nuevo.';
+            errorDiv.textContent = displayMessage;
             errorDiv.classList.add('show');
+            // Log para debugging
+            console.error('❌ ERROR MOSTRADO:', displayMessage);
+            // Auto-hide después de 8 segundos
+            setTimeout(() => {
+                hideError();
+            }, 8000);
         }
 
         function hideError() {
@@ -880,13 +1783,25 @@
             document.getElementById('submitBtn').disabled = show;
         }
 
+        function showSuccessModal(email, quantity) {
+            const modal = document.getElementById('successModal');
+            document.getElementById('confirmEmail').textContent = email;
+            document.getElementById('confirmQuantity').textContent = quantity + (quantity > 1 ? ' accesos' : ' acceso');
+            modal.style.display = 'flex';
+        }
+
+        function closeSuccessModal() {
+            window.location.href = 'evento.html?success=true';
+        }
+
         // Inicializar cuando carga la página
         document.addEventListener('DOMContentLoaded', () => {
-            initStripe();
-
             // Verificar parámetros de URL
             const urlParams = new URLSearchParams(window.location.search);
             const plan = urlParams.get('plan');
+            const statusParam = urlParams.get('status');
+
+            console.log('🔍 Parámetros de URL:', { plan, status: statusParam });
 
             if (plan && STRIPE_CONFIG.products[plan]) {
                 // Preseleccionar el plan
@@ -895,9 +1810,37 @@
                 document.getElementById('productSelect').dispatchEvent(event);
             }
 
-            // Verificar si viene de un pago exitoso
-            if (urlParams.get('success')) {
-                showSuccess('¡Compra completada! Revisa tu email para el recibo.');
+            // Verificar si viene de un pago exitoso desde Stripe
+            if (statusParam === 'success') {
+                console.log('✅ Pago exitoso detectado - mostrando modal de confirmación');
+
+                // Recuperar datos de sessionStorage
+                const checkoutData = sessionStorage.getItem('checkoutData');
+                console.log('📦 Datos guardados:', checkoutData);
+
+                if (checkoutData) {
+                    try {
+                        const data = JSON.parse(checkoutData);
+                        console.log('✅ Datos parseados:', data);
+
+                        // Mostrar el modal con los datos
+                        showSuccessModal(data.email, data.quantity);
+
+                        // Limpiar sessionStorage después de mostrar
+                        setTimeout(() => {
+                            sessionStorage.removeItem('checkoutData');
+                        }, 1000);
+                    } catch (error) {
+                        console.error('❌ Error parseando datos:', error);
+                        showSuccess('¡Compra completada! Revisa tu email para el recibo.');
+                    }
+                } else {
+                    console.warn('⚠️ No hay datos en sessionStorage');
+                    showSuccess('¡Compra completada! Revisa tu email para el recibo.');
+                }
+            } else if (statusParam === 'cancel') {
+                console.log('❌ Pago cancelado');
+                showError('El pago fue cancelado. Por favor intenta de nuevo.');
             }
         });
     </script>

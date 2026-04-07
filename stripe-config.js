@@ -7,6 +7,7 @@ const STRIPE_CONFIG = {
         free: {
             name: 'EXPO MAKERS PASS',
             price: 0,
+            limit: 999,
             priceId: 'price_1TFJdNFlJqxw20GM4qRX4Kh7',
             productId: 'prod_UDl9KmcCzI9xlE',
             link: 'https://buy.stripe.com/cNi00j1vx1Kk13S3LX2VG02',
@@ -21,6 +22,7 @@ const STRIPE_CONFIG = {
         conference: {
             name: 'CONFERENCE PASS',
             price: 497,
+            limit: 170,
             priceId: 'price_1TCTNvFlJqxw20GMrkrLrosG',
             productId: 'prod_UAp1deia0OGTfi',
             link: 'https://buy.stripe.com/cNi5kDcabgFe27W0zL2VG01',
@@ -36,6 +38,7 @@ const STRIPE_CONFIG = {
         vip: {
             name: 'VIP PASS',
             price: 897,
+            limit: 50,
             priceId: 'price_1TCTPFFlJqxw20GMS0D9rv1a',
             productId: 'prod_UAp3nzcF8VXsTq',
             link: 'https://buy.stripe.com/5kQcN51vx74Eh2Qcit2VG00',

@@ -1,116 +1,148 @@
-// Vercel Serverless Function - Crear sesión de checkout con Stripe
-// Cobro correcto para múltiples boletos
+import Stripe from 'stripe';
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Configuración de productos
-const PRODUCTS = {
-    free: {
-        name: 'EXPO MAKERS PASS',
-        price: 0,
-        priceId: 'price_1TFJdNFlJqxw20GM4qRX4Kh7',
-    },
-    conference: {
-        name: 'CONFERENCE PASS',
-        price: 49700, // $497 en centavos
-        priceId: 'price_1TCTNvFlJqxw20GMrkrLrosG',
-    },
-    vip: {
-        name: 'VIP PASS',
-        price: 89700, // $897 en centavos
-        priceId: 'price_1TCTPFFlJqxw20GMS0D9rv1a',
-    }
-};
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-module.exports = async function handler(req, res) {
-    // Validar método
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+  try {
+    const { ticketType, quantity, email, fullName } = req.body;
+
+    console.log('💳 CREATE-CHECKOUT-SESSION Request:', {
+      ticketType,
+      quantity,
+      email,
+      fullName
+    });
+
+    // Validar entrada
+    if (!ticketType || !quantity || !email || !fullName) {
+      console.error('🔴 Missing required fields:', { ticketType, quantity, email, fullName });
+      return res.status(400).json({
+        success: false,
+        error: 'Faltan campos requeridos: ticketType, quantity, email, fullName'
+      });
     }
 
-    try {
-        const { ticketType, quantity, email, fullName } = req.body;
+    // Configuración de precios (consistente con stripe-config.js)
+    const priceConfig = {
+      free: { price: 0, name: 'Boleto Gratis', limit: 999 },
+      conference: { price: 497, name: 'Conference Pass', limit: 170 },
+      vip: { price: 897, name: 'VIP Pass', limit: 50 }
+    };
 
-        // Validar datos
-        if (!ticketType || !quantity || !email || !fullName) {
-            return res.status(400).json({
-                error: 'Faltan datos requeridos: ticketType, quantity, email, fullName'
-            });
-        }
+    const ticketConfig = priceConfig[ticketType];
+    if (!ticketConfig) {
+      console.error('🔴 Invalid ticket type:', ticketType);
+      return res.status(400).json({
+        success: false,
+        error: `Tipo de boleto inválido: ${ticketType}`
+      });
+    }
 
-        // Validar tipo de boleto
-        if (!PRODUCTS[ticketType]) {
-            return res.status(400).json({ error: 'Tipo de boleto inválido' });
-        }
+    // Validar cantidad
+    const parsedQuantity = parseInt(quantity);
+    if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
+      console.error('🔴 Invalid quantity:', quantity);
+      return res.status(400).json({
+        success: false,
+        error: 'La cantidad debe ser un número positivo'
+      });
+    }
+    if (parsedQuantity > 100) {
+      console.error('🔴 Quantity exceeds maximum:', parsedQuantity);
+      return res.status(400).json({
+        success: false,
+        error: 'Máximo 100 boletos por orden'
+      });
+    }
+    if (parsedQuantity > ticketConfig.limit) {
+      console.error('🔴 Quantity exceeds available:', { requested: parsedQuantity, available: ticketConfig.limit });
+      return res.status(400).json({
+        success: false,
+        error: `Solo hay ${ticketConfig.limit} boletos disponibles para este tipo`
+      });
+    }
 
-        const product = PRODUCTS[ticketType];
-        const qty = Math.min(Math.max(1, parseInt(quantity)), 100); // 1-100
+    const unitPrice = ticketConfig.price;
+    const totalPrice = unitPrice * parsedQuantity;
 
-        // Si es gratuito, no procesar pago
-        if (product.price === 0) {
-            return res.status(200).json({
-                success: true,
-                message: 'Boletos gratuitos - no requiere pago',
-                isFree: true
-            });
-        }
+    console.log('✅ Validation passed:', {
+      ticketType,
+      ticketName: ticketConfig.name,
+      quantity: parsedQuantity,
+      unitPrice,
+      totalPrice
+    });
 
-        // Crear línea de artículo
-        const lineItems = [
-            {
-                price_data: {
-                    currency: 'mxn',
-                    product_data: {
-                        name: `${product.name} × ${qty}`,
-                        description: `${qty} boleto${qty > 1 ? 's' : ''} para EXPO MAKERS 2026`,
-                        metadata: {
-                            ticketType,
-                            quantity: qty,
-                            eventName: 'EXPO MAKERS 2026'
-                        }
-                    },
-                    unit_amount: product.price,
-                },
-                quantity: qty,
-            }
-        ];
+    // Si es gratis, no crear sesión de Stripe
+    if (totalPrice === 0) {
+      console.log('ℹ️ Free ticket - no Stripe session needed');
+      return res.status(200).json({
+        success: true,
+        isFree: true,
+        message: 'Boleto gratuito confirmado'
+      });
+    }
 
-        // Crear sesión de checkout
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: lineItems,
-            mode: 'payment',
-            success_url: `${req.headers.origin || 'https://www.topmakers.org'}/checkout.html?success=true&session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${req.headers.origin || 'https://www.topmakers.org'}/checkout.html?canceled=true`,
-            customer_email: email,
-            metadata: {
-                fullName,
-                email,
-                ticketType,
-                quantity: qty,
-                eventName: 'EXPO MAKERS 2026'
+    // Crear sesión de Stripe Checkout
+    console.log('🔗 Creating Stripe checkout session...');
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'mxn',
+            product_data: {
+              name: `${ticketConfig.name} - EXPO MAKERS 2026`,
+              description: `${parsedQuantity} ${parsedQuantity === 1 ? 'boleto' : 'boletos'} para EXPO MAKERS 2026 - Emprendimiento y Marketing`
             },
-            billing_address_collection: 'auto',
-            shipping_address_collection: {
-                allowed_countries: ['MX'] // Sólo México
-            }
-        });
+            unit_amount: unitPrice * 100 // Stripe usa centavos
+          },
+          quantity: parsedQuantity
+        }
+      ],
+      mode: 'payment',
+      success_url: `https://www.topmakers.org/checkout?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://www.topmakers.org/checkout?canceled=true`,
+      customer_email: email,
+      metadata: {
+        fullName,
+        ticketType,
+        quantity: parsedQuantity.toString(),
+        total: totalPrice.toString()
+      }
+    });
 
-        // Retornar URL de sesión
-        return res.status(200).json({
-            success: true,
-            sessionId: session.id,
-            url: session.url,
-            amount: product.price * qty,
-            quantity: qty,
-            product: product.name
-        });
+    console.log('✅ Stripe session created:', {
+      sessionId: session.id,
+      amount: totalPrice,
+      currency: 'mxn',
+      url: session.url
+    });
 
-    } catch (error) {
-        console.error('Error en create-checkout-session:', error);
-        return res.status(500).json({
-            error: 'Error creando sesión de pago',
-            message: error.message
-        });
-    }
+    return res.status(200).json({
+      success: true,
+      sessionId: session.id,
+      url: session.url,
+      amount: totalPrice,
+      quantity: parsedQuantity,
+      ticketType: ticketConfig.name
+    });
+  } catch (error) {
+    console.error('🔴 Error creating checkout session:', {
+      message: error.message,
+      code: error.code,
+      statusCode: error.statusCode,
+      type: error.type
+    });
+    return res.status(500).json({
+      success: false,
+      error: 'Error al crear sesión de pago',
+      details: error.message,
+      code: error.code
+    });
+  }
 }
