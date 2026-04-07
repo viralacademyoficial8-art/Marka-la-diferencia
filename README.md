@@ -24,7 +24,7 @@ Frontend (HTML + JS)          Backend (Supabase)
 | `admin.html` | Panel de administracion con auth y datos reales |
 | `config.js` | Configuracion de Supabase y utilidades compartidas |
 | `vercel.json` | Configuracion de rutas para Vercel |
-| `speaker-photo.jpg` | Foto de la mentora |
+| `speaker-photo.jpg` | Foto de la mentora |                  .
 | `supabase/migrations/001_initial_schema.sql` | Schema completo de la base de datos |
 | `supabase/functions/registro-lead/index.ts` | Edge Function para registro de leads |
 | `supabase/functions/actualizar-paso/index.ts` | Edge Function para tracking de pasos |
