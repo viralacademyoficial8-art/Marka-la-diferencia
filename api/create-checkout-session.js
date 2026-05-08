@@ -8,14 +8,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { ticketType, quantity, email, fullName } = req.body;
+    const { ticketType, quantity, email, fullName, couponCode } = req.body;
 
     console.log('💳 CREATE-CHECKOUT-SESSION Request:', {
       ticketType,
       quantity,
       email,
-      fullName
+      fullName,
+      couponCode
     });
+
+    // Cupones soportados
+    const COUPONS = {
+      SOYMAKER: { type: 'percent', value: 20, label: 'SOYMAKER (-20%)' }
+    };
 
     // Validar entrada
     if (!ticketType || !quantity || !email || !fullName) {
@@ -66,7 +72,32 @@ export default async function handler(req, res) {
       });
     }
 
-    const unitPrice = ticketConfig.price;
+    // Aplicar cupón si fue enviado y es válido
+    let unitPrice = ticketConfig.price;
+    let appliedCoupon = null;
+    if (couponCode) {
+      const normalizedCoupon = String(couponCode).trim().toUpperCase();
+      const coupon = COUPONS[normalizedCoupon];
+      if (!coupon) {
+        console.error('🔴 Invalid coupon code:', normalizedCoupon);
+        return res.status(400).json({
+          success: false,
+          error: `Cupón no válido: ${normalizedCoupon}`
+        });
+      }
+      if (unitPrice === 0) {
+        console.error('🔴 Coupon applied to free ticket:', normalizedCoupon);
+        return res.status(400).json({
+          success: false,
+          error: 'No se puede aplicar cupón a un boleto gratuito'
+        });
+      }
+      if (coupon.type === 'percent') {
+        unitPrice = Math.floor(unitPrice * (100 - coupon.value) / 100);
+      }
+      appliedCoupon = { code: normalizedCoupon, ...coupon };
+    }
+
     const totalPrice = unitPrice * parsedQuantity;
 
     console.log('✅ Validation passed:', {
@@ -74,7 +105,8 @@ export default async function handler(req, res) {
       ticketName: ticketConfig.name,
       quantity: parsedQuantity,
       unitPrice,
-      totalPrice
+      totalPrice,
+      coupon: appliedCoupon ? appliedCoupon.code : null
     });
 
     // Si es gratis, no crear sesión de Stripe
@@ -96,8 +128,8 @@ export default async function handler(req, res) {
           price_data: {
             currency: 'mxn',
             product_data: {
-              name: `${ticketConfig.name} - EXPO MAKERS 2026`,
-              description: `${parsedQuantity} ${parsedQuantity === 1 ? 'boleto' : 'boletos'} para EXPO MAKERS 2026 - Emprendimiento y Marketing`
+              name: `${ticketConfig.name} - EXPO MAKERS 2026${appliedCoupon ? ' (Cupón ' + appliedCoupon.code + ')' : ''}`,
+              description: `${parsedQuantity} ${parsedQuantity === 1 ? 'boleto' : 'boletos'} para EXPO MAKERS 2026 - Emprendimiento y Marketing${appliedCoupon ? ' · Descuento ' + appliedCoupon.value + '%' : ''}`
             },
             unit_amount: unitPrice * 100 // Stripe usa centavos
           },
@@ -112,7 +144,8 @@ export default async function handler(req, res) {
         fullName,
         ticketType,
         quantity: parsedQuantity.toString(),
-        total: totalPrice.toString()
+        total: totalPrice.toString(),
+        coupon: appliedCoupon ? appliedCoupon.code : ''
       }
     });
 

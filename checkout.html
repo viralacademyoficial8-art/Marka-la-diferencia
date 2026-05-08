@@ -1219,6 +1219,8 @@
                 <div class="price-display">
                     <div class="currency">$</div>
                     <div class="amount" id="productPrice">0.00</div>
+                    <div id="originalPriceDisplay" style="display:none; margin-top: 8px; color: rgba(255,255,255,0.6); font-size: 1rem; text-decoration: line-through;"></div>
+                    <div id="discountAppliedDisplay" style="display:none; margin-top: 6px; color: #22c55e; font-weight: 700; font-size: 0.95rem;"></div>
                 </div>
 
                 <div class="features-list">
@@ -1327,6 +1329,15 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="couponCode">🎟️ Cupón de descuento</label>
+                        <div style="display: flex; gap: 12px; align-items: stretch;">
+                            <input type="text" id="couponCode" placeholder="Ingresa tu código" style="flex: 1; text-transform: uppercase;">
+                            <button type="button" id="applyCouponBtn" class="qty-btn" style="width: auto; padding: 0 18px; font-size: 0.9rem; letter-spacing: 1px;">APLICAR</button>
+                        </div>
+                        <div id="couponMessage" style="font-size: 0.85rem; margin-top: 8px; text-align: center; min-height: 1.2em;"></div>
+                    </div>
+
                     <div id="cardElement" class="stripe-element"></div>
 
                     <button type="submit" class="submit-btn" id="submitBtn">
@@ -1357,6 +1368,20 @@
         let selectedProduct = null;
         let selectedProductKey = null;
         let selectedQuantity = 1;
+
+        // Cupones de descuento disponibles
+        const COUPONS = {
+            SOYMAKER: { type: 'percent', value: 20, label: 'SOYMAKER (-20%)' }
+        };
+        let appliedCoupon = null;
+
+        function getDiscountedUnitPrice(unitPrice) {
+            if (!appliedCoupon || !unitPrice) return unitPrice;
+            if (appliedCoupon.type === 'percent') {
+                return Math.floor(unitPrice * (100 - appliedCoupon.value) / 100);
+            }
+            return unitPrice;
+        }
 
         // Configuración de Stripe Elements - Solo para boletos pagados
         function initStripe() {
@@ -1414,6 +1439,14 @@
                 selectedProduct = STRIPE_CONFIG.products[selected];
                 selectedQuantity = 1;
                 document.getElementById('quantity').value = 1;
+
+                // Si el producto es gratis, descartar cualquier cupón aplicado
+                if (selectedProduct.price === 0 && appliedCoupon) {
+                    appliedCoupon = null;
+                    document.getElementById('couponMessage').textContent = '';
+                    document.getElementById('couponCode').value = '';
+                }
+
                 updateOrderSummary();
                 // Inicializar Stripe solo si se selecciona un boleto pagado
                 initStripe();
@@ -1441,15 +1474,80 @@
             updateOrderSummary();
         });
 
+        // Aplicar cupón de descuento
+        document.getElementById('applyCouponBtn').addEventListener('click', () => {
+            const input = document.getElementById('couponCode');
+            const msg = document.getElementById('couponMessage');
+            const code = (input.value || '').trim().toUpperCase();
+            input.value = code;
+
+            if (!code) {
+                appliedCoupon = null;
+                msg.textContent = '';
+                updateOrderSummary();
+                return;
+            }
+
+            if (!selectedProduct) {
+                msg.textContent = 'Primero selecciona un paquete';
+                msg.style.color = '#fca5a5';
+                return;
+            }
+
+            if (selectedProduct.price === 0) {
+                msg.textContent = 'Este boleto ya es gratis, no aplica cupón';
+                msg.style.color = '#fca5a5';
+                appliedCoupon = null;
+                updateOrderSummary();
+                return;
+            }
+
+            const coupon = COUPONS[code];
+            if (!coupon) {
+                appliedCoupon = null;
+                msg.textContent = '❌ Cupón no válido';
+                msg.style.color = '#fca5a5';
+                updateOrderSummary();
+                return;
+            }
+
+            appliedCoupon = { code, ...coupon };
+            msg.textContent = '✓ Cupón aplicado: -' + coupon.value + '%';
+            msg.style.color = '#86efac';
+            updateOrderSummary();
+        });
+
+        document.getElementById('couponCode').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('applyCouponBtn').click();
+            }
+        });
+
         function updateOrderSummary() {
             if (!selectedProduct) return;
 
             document.getElementById('productName').textContent = selectedProduct.name;
             document.getElementById('productDesc').textContent = selectedProduct.description;
 
-            // Calcular total
-            const totalPrice = selectedProduct.price * selectedQuantity;
+            // Calcular total con o sin cupón
+            const originalUnit = selectedProduct.price;
+            const discountedUnit = getDiscountedUnitPrice(originalUnit);
+            const totalPrice = discountedUnit * selectedQuantity;
+            const originalTotal = originalUnit * selectedQuantity;
             document.getElementById('productPrice').textContent = totalPrice.toFixed(2);
+
+            const originalEl = document.getElementById('originalPriceDisplay');
+            const discountEl = document.getElementById('discountAppliedDisplay');
+            if (appliedCoupon && discountedUnit < originalUnit) {
+                originalEl.textContent = '$' + originalTotal.toFixed(2);
+                originalEl.style.display = 'block';
+                discountEl.textContent = '✓ Cupón ' + appliedCoupon.label + ' aplicado';
+                discountEl.style.display = 'block';
+            } else {
+                originalEl.style.display = 'none';
+                discountEl.style.display = 'none';
+            }
 
             const featuresList = document.getElementById('featuresList');
             featuresList.innerHTML = selectedProduct.features
@@ -1568,6 +1666,7 @@
                     }
 
                     // Crear orden
+                    const freeUnitPrice = getDiscountedUnitPrice(selectedProduct.price);
                     createOrder({
                         fullName,
                         email,
@@ -1575,8 +1674,8 @@
                         company,
                         ticketType: selectedProductKey,
                         quantity: selectedQuantity,
-                        unitPrice: selectedProduct.price,
-                        totalPrice: selectedProduct.price * selectedQuantity
+                        unitPrice: freeUnitPrice,
+                        totalPrice: freeUnitPrice * selectedQuantity
                     }).then(orderResult => {
                         if (!orderResult.success) {
                             const errorMsg = orderResult.error || 'Error creando la orden';
@@ -1594,7 +1693,8 @@
                             email,
                             phone,
                             company,
-                            totalPrice: selectedProduct.price * selectedQuantity,
+                            totalPrice: freeUnitPrice * selectedQuantity,
+                            coupon: appliedCoupon ? appliedCoupon.code : null,
                             timestamp: new Date().toISOString(),
                             orderId: orderResult.orderId
                         };
@@ -1610,7 +1710,7 @@
                                 fullName,
                                 ticketType: selectedProductKey,
                                 quantity: selectedQuantity,
-                                total: selectedProduct.price * selectedQuantity
+                                total: freeUnitPrice * selectedQuantity
                             })
                         }).then(response => {
                             if (!response.ok) {
@@ -1672,7 +1772,8 @@
                 totalPrice: selectedProduct.price * selectedQuantity
             });
 
-            // Crear orden pendiente en Supabase
+            // Crear orden pendiente en Supabase con precio con descuento si aplica
+            const paidUnitPrice = getDiscountedUnitPrice(selectedProduct.price);
             createOrder({
                 fullName,
                 email,
@@ -1680,8 +1781,8 @@
                 company: document.getElementById('company').value,
                 ticketType: selectedProductKey,
                 quantity: selectedQuantity,
-                unitPrice: selectedProduct.price,
-                totalPrice: selectedProduct.price * selectedQuantity
+                unitPrice: paidUnitPrice,
+                totalPrice: paidUnitPrice * selectedQuantity
             }).then(orderResult => {
                 if (!orderResult.success) {
                     showError('Error creando la orden');
@@ -1698,8 +1799,9 @@
                     phone,
                     product: selectedProduct.name,
                     quantity: selectedQuantity,
-                    unitPrice: selectedProduct.price,
-                    totalPrice: selectedProduct.price * selectedQuantity,
+                    unitPrice: paidUnitPrice,
+                    totalPrice: paidUnitPrice * selectedQuantity,
+                    coupon: appliedCoupon ? appliedCoupon.code : null,
                     orderId: orderResult.orderId
                 }));
 
@@ -1713,7 +1815,8 @@
                         ticketType: selectedProductKey,
                         quantity: selectedQuantity,
                         email: email,
-                        fullName: fullName
+                        fullName: fullName,
+                        couponCode: appliedCoupon ? appliedCoupon.code : null
                     })
                 })
                 .then(response => {
